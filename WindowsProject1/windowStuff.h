@@ -149,9 +149,10 @@ void hanleNewWidow(HWND hWnd) {
         }
         
     }
+    else {
+        SetWindowText(hwndEdit, L"");
+    }
     
-
-    return;
 }
 
 
@@ -180,9 +181,12 @@ void handleEdit(HWND hWnd, LPARAM lParam) {
     //SendMessage(hwndEdit, WM_SETTEXT, 0, (LPARAM)lpszLatin);
 }
 
-void handleRichEditControl(HWND hWnd) {
 
+void handleRichEditControl(HWND hWnd) {
+   // hwndEdit = CreateRichEdit(hWnd, 0, 0, 100, 100, hInst)
 }
+
+
 
 
 

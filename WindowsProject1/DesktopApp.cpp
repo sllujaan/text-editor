@@ -8,6 +8,8 @@
 #include <tchar.h>
 using namespace std;
 
+
+
 #define MAINWIN_WIDTH 500
 #define MAINWIN_HEIGHT 400
 HINSTANCE hInst;
@@ -172,7 +174,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //handleManu(hWnd);
         handleMainMenu(hWnd, hMenuMain);
         handleEdit(hWnd, lParam);
-        handleRichEditControl(hWnd);
+        //handleRichEditControl(hWnd);
         break;
 
     case WM_COMMAND:
