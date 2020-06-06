@@ -28,6 +28,16 @@
 
 HMENU hMenu;
 static HWND hwndEdit;
+static HWND hwndRichEdit;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -182,8 +192,26 @@ void handleEdit(HWND hWnd, LPARAM lParam) {
 }
 
 
+HWND CreateRichEdit(HWND hwndOwner,        // Dialog box handle.
+    int x, int y,          // Location.
+    int width, int height, // Dimensions.
+    HINSTANCE hinst)       // Application or DLL instance.
+{
+    LoadLibrary(TEXT("Msftedit.dll"));
+
+    HWND hwndEdit = CreateWindowEx(0, MSFTEDIT_CLASS, TEXT("Type here"),
+        ES_MULTILINE | WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL | ES_AUTOVSCROLL | WS_VSCROLL | WS_HSCROLL ,
+        x, y, width, height,
+        hwndOwner, NULL, hinst, NULL);
+
+    return hwndEdit;
+}
+
+
 void handleRichEditControl(HWND hWnd) {
    // hwndEdit = CreateRichEdit(hWnd, 0, 0, 100, 100, hInst)
+
+    hwndEdit = CreateRichEdit(hWnd, 0, 0, 200, 200, hInst);
 }
 
 

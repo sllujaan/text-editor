@@ -6,7 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tchar.h>
+#include<Richedit.h>
 using namespace std;
+
+
 
 
 
@@ -52,6 +55,7 @@ int CALLBACK WinMain(
     _In_ int       nCmdShow
 )
 {
+
     
     WNDCLASSEX wcex;
 
@@ -173,8 +177,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //handleNewWidow(hWnd);
         //handleManu(hWnd);
         handleMainMenu(hWnd, hMenuMain);
-        handleEdit(hWnd, lParam);
-        //handleRichEditControl(hWnd);
+        //handleEdit(hWnd, lParam);
+        handleRichEditControl(hWnd);
         break;
 
     case WM_COMMAND:
@@ -222,7 +226,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_SETFOCUS:
         SetFocus(hwndEdit);
-        break;
+        break;        
 
     case WM_SIZE:
         MoveWindow(hwndEdit,
