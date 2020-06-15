@@ -24,6 +24,10 @@ static TCHAR szWindowClass[] = _T("DesktopApp");
 // The string that appears in the application's title bar.
 static TCHAR szTitle[] = _T("Untitled - Text-Editor");
 
+//font style
+HFONT hFont = CreateFont(18, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
+    OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+    DEFAULT_PITCH | FF_DONTCARE, TEXT("Tahoma"));
 
 
 #include"windowStuff.h"
@@ -35,11 +39,21 @@ static TCHAR szTitle[] = _T("Untitled - Text-Editor");
 
 
 
-
+// Global variables
 HMENU hMenuMain;
 
+//font
+/*
+    HFONT hFont = CreateFont(18, 0, 0, 0, FW_DONTCARE, FALSE, TRUE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
+    CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, VARIABLE_PITCH, TEXT("Impact"));
+*/
 
-// Global variables
+
+
+
+
+
+
 
 
 
@@ -194,6 +208,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_OPEN_MENU:
             handleOpenMenu(hWnd);
+            OutputDebugStringW((LPCWSTR)L"ID_OPEN_MENU called....");
             break;
         case ID_NEW_MENU:
             hanleNewWidow(hWnd);
@@ -210,6 +225,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_SETTINGS_DIALOG_MENU:
             handleSettingsDialogBoxWindow(hWnd);
             break;
+        case ID_SELECT_ALL_MENU:
+            SendMessage(hwndEdit, EM_SETSEL, 0, -1);
+            break;
+        case ID_CHANGE_FONT_MENU:
+            SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE); 
+            break;
             
         default:
             break;
@@ -225,7 +246,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_SETFOCUS:
         SetFocus(hwndEdit);
-        break;        
+        break;
+
+
+    case WM_COPY:
+        OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>>>WM_COPY called<<<<<<<<<");
+        break;
+
 
     case WM_SIZE:
         MoveWindow(hwndEdit,
@@ -259,6 +286,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         handleDistroyManu();
         PostQuitMessage(0);
         break;
+
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
         break;

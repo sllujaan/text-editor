@@ -24,6 +24,8 @@
 #define ID_SAVE_MENU 0x998
 #define ID_SETTINGS_MENU 0x000
 #define ID_SETTINGS_DIALOG_MENU 0x123
+#define ID_SELECT_ALL_MENU 0x354
+#define ID_CHANGE_FONT_MENU 0xfde
 
 
 HMENU hMenu;
@@ -213,6 +215,10 @@ void handleRichEditControl(HWND hWnd) {
    // hwndEdit = CreateRichEdit(hWnd, 0, 0, 100, 100, hInst)
 
     hwndEdit = CreateRichEdit(hWnd, 0, 0, 200, 200, hInst);
+
+    //formating editrich control..
+    SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
+
 }
 
 
@@ -372,6 +378,8 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     AppendMenu(hFileMenu, MF_STRING, ID_OPEN_MENU, (LPCWSTR)L"Open...");
     AppendMenu(hFileMenu, MF_STRING, ID_SAVE_MENU, (LPCWSTR)L"Save");
     AppendMenu(hFileMenu, MF_STRING, ID_SAVEAS_MENU, (LPCWSTR)L"Save As...");
+    AppendMenu(hFileMenu, MF_STRING, ID_SELECT_ALL_MENU, (LPCWSTR)L"Select All...");
+    AppendMenu(hFileMenu, MF_STRING, ID_CHANGE_FONT_MENU, (LPCWSTR)L"Change Font...");
     AppendMenu(hFileMenu, MF_POPUP, (UINT_PTR)hSubFileMenu, (LPCWSTR)L"Tools");
     AppendMenu(hFileMenu, MF_SEPARATOR, NULL, NULL);
     AppendMenu(hFileMenu, MF_STRING, ID_EXIT_MENU, (LPCWSTR)L"Exit");
