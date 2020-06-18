@@ -221,30 +221,7 @@ HWND CreateRichEdit(HWND hwndOwner,        // Dialog box handle.
                 procedure.
 
 *********************************************************/
-LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    switch (msg)
-    {
-    case WM_KEYDOWN:
-        OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>");
-        break;
-
-    case WM_KEYUP:
-    case WM_CHAR:
-        switch (wParam)
-        {
-        case VK_TAB:
-        case VK_ESCAPE:
-        case VK_RETURN:
-            return 0;
-        }
-    }
-
-    //  Call the original window procedure for default processing. 
-    return CallWindowProc(lpfnEditWndProc, hwnd, msg, wParam, lParam);
-}
-
-
+LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 void handleRichEditControl(HWND hWnd) {
@@ -577,3 +554,44 @@ MAINWIN_WIDTH - 17, MAINWIN_HEIGHT - 59
  
 */
 
+
+
+
+
+/********************************************************
+
+    FUNCTION:   SubClassProc
+
+    PURPOSE:    Process TAB and ESCAPE keys, and pass all
+                other messages to the class window
+                procedure.
+
+*********************************************************/
+LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+    case WM_KEYDOWN:
+        OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>\r\n");
+        break;
+
+    case WM_KEYUP:
+    case WM_CHAR:
+        switch (wParam)
+        {
+        case VK_TAB:
+            OutputDebugStringW((LPCWSTR)L"VK_TAB\r\n");
+            break;
+        case VK_ESCAPE:
+            OutputDebugStringW((LPCWSTR)L"VK_ESCAPE");
+            break;
+        case VK_RETURN:
+            OutputDebugStringW((LPCWSTR)L"VK_RETURN");
+            break;
+            return 0;
+        }
+    }
+
+    //  Call the original window procedure for default processing. 
+    return CallWindowProc(lpfnEditWndProc, hwnd, msg, wParam, lParam);
+}
