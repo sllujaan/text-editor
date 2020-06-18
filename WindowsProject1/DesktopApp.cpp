@@ -10,7 +10,9 @@
 using namespace std;
 
 
-
+//  Global variables
+HWND    hwndMain;
+WNDPROC lpfnEditWndProc; //  Original wndproc for the combo box 
 
 
 #define MAINWIN_WIDTH 500
@@ -142,6 +144,9 @@ int CALLBACK WinMain(
         return 1;
     }
 
+    //stroring the handle to global variable--
+    hwndMain = hWnd;
+
     // The parameters to ShowWindow explained:
     // hWnd: the value returned from CreateWindow
     // nCmdShow: the fourth parameter from WinMain
@@ -178,7 +183,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     PAINTSTRUCT ps;
     HDC hdc;
     TCHAR greeting[] = _T("Hello, Windows desktop!");
-    wchar_t msg[50];
+    //wchar_t msg[50];
+
 
 
     switch (message)
@@ -192,6 +198,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         handleMainMenu(hWnd, hMenuMain);
         //handleEdit(hWnd, lParam);
         handleRichEditControl(hWnd);
+        break;
+
+    case WM_KEYDOWN:
+        OutputDebugStringW((LPCWSTR)L"WM_KEYDOWN called>>>>>>>>>>>>");
+        break;
+    case WM_KEYUP:
+        OutputDebugStringW((LPCWSTR)L"WM_KEYUP called>>>>>>>>>>>>");
+        break;
+    case WM_SYSKEYDOWN:
+        OutputDebugStringW((LPCWSTR)L"WM_SYSKEYDOWN called>>>>>>>>>>>>");
+        break;
+    case WM_SYSKEYUP:
+        OutputDebugStringW((LPCWSTR)L"WM_SYSKEYUP called>>>>>>>>>>>>");
+
         break;
 
     case WM_COMMAND:
@@ -231,6 +251,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_CHANGE_FONT_MENU:
             SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE); 
             break;
+
+        case EN_CHANGE:
+            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<");
+            break;
             
         default:
             break;
@@ -242,6 +266,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_INITDIALOG:
         OutputDebugStringW((LPCWSTR)L"WM_INITDIALOG called....");
+        //SetWindowSubclass(hwndEdit, (SUBCLASSPROC)editControlProcedures, 0, 0);
+        //return TRUE;
         break;
 
     case WM_SETFOCUS:
@@ -252,6 +278,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COPY:
         OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>>>WM_COPY called<<<<<<<<<");
         break;
+
 
 
     case WM_SIZE:

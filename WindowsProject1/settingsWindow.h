@@ -5,17 +5,26 @@ LRESULT CALLBACK WndProcSettings(HWND, UINT, WPARAM, LPARAM); //declaration of t
 
 
 
-
+INT_PTR CALLBACK PasswordProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 
 
 void handleSettingsDialogBoxWindow(HWND hWnd) {
-    MessageBox(
+   
+    /*MessageBox(
         hWnd,
         (LPCWSTR)L"handleSettingsDialogBoxWindow.",
         (LPCWSTR)L"Settings...",
         MB_ICONERROR
+    );*/
+
+
+    DialogBox(hInst,                   // application instance
+        NULL, // dialog box resource
+        hWnd,                          // owner window
+        NULL                    // dialog box window procedure
     );
+
 
 }
 

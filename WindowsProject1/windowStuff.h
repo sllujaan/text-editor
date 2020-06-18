@@ -211,6 +211,42 @@ HWND CreateRichEdit(HWND hwndOwner,        // Dialog box handle.
 }
 
 
+
+/********************************************************
+
+    FUNCTION:   SubClassProc
+
+    PURPOSE:    Process TAB and ESCAPE keys, and pass all
+                other messages to the class window
+                procedure.
+
+*********************************************************/
+LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+    case WM_KEYDOWN:
+        OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>");
+        break;
+
+    case WM_KEYUP:
+    case WM_CHAR:
+        switch (wParam)
+        {
+        case VK_TAB:
+        case VK_ESCAPE:
+        case VK_RETURN:
+            return 0;
+        }
+    }
+
+    //  Call the original window procedure for default processing. 
+    return CallWindowProc(lpfnEditWndProc, hwnd, msg, wParam, lParam);
+}
+
+
+
+
 void handleRichEditControl(HWND hWnd) {
    // hwndEdit = CreateRichEdit(hWnd, 0, 0, 100, 100, hInst)
 
@@ -219,6 +255,8 @@ void handleRichEditControl(HWND hWnd) {
     //formating editrich control..
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
 
+    lpfnEditWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit,
+        GWLP_WNDPROC, (LONG_PTR)SubClassProc);
 }
 
 
@@ -295,7 +333,9 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
     LPCWSTR lpString = wstr.c_str();
 
 
-    
+    //saving edit control fonts
+    HFONT prevFont = (HFONT)SendMessage(hwndEdit, WM_GETFONT, 0, 0);
+
 
     MessageBox(
         NULL,
@@ -305,10 +345,16 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
     );
 
     SetWindowText(hWnd, (LPCWSTR)path);
+
+    
     
     SetWindowTextW(hwndEdit, (LPCWSTR)lpString);
-    //SetWindowText(hwndEdit, (LPCWSTR)lpString);
-    
+
+    //setting previously saved fonts
+    //SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
+
+    if(prevFont) SendMessage(hwndEdit, WM_SETFONT, (WPARAM)prevFont, TRUE);
+    if(!prevFont) OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>>>>>font was NULL<<<<<<<<<<<<<<");
 }
 
 
@@ -530,3 +576,4 @@ MAINWIN_WIDTH - 17, MAINWIN_HEIGHT - 59
  
  
 */
+
