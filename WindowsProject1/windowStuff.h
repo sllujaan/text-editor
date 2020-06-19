@@ -573,8 +573,18 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
     case WM_KEYDOWN:
         OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>\r\n");
+        SendMessage(hwndEdit, EN_CHANGE, 0, 0);
         break;
+    case WM_COMMAND:
+        OutputDebugStringW((LPCWSTR)L"---------------WM_COMMAND called>>>>>>>>>>>>\r\n");
 
+        switch (wParam)
+        {
+        case EN_CHANGE:
+            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<");
+            break;
+        }
+        break;
     case WM_KEYUP:
     case WM_CHAR:
         switch (wParam)

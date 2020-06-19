@@ -216,9 +216,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_COMMAND:
         //DisplayResourceNAMessageBox(hWnd);
+        OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_COMMAND parent called<<<<<<<<<<<<\r\n");
 
         switch (wParam)
         {
+            
         case ID_EXIT_MENU:
             handleDistroyManu();
             PostQuitMessage(0);
@@ -255,14 +257,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case EN_CHANGE:
             OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<");
             break;
+
+        case EN_KILLFOCUS:
+            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_KILLFOCUS called<<<<<<<<<<<<");
+            break;
             
         default:
+            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>wParam parent default called<<<<<<<<<<<<\r\n");
             break;
         }
 
         //OutputDebugStringW((LPCWSTR)L"command called.");
 
         break;
+
+    
 
     case WM_INITDIALOG:
         OutputDebugStringW((LPCWSTR)L"WM_INITDIALOG called....");
