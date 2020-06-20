@@ -45,12 +45,47 @@ void handleOnTextModified(HWND hWnd) {
 
     GetWindowText(hWnd, (LPWSTR)data, size + 1);
 
+
+    /*
+    if (wcscmp((LPWSTR)data[0], (LPWSTR)L"*") != 0) {
+
+    }
+    */
+
+    //data = L"*";
+
+    //WCHAR* title_textModified = new WCHAR[size + 2];
+    
+
+    wstring wstr = data;
+    wstring subStr = L"*" + wstr;
+    LPCWSTR subTitle = subStr.c_str();
+    
+
+
+    //wcsncpy_s(title_textModified, size + 1, data, size);
+
+    //title_textModified[0] = (WCHAR)L"A";
+
+    /*
+    for (size_t i = 1; i < size + 1; i++)
+    {
+        title_textModified[i]
+    }
+    */
+
+    
     MessageBox(
         hWnd,
-        data,
+        (LPCWSTR)subTitle,
         (LPCWSTR)L"save",
         MB_OK
     );
+
+    SetWindowText(hWnd, (LPCWSTR)subTitle);
+
+
+    //delete[] title_textModified;
 
 
 
