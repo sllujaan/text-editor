@@ -36,6 +36,28 @@ static HWND hwndRichEdit;
 
 
 
+void handleOnTextModified(HWND hWnd) {
+
+    //get main window title--
+    const int size = GetWindowTextLength(hWnd);
+    //wchar_t* data = new wchar_t[size + 1];
+    LPCWSTR data = new WCHAR[size + 1];
+
+    GetWindowText(hWnd, (LPWSTR)data, size + 1);
+
+    MessageBox(
+        hWnd,
+        data,
+        (LPCWSTR)L"save",
+        MB_OK
+    );
+
+
+
+}
+
+
+
 
 
 
@@ -140,7 +162,7 @@ void hanleNewWidow(HWND hWnd) {
     //converting wstring to wchar_t*...
     const wchar_t* wchar_ptr = wstr.c_str();
 
-
+     
     //get main window title--
     const int size = GetWindowTextLength(hWnd);
     //wchar_t* data = new wchar_t[size + 1];
@@ -572,6 +594,7 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
     case WM_KEYDOWN:
+        handleOnTextModified(hwndMain);
         OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>\r\n");
         SendMessage(hwndEdit, EN_CHANGE, 0, 0);
         break;
