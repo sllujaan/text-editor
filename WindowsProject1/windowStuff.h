@@ -28,69 +28,62 @@
 #define ID_CHANGE_FONT_MENU 0xfde
 
 
+
+
+
 HMENU hMenu;
 static HWND hwndEdit;
 static HWND hwndRichEdit;
+BOOL titleUpdatedOnTextModified = FALSE;
 
 
 
 
+void handleTitleOnTextModified(HWND hWnd) {
 
-void handleOnTextModified(HWND hWnd) {
+    if (titleUpdatedOnTextModified == FALSE) {
 
-    //get main window title--
-    const int size = GetWindowTextLength(hWnd);
-    //wchar_t* data = new wchar_t[size + 1];
-    LPCWSTR data = new WCHAR[size + 1];
+        //get main window title--
+        const int size = GetWindowTextLength(hWnd);
+        //wchar_t* data = new wchar_t[size + 1];
+        LPCWSTR data = new WCHAR[size + 1];
 
-    GetWindowText(hWnd, (LPWSTR)data, size + 1);
+        GetWindowText(hWnd, (LPWSTR)data, size + 1);
 
+        wstring wstr = data;
+        wstring subStr = L"*" + wstr;
+        LPCWSTR subTitle = subStr.c_str();
 
-    /*
-    if (wcscmp((LPWSTR)data[0], (LPWSTR)L"*") != 0) {
+        SetWindowText(hWnd, (LPCWSTR)subTitle);
+
+        titleUpdatedOnTextModified = TRUE;
 
     }
-    */
-
-    //data = L"*";
-
-    //WCHAR* title_textModified = new WCHAR[size + 2];
-    
-
-    wstring wstr = data;
-    wstring subStr = L"*" + wstr;
-    LPCWSTR subTitle = subStr.c_str();
-    
-
-
-    //wcsncpy_s(title_textModified, size + 1, data, size);
-
-    //title_textModified[0] = (WCHAR)L"A";
-
-    /*
-    for (size_t i = 1; i < size + 1; i++)
-    {
-        title_textModified[i]
-    }
-    */
-
-    
-    MessageBox(
-        hWnd,
-        (LPCWSTR)subTitle,
-        (LPCWSTR)L"save",
-        MB_OK
-    );
-
-    SetWindowText(hWnd, (LPCWSTR)subTitle);
-
-
-    //delete[] title_textModified;
-
-
 
 }
 
+
+
+void handleTitleOnTextSaved(HWND hWnd) {
+    if (titleUpdatedOnTextModified == TRUE) {
+
+        //get main window title--
+        const int size = GetWindowTextLength(hWnd);
+        //wchar_t* data = new wchar_t[size + 1];
+        LPCWSTR data = new WCHAR[size + 1];
+
+        GetWindowText(hWnd, (LPWSTR)data, size + 1);
+
+        wstring wstr = data;
+        wstring subStr = wstr.substr(1, size);
+        LPCWSTR subTitle = subStr.c_str();
+
+        SetWindowText(hWnd, (LPCWSTR)subTitle);
+
+        titleUpdatedOnTextModified = FALSE;
+
+    }
+}
 
 
 
@@ -629,7 +622,7 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
     case WM_KEYDOWN:
-        handleOnTextModified(hwndMain);
+        
         OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>\r\n");
         SendMessage(hwndEdit, EN_CHANGE, 0, 0);
         break;
@@ -648,10 +641,12 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
         case VK_TAB:
+            handleTitleOnTextModified(hwndMain);
             OutputDebugStringW((LPCWSTR)L"VK_TAB\r\n");
             break;
         case VK_ESCAPE:
             OutputDebugStringW((LPCWSTR)L"VK_ESCAPE");
+            handleTitleOnTextSaved(hwndMain);
             break;
         case VK_RETURN:
             OutputDebugStringW((LPCWSTR)L"VK_RETURN");
