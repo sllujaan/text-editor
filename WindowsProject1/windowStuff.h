@@ -8,6 +8,7 @@
 //#include <string>
 #include"File.h"
 #include"debug.h"
+#include<Shlwapi.h>
 
 
 #define PACKVERSION(major,minor) MAKELONG(minor,major)
@@ -198,7 +199,7 @@ void hanleNewWidow(HWND hWnd) {
 
     GetWindowText(hWnd, (LPWSTR)data, size+1);
 
-    if (wcscmp((LPWSTR)data, (LPWSTR)L"Untitled - Text-Editor") == 0) {
+    if (wcscmp((LPWSTR)data, (LPWSTR)L"*Untitled - Text-Editor") == 0) {
 
         if (editLength > 0) {
             MessageBox(
@@ -209,6 +210,23 @@ void hanleNewWidow(HWND hWnd) {
             );
             //return;
         }
+        
+    }
+    else if (titleUpdatedOnTextModified) {
+
+        wstring wstr = data;
+        wstring subStr = L"Do you want to save changes to: " + wstr.substr(1, size);
+        LPCWSTR subTitle = subStr.c_str();
+
+        LPCSTR fileName = PathFindFileNameA((LPCSTR)subTitle);
+
+
+        MessageBox(
+            hWnd,
+            (LPCWSTR)fileName,
+            (LPCWSTR)L"save",
+            MB_OK
+        );
         
     }
     else {
@@ -372,7 +390,7 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
     );
 
     SetWindowText(hWnd, (LPCWSTR)path);
-
+    titleUpdatedOnTextModified = FALSE;
     
     
     SetWindowTextW(hwndEdit, (LPCWSTR)lpString);
