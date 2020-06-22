@@ -36,6 +36,7 @@ HMENU hMenu;
 static HWND hwndEdit;
 static HWND hwndRichEdit;
 BOOL titleUpdatedOnTextModified = FALSE;
+BOOL titleUntitled = FALSE;
 
 
 
@@ -152,16 +153,38 @@ void hanleSaveAsText(HWND hWnd) {
     
 
     File file;
-    int res = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile);
+    int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, FALSE);
+    int msgboxID = 0;
     
-    if (!res) {
-        MessageBox(
+    switch (FILE_ID)
+    {
+    case FILE_EXIST:
+
+        msgboxID = MessageBox(
             hWnd,
-            (LPCWSTR)L"Error while writing to file.",
-            (LPCWSTR)L"save",
-            MB_ICONERROR
+            (LPWSTR)ofn.lpstrFile,
+            (LPCWSTR)L"Conform Save As",
+            MB_YESNO | MB_ICONEXCLAMATION
         );
+
+        switch (msgboxID)
+        {
+        case IDYES:
+            file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, TRUE);
+            break;
+        default:
+            break;
+        }
+
+
+        break;
+    case FILE_ERROR:
+
+        break;
+    default:
+        break;
     }
+
 
 }
 
@@ -172,16 +195,65 @@ void generateNewTextWindow(HWND hWnd) {
     SetWindowText(hWnd, L"Untitled - Text-Editor");
     SetWindowText(hwndEdit, L"");
     titleUpdatedOnTextModified = FALSE;
+    titleUntitled = TRUE;
 }
 
 
 
 
 
+int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
+{   
+    int msgboxID = 0;
+
+    if (fileName == NULL) {
+        msgboxID = MessageBox(
+            hWnd,
+            (LPCWSTR)L"Do you want to save changes to Untitled?",
+            (LPCWSTR)L"save",
+            MB_YESNOCANCEL | MB_ICONQUESTION
+        );
+    }
+    else {
+        msgboxID = MessageBox(
+            hWnd,
+            (LPCWSTR)fileName,
+            (LPCWSTR)L"save",
+            MB_YESNOCANCEL | MB_ICONQUESTION
+        );
+    }
+    
+
+    switch (msgboxID)
+    {
+    case IDYES:
+        // TODO: add code
+        OutputDebugStringW((LPCWSTR)L"User chose the yes button....");
+        
+        break;
+    case IDNO:
+        OutputDebugStringW((LPCWSTR)L"User chose the no button....");
+        generateNewTextWindow(hWnd);
+        // TODO: add code
+        break;
+
+    }
+
+    return msgboxID;
+}
 
 
 
 
+
+void handleNewWindowA(HWND hWnd) {
+    if (titleUntitled && titleUpdatedOnTextModified) {
+        DisplayResourceNAMessageBox(hWnd, NULL);
+    }
+    else if (titleUntitled) {
+        generateNewTextWindow(hWnd);
+    }
+}
 
 
 
@@ -325,6 +397,9 @@ void handleRichEditControl(HWND hWnd) {
 
     lpfnEditWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit,
         GWLP_WNDPROC, (LONG_PTR)SubClassProc);
+
+    titleUntitled = TRUE;
+    titleUpdatedOnTextModified = FALSE;
 }
 
 

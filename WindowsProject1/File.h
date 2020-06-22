@@ -6,6 +6,11 @@
 #include<comdef.h>
 using namespace std;
 
+
+#define FILE_EXIST 0x2
+#define FILE_ERROR 0x0
+#define FILE_SUCCESS 0x1
+
 struct File {
 
 	fstream file;
@@ -26,7 +31,7 @@ struct File {
 	}
 
 
-	int writeFile_LPCWSTR(LPCWSTR text, LPCWSTR path) {
+	int writeFile_LPCWSTR(LPCWSTR text, LPCWSTR path, BOOL replace = FALSE) {
 
 		//LPCWSTR is cosnt wchar_t*
 
@@ -35,11 +40,15 @@ struct File {
 		_bstr_t b(path);
 		const char* fileNamePtr = b;
 
+		if (isFile(fileNamePtr)) {
+			if(!replace) return FILE_EXIST;
+		}
+
 		fstream new_file;
 
 		new_file.open(fileNamePtr, ios_base::out);
 
-		if (!new_file) return 0;
+		if (!new_file) return FILE_ERROR;
 
 		//new_file << "this text has been generated from c++ programming language.\nAnd this is new the new line.\n\tThis is new line and tab space." << endl;
 		
@@ -52,7 +61,7 @@ struct File {
 
 		new_file.close();
 
-		return 1;
+		return FILE_SUCCESS;
 	}
 
 

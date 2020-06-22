@@ -233,7 +233,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             OutputDebugStringW((LPCWSTR)L"ID_OPEN_MENU called....");
             break;
         case ID_NEW_MENU:
-            hanleNewWidow(hWnd);
+            handleNewWindowA(hWnd);
             break;
         case ID_SAVE_MENU:
             hanleSaveText(hWnd);
