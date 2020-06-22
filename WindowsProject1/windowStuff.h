@@ -168,6 +168,12 @@ void hanleSaveAsText(HWND hWnd) {
 
 
 
+void generateNewTextWindow(HWND hWnd) {
+    SetWindowText(hWnd, L"Untitled - Text-Editor");
+    SetWindowText(hwndEdit, L"");
+    titleUpdatedOnTextModified = FALSE;
+}
+
 
 
 
@@ -218,15 +224,32 @@ void hanleNewWidow(HWND hWnd) {
         wstring subStr = L"Do you want to save changes to: " + wstr.substr(1, size);
         LPCWSTR subTitle = subStr.c_str();
 
+        //geting filename from the url---
         LPCSTR fileName = PathFindFileNameA((LPCSTR)subTitle);
 
 
-        MessageBox(
+        int msgboxID = MessageBox(
             hWnd,
             (LPCWSTR)fileName,
             (LPCWSTR)L"save",
-            MB_OK
+            MB_YESNOCANCEL | MB_ICONQUESTION
         );
+
+        switch (msgboxID)
+        {
+        case IDYES:
+            // TODO: add code
+            OutputDebugStringW((LPCWSTR)L"User choose the yes button....");
+            break;
+        case IDNO:
+            OutputDebugStringW((LPCWSTR)L"User choose the no button....");
+            generateNewTextWindow(hWnd);
+            // TODO: add code
+            break;
+
+        }
+
+        
         
     }
     else {
