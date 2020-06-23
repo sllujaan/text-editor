@@ -92,6 +92,13 @@ void handleTitleOnTextSaved(HWND hWnd) {
 
 
 
+void generateNewTextWindow(HWND hWnd) {
+    SetWindowText(hWnd, L"Untitled - Text-Editor");
+    SetWindowText(hwndEdit, L"");
+    titleUpdatedOnTextModified = FALSE;
+    titleUntitled = TRUE;
+}
+
 
 
 
@@ -125,6 +132,8 @@ void hanleSaveText(HWND hWnd) {
 
     //saveText();
 }
+
+
 
 void hanleSaveAsText(HWND hWnd) {
     OPENFILENAME ofn;
@@ -165,52 +174,25 @@ void hanleSaveAsText(HWND hWnd) {
 
     File file;
     int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, TRUE);
-    
-    /*
-    int msgboxID = 0;
-    
-    switch (FILE_ID)
-    {
-    case FILE_EXIST:
-        /*
-        msgboxID = MessageBox(
-            hWnd,
-            (LPWSTR)ofn.lpstrFile,
-            (LPCWSTR)L"Conform Save As",
-            MB_YESNO | MB_ICONEXCLAMATION
-        );
-        *//*
-        switch (msgboxID)
-        {
-        case IDYES:
-            file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, TRUE);
-            break;
-        default:
-            break;
-        }
 
+    MessageBox(
+        hWnd,
+        (LPWSTR)fileName,
+        (LPCWSTR)L"Conform Save As",
+        MB_OK
+    );
 
-        break;
-    case FILE_ERROR:
+    generateNewTextWindow(hWnd);
 
-        break;
-    default:
-        break;
-    }
-    */
-
+    //storing file name globally---
+    OPENED_FILE_NAME = (LPCWSTR)fileTitle;
+    OPENED_FILE_PATH = (LPCWSTR)fileName;
+    titleUntitled = FALSE;
 
 }
 
 
 
-
-void generateNewTextWindow(HWND hWnd) {
-    SetWindowText(hWnd, L"Untitled - Text-Editor");
-    SetWindowText(hwndEdit, L"");
-    titleUpdatedOnTextModified = FALSE;
-    titleUntitled = TRUE;
-}
 
 void handleSaveFileA(HWND hWnd) {
     if (OPENED_FILE_PATH.length() > 0) {
@@ -527,9 +509,6 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
 
     if(prevFont) SendMessage(hwndEdit, WM_SETFONT, (WPARAM)prevFont, TRUE);
     if(!prevFont) OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>>>>>font was NULL<<<<<<<<<<<<<<");
-
-    titleUntitled = FALSE;
-    OPENED_FILE_PATH = path;
 }
 
 
@@ -575,7 +554,7 @@ void handleOpenMenu(HWND hWnd) {
     //storing file name globally---
     OPENED_FILE_NAME = (LPCWSTR)fileTitle;
     OPENED_FILE_PATH = (LPCWSTR)fileName;
-
+    titleUntitled = FALSE;
 }
 
 
