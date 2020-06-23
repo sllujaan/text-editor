@@ -37,7 +37,7 @@ static HWND hwndEdit;
 static HWND hwndRichEdit;
 BOOL titleUpdatedOnTextModified = FALSE;
 BOOL titleUntitled = FALSE;
-LPCWSTR OPENED_FILE_PATH = L"";
+wstring OPENED_FILE_PATH = L"";
 wstring OPENED_FILE_NAME = L"";
 
 
@@ -146,6 +146,7 @@ void hanleSaveAsText(HWND hWnd) {
     ofn.lpstrFileTitle = (LPWSTR)fileTitle;
     ofn.lpstrFileTitle[0] = '\0';
     ofn.nMaxFileTitle = 100;
+    ofn.Flags = OFN_OVERWRITEPROMPT;
 
     BOOL OPEN = GetSaveFileName(&ofn);
     if (!OPEN) return;
@@ -163,20 +164,22 @@ void hanleSaveAsText(HWND hWnd) {
     
 
     File file;
-    int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, FALSE);
+    int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, TRUE);
+    
+    /*
     int msgboxID = 0;
     
     switch (FILE_ID)
     {
     case FILE_EXIST:
-
+        /*
         msgboxID = MessageBox(
             hWnd,
             (LPWSTR)ofn.lpstrFile,
             (LPCWSTR)L"Conform Save As",
             MB_YESNO | MB_ICONEXCLAMATION
         );
-
+        *//*
         switch (msgboxID)
         {
         case IDYES:
@@ -194,6 +197,7 @@ void hanleSaveAsText(HWND hWnd) {
     default:
         break;
     }
+    */
 
 
 }
@@ -206,6 +210,15 @@ void generateNewTextWindow(HWND hWnd) {
     SetWindowText(hwndEdit, L"");
     titleUpdatedOnTextModified = FALSE;
     titleUntitled = TRUE;
+}
+
+void handleSaveFileA(HWND hWnd) {
+    if (OPENED_FILE_PATH.length() > 0) {
+
+    }
+    else {
+        hanleSaveAsText(hWnd);
+    }
 }
 
 
@@ -239,7 +252,7 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
     case IDYES:
         // TODO: add code
         OutputDebugStringW((LPCWSTR)L"User chose the yes button....");
-        
+        handleSaveFileA(hWnd);
         break;
     case IDNO:
         OutputDebugStringW((LPCWSTR)L"User chose the no button....");
@@ -261,13 +274,10 @@ void handleNewWindowA(HWND hWnd) {
         DisplayResourceNAMessageBox(hWnd, NULL);
     }
     else if (!titleUntitled && titleUpdatedOnTextModified) {
-        MessageBox(
-            hWnd,
-            (LPWSTR)OPENED_FILE_NAME.c_str(),
-            (LPCWSTR)L"Text Editor",
-            BS_PUSHBUTTON
-        );
-        //DisplayResourceNAMessageBox(hWnd, (LPCSTR)OPENED_FILE_PATH);
+        wstring wstr = L"Do you want to save changes to ";
+        wstring message = wstr + OPENED_FILE_NAME + L" ?";
+
+        DisplayResourceNAMessageBox(hWnd, (LPCSTR)message.c_str());
     }
     else {
         generateNewTextWindow(hWnd);
@@ -564,6 +574,7 @@ void handleOpenMenu(HWND hWnd) {
 
     //storing file name globally---
     OPENED_FILE_NAME = (LPCWSTR)fileTitle;
+    OPENED_FILE_PATH = (LPCWSTR)fileName;
 
 }
 
