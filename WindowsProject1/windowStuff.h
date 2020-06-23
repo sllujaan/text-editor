@@ -37,7 +37,8 @@ static HWND hwndEdit;
 static HWND hwndRichEdit;
 BOOL titleUpdatedOnTextModified = FALSE;
 BOOL titleUntitled = FALSE;
-
+LPCWSTR OPENED_FILE_PATH = L"";
+wstring OPENED_FILE_NAME = L"";
 
 
 
@@ -129,6 +130,7 @@ void hanleSaveAsText(HWND hWnd) {
     OPENFILENAME ofn;
 
     LPWSTR fileName[100];
+    LPWSTR fileTitle[100];
 
     ZeroMemory(&ofn, sizeof(OPENFILENAME));
 
@@ -140,8 +142,16 @@ void hanleSaveAsText(HWND hWnd) {
     ofn.lpstrFilter = (LPWSTR)L"Text Documents (*.txt)\0*.txt*\0";
     ofn.nFilterIndex = 1;
 
+    //saving file name-----
+    ofn.lpstrFileTitle = (LPWSTR)fileTitle;
+    ofn.lpstrFileTitle[0] = '\0';
+    ofn.nMaxFileTitle = 100;
+
     BOOL OPEN = GetSaveFileName(&ofn);
     if (!OPEN) return;
+
+
+
 
 
     //get edit window length--
@@ -250,7 +260,16 @@ void handleNewWindowA(HWND hWnd) {
     if (titleUntitled && titleUpdatedOnTextModified) {
         DisplayResourceNAMessageBox(hWnd, NULL);
     }
-    else if (titleUntitled) {
+    else if (!titleUntitled && titleUpdatedOnTextModified) {
+        MessageBox(
+            hWnd,
+            (LPWSTR)OPENED_FILE_NAME.c_str(),
+            (LPCWSTR)L"Text Editor",
+            BS_PUSHBUTTON
+        );
+        //DisplayResourceNAMessageBox(hWnd, (LPCSTR)OPENED_FILE_PATH);
+    }
+    else {
         generateNewTextWindow(hWnd);
     }
 }
@@ -498,6 +517,9 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
 
     if(prevFont) SendMessage(hwndEdit, WM_SETFONT, (WPARAM)prevFont, TRUE);
     if(!prevFont) OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>>>>>font was NULL<<<<<<<<<<<<<<");
+
+    titleUntitled = FALSE;
+    OPENED_FILE_PATH = path;
 }
 
 
@@ -510,6 +532,7 @@ void handleOpenMenu(HWND hWnd) {
     OPENFILENAME ofn;
 
     char* fileName[100];
+    LPWSTR fileTitle[100];
 
     ZeroMemory(&ofn, sizeof(OPENFILENAME));
 
@@ -523,13 +546,24 @@ void handleOpenMenu(HWND hWnd) {
     ofn.lpstrDefExt = L"txt";
     ofn.Flags = OFN_FILEMUSTEXIST;
 
+    //saving file name-----
+    ofn.lpstrFileTitle = (LPWSTR)fileTitle;
+    ofn.lpstrFileTitle[0] = '\0';
+    ofn.nMaxFileTitle = 100;
+
     
     BOOL OPEN = GetOpenFileName(&ofn);
     if (!OPEN) return;
+
+    
+
     
     handleReadFile_LPCWSTR(hWnd, (LPCWSTR)fileName);
     //handleReadFile(hWnd, (char*)ofn.lpstrFile);
+    
 
+    //storing file name globally---
+    OPENED_FILE_NAME = (LPCWSTR)fileTitle;
 
 }
 
