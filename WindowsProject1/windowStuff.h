@@ -41,6 +41,20 @@ wstring OPENED_FILE_PATH = L"";
 wstring OPENED_FILE_NAME = L"";
 
 
+void handleEnableManues(HWND hWnd) {
+    EnableMenuItem(GetMenu(hWnd), ID_SAVE_MENU, MF_ENABLED | MF_BYCOMMAND);
+    EnableMenuItem(GetMenu(hWnd), ID_SAVEAS_MENU, MF_ENABLED | MF_BYCOMMAND);
+}
+void handleDisableManues(HWND hWnd) {
+    EnableMenuItem(GetMenu(hWnd), ID_SAVE_MENU, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
+    EnableMenuItem(GetMenu(hWnd), ID_SAVEAS_MENU, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
+}
+
+void handleManuDisableEnable(HWND hWnd, BOOL Disable = FALSE) {
+    if (Disable) handleEnableManues(hWnd);
+    else handleDisableManues(hWnd);
+}
+
 
 void handleTitleOnTextModified(HWND hWnd) {
 
@@ -262,7 +276,7 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
         OutputDebugStringW((LPCWSTR)L"User chose the no button....");
         generateNewTextWindow(hWnd);
         
-        EnableMenuItem(GetSubMenu(GetMenu(hWnd), 0), ID_SAVE_MENU, MF_DISABLED | MF_GRAYED);
+        EnableMenuItem(GetMenu(hWnd), ID_SAVE_MENU, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
         // TODO: add code
         break;
 
@@ -624,8 +638,7 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     SetMenu(hWnd, hMenuMain);
 
 
-    EnableMenuItem(GetSubMenu(GetMenu(hWnd), 0), ID_SAVE_MENU, MF_DISABLED | MF_GRAYED);
-    EnableMenuItem(GetSubMenu(GetMenu(hWnd), 0), ID_SAVEAS_MENU, MF_DISABLED | MF_GRAYED);
+    handleDisableManues(hWnd);
 }
 
 
@@ -811,10 +824,12 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case VK_TAB:
             handleTitleOnTextModified(hwndMain);
             OutputDebugStringW((LPCWSTR)L"VK_TAB\r\n");
+            handleEnableManues(hwndMain);
             break;
         case VK_ESCAPE:
             OutputDebugStringW((LPCWSTR)L"VK_ESCAPE");
             handleTitleOnTextSaved(hwndMain);
+            handleDisableManues(hwndMain);
             break;
         case VK_RETURN:
             OutputDebugStringW((LPCWSTR)L"VK_RETURN");
