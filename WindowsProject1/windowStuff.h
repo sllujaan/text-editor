@@ -100,6 +100,27 @@ void generateNewTextWindow(HWND hWnd) {
 }
 
 
+void handleSaveTextPath(HWND hWnd, LPCWSTR path) {
+
+    //get edit window length--
+    const int size = GetWindowTextLength(hwndEdit);
+    //wchar_t* data = new wchar_t[size + 1];
+    LPCWSTR text = new WCHAR[size + 1];
+
+    GetWindowText(hwndEdit, (LPWSTR)text, size + 1);
+    
+    File file;
+    int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)path, TRUE);
+
+    generateNewTextWindow(hWnd);
+
+    //storing file name globally---
+    OPENED_FILE_NAME = L"";
+    OPENED_FILE_PATH = L"";
+    titleUntitled = FALSE;
+}
+
+
 
 
 
@@ -175,19 +196,20 @@ void hanleSaveAsText(HWND hWnd) {
     File file;
     int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, TRUE);
 
-    MessageBox(
-        hWnd,
-        (LPWSTR)fileName,
-        (LPCWSTR)L"Conform Save As",
-        MB_OK
-    );
-
     generateNewTextWindow(hWnd);
 
+    //storing file name globally---
+    OPENED_FILE_NAME = L"";
+    OPENED_FILE_PATH = L"";
+    titleUntitled = FALSE;
+
+    /*
     //storing file name globally---
     OPENED_FILE_NAME = (LPCWSTR)fileTitle;
     OPENED_FILE_PATH = (LPCWSTR)fileName;
     titleUntitled = FALSE;
+    */
+
 
 }
 
@@ -196,7 +218,7 @@ void hanleSaveAsText(HWND hWnd) {
 
 void handleSaveFileA(HWND hWnd) {
     if (OPENED_FILE_PATH.length() > 0) {
-
+        handleSaveTextPath(hWnd, (LPCWSTR)OPENED_FILE_PATH.c_str());
     }
     else {
         hanleSaveAsText(hWnd);
