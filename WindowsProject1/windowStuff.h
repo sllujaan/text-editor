@@ -261,6 +261,8 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
     case IDNO:
         OutputDebugStringW((LPCWSTR)L"User chose the no button....");
         generateNewTextWindow(hWnd);
+        
+        EnableMenuItem(GetSubMenu(GetMenu(hWnd), 0), ID_SAVE_MENU, MF_DISABLED | MF_GRAYED);
         // TODO: add code
         break;
 
@@ -620,6 +622,10 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     AppendMenu(hFileMenu, MF_STRING, ID_EXIT_MENU, (LPCWSTR)L"Exit");
 
     SetMenu(hWnd, hMenuMain);
+
+
+    EnableMenuItem(GetSubMenu(GetMenu(hWnd), 0), ID_SAVE_MENU, MF_DISABLED | MF_GRAYED);
+    EnableMenuItem(GetSubMenu(GetMenu(hWnd), 0), ID_SAVEAS_MENU, MF_DISABLED | MF_GRAYED);
 }
 
 
