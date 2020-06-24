@@ -186,6 +186,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //wchar_t msg[50];
 
 
+    
 
     switch (message)
     {

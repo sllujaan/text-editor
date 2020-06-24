@@ -448,6 +448,9 @@ void handleRichEditControl(HWND hWnd) {
 
     titleUntitled = TRUE;
     titleUpdatedOnTextModified = FALSE;
+
+    //edit rich event mask
+    SendMessage(hwndMain, EM_SETEVENTMASK, 0, ENM_CHANGE);
 }
 
 
