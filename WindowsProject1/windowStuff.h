@@ -186,6 +186,8 @@ void hanleSaveAsText(HWND hWnd) {
     ofn.lpstrFilter = (LPWSTR)L"Text Documents (*.txt)\0*.txt*\0";
     ofn.nFilterIndex = 1;
 
+    ofn.lpstrDefExt = L"txt";
+
     //saving file name-----
     ofn.lpstrFileTitle = (LPWSTR)fileTitle;
     ofn.lpstrFileTitle[0] = '\0';
