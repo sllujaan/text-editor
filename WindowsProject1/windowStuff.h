@@ -37,6 +37,8 @@ static HWND hwndEdit;
 static HWND hwndRichEdit;
 BOOL titleUpdatedOnTextModified = FALSE;
 BOOL titleUntitled = FALSE;
+BOOL NewEditRich = TRUE;
+BOOL EditRichFocus = FALSE;
 wstring OPENED_FILE_PATH = L"";
 wstring OPENED_FILE_NAME = L"";
 

@@ -221,8 +221,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case EN_CHANGE:
             OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<\r\n");
             /*do the stuff text has been changed.*/
-            handleTitleOnTextModified(hwndMain);
-            handleEnableManues(hwndMain);
+            
+            if (!NewEditRich) {
+                handleTitleOnTextModified(hwndMain);
+                handleEnableManues(hwndMain);
+            }
+            else {
+                //NewEditRich = FALSE;
+
+
+                HWND hwnd = GetFocus();
+                if (hwnd == hwndEdit) {
+                    OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>hwndEdit has focus Now<<<<<<<<<<<<\r\n");
+                }
+
+
+            }
 
             break;
         case WM_NOTIFY:
