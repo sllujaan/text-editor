@@ -24,7 +24,7 @@
 #define ID_SAVEAS_MENU 0x992
 #define ID_SAVE_MENU 0x998
 #define ID_SETTINGS_MENU 0x000
-#define ID_SETTINGS_DIALOG_MENU 0x123
+#define ID_SETTINGS_COMBOBOX_MENU 0x123
 #define ID_SELECT_ALL_MENU 0x354
 #define ID_CHANGE_FONT_MENU 0xfde
 
@@ -39,6 +39,18 @@ BOOL titleUpdatedOnTextModified = FALSE;
 BOOL titleUntitled = FALSE;
 wstring OPENED_FILE_PATH = L"";
 wstring OPENED_FILE_NAME = L"";
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void handleEnableManues(HWND hWnd) {
@@ -414,7 +426,7 @@ HWND CreateRichEdit(HWND hwndOwner,        // Dialog box handle.
 {
     LoadLibrary(TEXT("Msftedit.dll"));
 
-    HWND hwndEdit = CreateWindowEx(0, MSFTEDIT_CLASS, TEXT("Type here"),
+    HWND hwndEdit = CreateWindowEx(0, MSFTEDIT_CLASS, TEXT(""), // TEXT("") was TEXT("Type here")
          WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
         ES_LEFT | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL,
         x, y, width, height,
@@ -451,8 +463,9 @@ void handleRichEditControl(HWND hWnd) {
     titleUntitled = TRUE;
     titleUpdatedOnTextModified = FALSE;
 
+    //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
     //edit rich event mask
-    SendMessage(hwndMain, EM_SETEVENTMASK, 0, ENM_CHANGE);
+    //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
 }
 
 
@@ -627,7 +640,7 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hHelpMenu, (LPCWSTR)L"Help");
     AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About");
     AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
-    AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_DIALOG_MENU, (LPCWSTR)L"Settings Dialog box...");
+    AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
     AppendMenu(hFileMenu, MF_STRING, ID_NEW_MENU, (LPCWSTR)L"New");
     AppendMenu(hFileMenu, MF_STRING, ID_OPEN_MENU, (LPCWSTR)L"Open...");
@@ -807,28 +820,34 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
     case WM_KEYDOWN:
-        
+        //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
         OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>\r\n");
-        SendMessage(hwndEdit, EN_CHANGE, 0, 0);
+        //SendMessage(hwndEdit, ENM_CHANGE, 0, 0);
+
         break;
+    
     case WM_COMMAND:
         OutputDebugStringW((LPCWSTR)L"---------------WM_COMMAND called>>>>>>>>>>>>\r\n");
-
+            
         switch (wParam)
         {
+
         case EN_CHANGE:
             OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<");
             break;
         }
+
         break;
     case WM_KEYUP:
     case WM_CHAR:
         switch (wParam)
         {
         case VK_TAB:
+            /*
             handleTitleOnTextModified(hwndMain);
             OutputDebugStringW((LPCWSTR)L"VK_TAB\r\n");
             handleEnableManues(hwndMain);
+            */
             break;
         case VK_ESCAPE:
             OutputDebugStringW((LPCWSTR)L"VK_ESCAPE");

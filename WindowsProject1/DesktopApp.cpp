@@ -185,7 +185,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     TCHAR greeting[] = _T("Hello, Windows desktop!");
     //wchar_t msg[50];
 
-
     
 
     switch (message)
@@ -219,6 +218,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //DisplayResourceNAMessageBox(hWnd);
         OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_COMMAND parent called<<<<<<<<<<<<\r\n");
 
+        case EN_CHANGE:
+            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<\r\n");
+            /*do the stuff text has been changed.*/
+            handleTitleOnTextModified(hwndMain);
+            handleEnableManues(hwndMain);
+
+            break;
+        case WM_NOTIFY:
+            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_NOTIFY called<<<<<<<<<<<<\r\n");
+            break;
+
+
         switch (wParam)
         {
             
@@ -245,8 +256,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_SETTINGS_MENU:
             handleSettingsWindow(hWnd);
             break;
-        case ID_SETTINGS_DIALOG_MENU:
-            handleSettingsDialogBoxWindow(hWnd);
+        case ID_SETTINGS_COMBOBOX_MENU:
+            //handleSettingsComboBoxWindow(hWnd);
             break;
         case ID_SELECT_ALL_MENU:
             SendMessage(hwndEdit, EM_SETSEL, 0, -1);
@@ -255,9 +266,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE); 
             break;
 
-        case EN_CHANGE:
-            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<");
-            break;
+        
 
         case EN_KILLFOCUS:
             OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_KILLFOCUS called<<<<<<<<<<<<");

@@ -9,23 +9,76 @@ INT_PTR CALLBACK PasswordProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPa
 
 
 
-void handleSettingsDialogBoxWindow(HWND hWnd) {
-   
-    /*MessageBox(
-        hWnd,
-        (LPCWSTR)L"handleSettingsDialogBoxWindow.",
-        (LPCWSTR)L"Settings...",
-        MB_ICONERROR
-    );*/
+
+LRESULT CALLBACK SubClassProcComboBox(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+void handleSettingsComboBoxWindow(HWND hWnd) {
+    //  Create a combo box child window.
+    DWORD dwBaseUnits;
+    static HWND hwndCombo1;
+    POINT pt;
+    static HWND   hwndEdit1;
+
+    dwBaseUnits = GetDialogBaseUnits();
+
+    hwndCombo1 = CreateWindow(L"COMBOBOX", L"",
+        CBS_DROPDOWN | WS_CHILD | WS_VISIBLE,
+        (6 * LOWORD(dwBaseUnits)) / 4,
+        (2 * HIWORD(dwBaseUnits)) / 8,
+        (100 * LOWORD(dwBaseUnits)) / 4,
+        (50 * HIWORD(dwBaseUnits)) / 8,
+        hWnd, NULL, NULL, NULL);
+
+    //  Get the edit window handle to each combo box. 
+    pt.x = 1;
+    pt.y = 1;
+
+    hwndEdit1 = ChildWindowFromPoint(hwndCombo1, pt);
+
+    lpfnEditWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit1,
+        GWLP_WNDPROC, (LONG_PTR)SubClassProcComboBox);
+
+}
 
 
-    DialogBox(hInst,                   // application instance
-        NULL, // dialog box resource
-        hWnd,                          // owner window
-        NULL                    // dialog box window procedure
-    );
+LRESULT CALLBACK SubClassProcComboBox(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+    case WM_KEYDOWN:
 
+        OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>\r\n");
+        break;
+    case WM_COMMAND:
+        OutputDebugStringW((LPCWSTR)L"---------------WM_COMMAND called>>>>>>>>>>>>\r\n");
 
+        switch (wParam)
+        {
+        case EN_CHANGE:
+            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<");
+            break;
+        }
+        break;
+    case WM_KEYUP:
+    case WM_CHAR:
+        switch (wParam)
+        {
+        case VK_TAB:
+
+            break;
+        case VK_ESCAPE:
+            OutputDebugStringW((LPCWSTR)L"VK_ESCAPE");
+
+            break;
+        case VK_RETURN:
+            OutputDebugStringW((LPCWSTR)L"VK_RETURN");
+            break;
+            return 0;
+        }
+    }
+
+    //  Call the original window procedure for default processing. 
+    return CallWindowProc(lpfnEditWndProc, hwnd, msg, wParam, lParam);
 }
 
 
@@ -96,7 +149,7 @@ int CALLBACK handleSettingsWindow(HWND hWnd) {
     ShowWindow(hwnd, nCmdShowGlobal);
 
 
-
+    //handleSettingsComboBoxWindow(hwnd);
 
     return 1;
 }
