@@ -28,6 +28,8 @@
 #define ID_SELECT_ALL_MENU 0x354
 #define ID_CHANGE_FONT_MENU 0xfde
 
+#define CUSTOM_SELCHANGE 0xabc
+
 
 
 
@@ -437,6 +439,13 @@ HWND CreateRichEdit(HWND hwndOwner,        // Dialog box handle.
     return hwndEdit;
 }
 
+/*
+----rich edit-----
+
+WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
+        ES_LEFT | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL
+*/
+
 
 
 /********************************************************
@@ -467,7 +476,26 @@ void handleRichEditControl(HWND hWnd) {
 
     //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
     //edit rich event mask
-    //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
+    SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
+
+
+
+    //sending notify message...
+
+
+    /*
+
+    NMHDR nmh;
+    nmh.code = CUSTOM_SELCHANGE;    // Message type defined by control.
+    nmh.idFrom = GetDlgCtrlID(hwndEdit);
+    nmh.hwndFrom = hwndEdit;
+
+    SendMessage(GetParent(hwndMain),
+        WM_NOTIFY,
+        nmh.idFrom,
+        (LPARAM)&nmh);
+
+        */
 }
 
 

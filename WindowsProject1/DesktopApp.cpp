@@ -7,6 +7,7 @@
 #include <string.h>
 #include <tchar.h>
 #include<Richedit.h>
+#include<TextServ.h>
 using namespace std;
 
 
@@ -214,6 +215,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         break;
 
+    
+
     case WM_COMMAND:
         //DisplayResourceNAMessageBox(hWnd);
         OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_COMMAND parent called<<<<<<<<<<<<\r\n");
@@ -238,11 +241,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             }
 
+
+
+            if (((LPNMHDR)lParam)->code) {
+                OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>CHANGENOTIFY called...<<<<<<<<<<<<\r\n");
+            }
+
+
+
+
+            switch (wParam)
+            {
+            case ID_ABOUT_MENU:
+                handleAbout(hWnd);
+                break;
+            default:
+                break;
+            }
+
             break;
+        
         case WM_NOTIFY:
             OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_NOTIFY called<<<<<<<<<<<<\r\n");
             break;
-
 
         switch (wParam)
         {
