@@ -101,7 +101,7 @@ struct File {
 		string lineText;
 		string wholeText;
 
-		while (getline(file, lineText)) { wholeText += lineText + "\r\n"; }
+		while (getline(file, lineText)) { wholeText += lineText + "\n"; }
 
 		//cout << wholeText << endl;
 
@@ -138,6 +138,34 @@ struct File {
 		*/
 
 	}
+
+
+
+	string readFile_LPCWSTR_A(LPCWSTR fileName) {
+
+		//LPCWSTR is cosnt wchar_t*
+
+
+		//converting WCHAR* to CHAR*
+		_bstr_t b(fileName);
+		const char* fileNamePtr = b;
+
+		file.open(fileNamePtr, ios_base::in);
+
+		string msg = "No such file exists named " + (string)fileNamePtr;
+		if (!file) { cout << msg << endl;return "ERROR::NOT FOUND."; }
+
+		string lineText;
+		string wholeText;
+
+		while (getline(file, lineText)) { wholeText += lineText + "\r\n"; }
+
+		//cout << wholeText << endl;
+
+		return wholeText;
+
+	}
+
 
 
 };

@@ -157,6 +157,17 @@ int CALLBACK handleSettingsWindow(HWND hWnd) {
 
 
 
+void handleSettingsDialog(HWND hWnd) {
+    MessageBox(
+        hWnd,
+        (LPCWSTR)L"Settings will be available in upcoming versions!",
+        (LPCWSTR)L"Settings",
+        MB_OK | MB_ICONASTERISK
+    );
+}
+
+
+
 
 
 

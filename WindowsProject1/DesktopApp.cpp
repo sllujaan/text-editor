@@ -215,17 +215,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         break;
 
-    
+    case WM_NOTIFY:
+        OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_NOTIFY called<<<<<<<<<<<<\r\n");
+        break;
 
     case WM_COMMAND:
         //DisplayResourceNAMessageBox(hWnd);
         OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_COMMAND parent called<<<<<<<<<<<<\r\n");
-
+        /*
         case EN_CHANGE:
             OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<\r\n");
             /*do the stuff text has been changed.*/
             
-            if (!NewEditRich) {
+         /*   if (!NewEditRich) {
                 handleTitleOnTextModified(hwndMain);
                 handleEnableManues(hwndMain);
             }
@@ -243,9 +245,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 
-            if (((LPNMHDR)lParam)->code) {
-                OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>CHANGENOTIFY called...<<<<<<<<<<<<\r\n");
-            }
+         
 
 
 
@@ -261,9 +261,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             break;
         
-        case WM_NOTIFY:
-            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_NOTIFY called<<<<<<<<<<<<\r\n");
-            break;
+        */
 
         switch (wParam)
         {
@@ -283,13 +281,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             handleNewWindowA(hWnd);
             break;
         case ID_SAVE_MENU:
-            hanleSaveText(hWnd);
+            //hanleSaveText(hWnd);
+            handleSaveTextPathKeepOpen(hWnd, (LPCWSTR)OPENED_FILE_PATH.c_str());
             break;
         case ID_SAVEAS_MENU:
             hanleSaveAsText(hWnd);
             break;
         case ID_SETTINGS_MENU:
-            handleSettingsWindow(hWnd);
+            //handleSettingsWindow(hWnd);
+            handleSettingsDialog(hWnd);
             break;
         case ID_SETTINGS_COMBOBOX_MENU:
             //handleSettingsComboBoxWindow(hWnd);

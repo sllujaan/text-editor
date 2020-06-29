@@ -59,11 +59,11 @@ wstring OPENED_FILE_NAME = L"";
 
 void handleEnableManues(HWND hWnd) {
     EnableMenuItem(GetMenu(hWnd), ID_SAVE_MENU, MF_ENABLED | MF_BYCOMMAND);
-    EnableMenuItem(GetMenu(hWnd), ID_SAVEAS_MENU, MF_ENABLED | MF_BYCOMMAND);
+    //EnableMenuItem(GetMenu(hWnd), ID_SAVEAS_MENU, MF_ENABLED | MF_BYCOMMAND);
 }
 void handleDisableManues(HWND hWnd) {
     EnableMenuItem(GetMenu(hWnd), ID_SAVE_MENU, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
-    EnableMenuItem(GetMenu(hWnd), ID_SAVEAS_MENU, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
+    //EnableMenuItem(GetMenu(hWnd), ID_SAVEAS_MENU, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
 }
 
 void handleManuDisableEnable(HWND hWnd, BOOL Disable = FALSE) {
@@ -143,10 +143,34 @@ void handleSaveTextPath(HWND hWnd, LPCWSTR path) {
     int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)path, TRUE);
 
     generateNewTextWindow(hWnd);
+    handleDisableManues(hwndMain);
 
     //storing file name globally---
     OPENED_FILE_NAME = L"";
     OPENED_FILE_PATH = L"";
+    titleUntitled = FALSE;
+}
+
+
+void handleSaveTextPathKeepOpen(HWND hWnd, LPCWSTR path) {
+
+    //get edit window length--
+    const int size = GetWindowTextLength(hwndEdit);
+    //wchar_t* data = new wchar_t[size + 1];
+    LPCWSTR text = new WCHAR[size + 1];
+
+    GetWindowText(hwndEdit, (LPWSTR)text, size + 1);
+
+    File file;
+    int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)path, TRUE);
+
+    //generateNewTextWindow(hWnd);
+    handleTitleOnTextSaved(hwndMain);
+    handleDisableManues(hwndMain);
+
+    //storing file name globally---
+    //OPENED_FILE_NAME = L"";
+    //OPENED_FILE_PATH = L"";
     titleUntitled = FALSE;
 }
 
@@ -229,6 +253,7 @@ void hanleSaveAsText(HWND hWnd) {
     int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, TRUE);
 
     generateNewTextWindow(hWnd);
+    handleDisableManues(hwndMain);
 
     //storing file name globally---
     OPENED_FILE_NAME = L"";
@@ -318,6 +343,7 @@ void handleNewWindowA(HWND hWnd) {
     }
     else {
         generateNewTextWindow(hWnd);
+        handleDisableManues(hwndMain);
     }
 }
 
@@ -483,7 +509,7 @@ void handleRichEditControl(HWND hWnd) {
     //sending notify message...
 
 
-    /*
+    
 
     NMHDR nmh;
     nmh.code = CUSTOM_SELCHANGE;    // Message type defined by control.
@@ -495,7 +521,7 @@ void handleRichEditControl(HWND hWnd) {
         nmh.idFrom,
         (LPARAM)&nmh);
 
-        */
+        
 }
 
 
@@ -670,14 +696,14 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hHelpMenu, (LPCWSTR)L"Help");
     AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About");
     AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
-    AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
+    //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
     AppendMenu(hFileMenu, MF_STRING, ID_NEW_MENU, (LPCWSTR)L"New");
     AppendMenu(hFileMenu, MF_STRING, ID_OPEN_MENU, (LPCWSTR)L"Open...");
     AppendMenu(hFileMenu, MF_STRING, ID_SAVE_MENU, (LPCWSTR)L"Save");
     AppendMenu(hFileMenu, MF_STRING, ID_SAVEAS_MENU, (LPCWSTR)L"Save As...");
-    AppendMenu(hFileMenu, MF_STRING, ID_SELECT_ALL_MENU, (LPCWSTR)L"Select All...");
-    AppendMenu(hFileMenu, MF_STRING, ID_CHANGE_FONT_MENU, (LPCWSTR)L"Change Font...");
+    //AppendMenu(hFileMenu, MF_STRING, ID_SELECT_ALL_MENU, (LPCWSTR)L"Select All...");
+    //AppendMenu(hFileMenu, MF_STRING, ID_CHANGE_FONT_MENU, (LPCWSTR)L"Change Font...");
     AppendMenu(hFileMenu, MF_POPUP, (UINT_PTR)hSubFileMenu, (LPCWSTR)L"Tools");
     AppendMenu(hFileMenu, MF_SEPARATOR, NULL, NULL);
     AppendMenu(hFileMenu, MF_STRING, ID_EXIT_MENU, (LPCWSTR)L"Exit");
@@ -873,11 +899,11 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
         case VK_TAB:
-            /*
+            
             handleTitleOnTextModified(hwndMain);
             OutputDebugStringW((LPCWSTR)L"VK_TAB\r\n");
             handleEnableManues(hwndMain);
-            */
+            
             break;
         case VK_ESCAPE:
             OutputDebugStringW((LPCWSTR)L"VK_ESCAPE");
