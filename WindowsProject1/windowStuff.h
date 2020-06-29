@@ -210,6 +210,67 @@ void hanleSaveText(HWND hWnd) {
 
 
 
+void hanleSaveAsTextKeepOpen(HWND hWnd) {
+    OPENFILENAME ofn;
+
+    LPWSTR fileName[100];
+    LPWSTR fileTitle[100];
+
+    ZeroMemory(&ofn, sizeof(OPENFILENAME));
+
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = hWnd;
+    ofn.lpstrFile = (LPWSTR)fileName;
+    ofn.lpstrFile[0] = '\0';
+    ofn.nMaxFile = 100;
+    ofn.lpstrFilter = (LPWSTR)L"Text Documents (*.txt)\0*.txt*\0";
+    ofn.nFilterIndex = 1;
+
+    ofn.lpstrDefExt = L"txt";
+
+    //saving file name-----
+    ofn.lpstrFileTitle = (LPWSTR)fileTitle;
+    ofn.lpstrFileTitle[0] = '\0';
+    ofn.nMaxFileTitle = 100;
+    ofn.Flags = OFN_OVERWRITEPROMPT;
+
+    BOOL OPEN = GetSaveFileName(&ofn);
+    if (!OPEN) return;
+
+
+
+
+
+    //get edit window length--
+    const int size = GetWindowTextLength(hwndEdit);
+    //wchar_t* data = new wchar_t[size + 1];
+    LPCWSTR text = new WCHAR[size + 1];
+
+    GetWindowText(hwndEdit, (LPWSTR)text, size + 1);
+
+
+    File file;
+    int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, TRUE);
+
+    //generateNewTextWindow(hWnd);
+    handleDisableManues(hwndMain);
+
+    //storing file name globally---
+    OPENED_FILE_NAME = L"";
+    OPENED_FILE_PATH = L"";
+    titleUntitled = FALSE;
+
+    /*
+    //storing file name globally---
+    OPENED_FILE_NAME = (LPCWSTR)fileTitle;
+    OPENED_FILE_PATH = (LPCWSTR)fileName;
+    titleUntitled = FALSE;
+    */
+
+
+}
+
+
 void hanleSaveAsText(HWND hWnd) {
     OPENFILENAME ofn;
 
