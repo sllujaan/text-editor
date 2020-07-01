@@ -29,7 +29,8 @@
 #define ID_CHANGE_FONT_MENU 0xfde
 
 #define CUSTOM_SELCHANGE 0xabc
-
+#define IDI_CLOSE_OK 0x444
+#define IDI_CLOSE_CANCEL 0x555
 
 
 
@@ -54,6 +55,35 @@ wstring OPENED_FILE_NAME = L"";
 
 
 void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path);
+int handleNewWindowA(HWND hWnd);
+
+
+
+
+
+
+
+
+
+
+INT handleOnClose(HWND hWnd) {
+
+    int msgboxID = 0;
+
+    msgboxID = handleNewWindowA(hWnd);
+    return msgboxID;
+    
+    /*
+    if (titleUpdatedOnTextModified) {
+        msgboxID = handleNewWindowA(hWnd);
+        return msgboxID;
+    }
+    else {
+        return msgboxID;
+    }
+    */
+
+}
 
 
 void handleEnableManues(HWND hWnd) {
@@ -376,12 +406,14 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
         // TODO: add code
         OutputDebugStringW((LPCWSTR)L"User chose the yes button....");
         handleSaveFileA(hWnd);
+        return IDYES;
         break;
     case IDNO:
         OutputDebugStringW((LPCWSTR)L"User chose the no button....");
         generateNewTextWindow(hWnd);
         handleDisableManues(hWnd);
         // TODO: add code
+        return IDNO;
         break;
 
     }
@@ -393,19 +425,24 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
 
 
 
-void handleNewWindowA(HWND hWnd) {
+int handleNewWindowA(HWND hWnd) {
+    int msgboxID = 0;
+
     if (titleUntitled && titleUpdatedOnTextModified) {
-        DisplayResourceNAMessageBox(hWnd, NULL);
+        msgboxID = DisplayResourceNAMessageBox(hWnd, NULL);
+        return msgboxID;
     }
     else if (!titleUntitled && titleUpdatedOnTextModified) {
         wstring wstr = L"Do you want to save changes to ";
         wstring message = wstr + OPENED_FILE_NAME + L" ?";
 
-        DisplayResourceNAMessageBox(hWnd, (LPCSTR)message.c_str());
+        msgboxID = DisplayResourceNAMessageBox(hWnd, (LPCSTR)message.c_str());
+        return msgboxID;
     }
     else {
         generateNewTextWindow(hWnd);
         handleDisableManues(hwndMain);
+        return msgboxID;
     }
 }
 
@@ -937,6 +974,10 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
+
+    case WM_SYSKEYDOWN:
+        OutputDebugStringW((LPCWSTR)L"---------------WM_SYSKEYDOWN called>>>>>>>>>>>>\r\n");
+        break;
     case WM_KEYDOWN:
         //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
         OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>\r\n");
@@ -960,6 +1001,7 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_CHAR:
         switch (wParam)
         {
+        
         case VK_TAB:
             
             handleTitleOnTextModified(hwndMain);
