@@ -53,8 +53,7 @@ wstring OPENED_FILE_NAME = L"";
 
 
 
-
-
+void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path);
 
 
 void handleEnableManues(HWND hWnd) {
@@ -253,11 +252,13 @@ void hanleSaveAsTextKeepOpen(HWND hWnd) {
     int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)ofn.lpstrFile, TRUE);
 
     //generateNewTextWindow(hWnd);
+
+    handleReadFile_LPCWSTR(hWnd, (LPCWSTR)fileName);
     handleDisableManues(hwndMain);
 
     //storing file name globally---
-    OPENED_FILE_NAME = L"";
-    OPENED_FILE_PATH = L"";
+    OPENED_FILE_NAME = (LPCWSTR)fileTitle;
+    OPENED_FILE_PATH = (LPCWSTR)fileName;
     titleUntitled = FALSE;
 
     /*
