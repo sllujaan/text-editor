@@ -29,8 +29,8 @@
 #define ID_CHANGE_FONT_MENU 0xfde
 
 #define CUSTOM_SELCHANGE 0xabc
-#define IDI_CLOSE_OK 0x444
-#define IDI_CLOSE_CANCEL 0x555
+#define IDI_CLOSE_TEXT_SAVED 0x444
+#define IDI_CLOSE_TEXT_SAVE_CANCEL 0x555
 
 
 
@@ -56,6 +56,7 @@ wstring OPENED_FILE_NAME = L"";
 
 void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path);
 int handleNewWindowA(HWND hWnd);
+INT hanleSaveAsText(HWND hWnd);
 
 
 
@@ -302,7 +303,7 @@ void hanleSaveAsTextKeepOpen(HWND hWnd) {
 }
 
 
-void hanleSaveAsText(HWND hWnd) {
+INT hanleSaveAsText(HWND hWnd) {
     OPENFILENAME ofn;
 
     LPWSTR fileName[100];
@@ -327,7 +328,7 @@ void hanleSaveAsText(HWND hWnd) {
     ofn.Flags = OFN_OVERWRITEPROMPT;
 
     BOOL OPEN = GetSaveFileName(&ofn);
-    if (!OPEN) return;
+    if (!OPEN) return IDI_CLOSE_TEXT_SAVE_CANCEL;
 
 
 
@@ -352,6 +353,8 @@ void hanleSaveAsText(HWND hWnd) {
     OPENED_FILE_PATH = L"";
     titleUntitled = FALSE;
 
+    return IDI_CLOSE_TEXT_SAVED;
+
     /*
     //storing file name globally---
     OPENED_FILE_NAME = (LPCWSTR)fileTitle;
@@ -365,12 +368,14 @@ void hanleSaveAsText(HWND hWnd) {
 
 
 
-void handleSaveFileA(HWND hWnd) {
+INT handleSaveFileA(HWND hWnd) {
     if (OPENED_FILE_PATH.length() > 0) {
         handleSaveTextPath(hWnd, (LPCWSTR)OPENED_FILE_PATH.c_str());
+        return 0;
     }
     else {
-        hanleSaveAsText(hWnd);
+        INT IDI_SAVE = hanleSaveAsText(hWnd);
+        return IDI_SAVE;
     }
 }
 
@@ -381,6 +386,7 @@ void handleSaveFileA(HWND hWnd) {
 int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
 {   
     int msgboxID = 0;
+    INT IDI_SAVE = 0;
 
     if (fileName == NULL) {
         msgboxID = MessageBox(
@@ -405,8 +411,8 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
     case IDYES:
         // TODO: add code
         OutputDebugStringW((LPCWSTR)L"User chose the yes button....");
-        handleSaveFileA(hWnd);
-        return IDYES;
+        IDI_SAVE = handleSaveFileA(hWnd);
+        return IDI_SAVE;
         break;
     case IDNO:
         OutputDebugStringW((LPCWSTR)L"User chose the no button....");

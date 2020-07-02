@@ -368,7 +368,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_CLOSE:
         msgboxID_CLOSE = handleOnClose(hWnd);
-        if (msgboxID_CLOSE == 0 || msgboxID_CLOSE == IDNO || msgboxID_CLOSE == IDYES) DestroyWindow(hWnd);
+        if (msgboxID_CLOSE == 0 || msgboxID_CLOSE == IDNO || msgboxID_CLOSE == IDI_CLOSE_TEXT_SAVED) DestroyWindow(hWnd);
         else return 0;
         /*
         ID_CLOSE = handleOnClose(hWnd);
