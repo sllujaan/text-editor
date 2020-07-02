@@ -563,7 +563,8 @@ HWND CreateRichEdit(HWND hwndOwner,        // Dialog box handle.
 
     HWND hwndEdit = CreateWindowEx(0, MSFTEDIT_CLASS, TEXT(""), // TEXT("") was TEXT("Type here")
          WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
-        ES_LEFT | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL,
+        ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL
+        ,
         x, y, width, height,
         hwndOwner, NULL, hinst, NULL);
 
@@ -598,6 +599,7 @@ void handleRichEditControl(HWND hWnd) {
 
     //formating editrich control..
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
+
 
     lpfnEditWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit,
         GWLP_WNDPROC, (LONG_PTR)SubClassProc);
