@@ -372,15 +372,16 @@ INT hanleSaveAsText(HWND hWnd) {
 
 
 
-
 INT handleSaveFileA(HWND hWnd) {
     if (OPENED_FILE_PATH.length() > 0) {
-        handleSaveTextPath(hWnd, (LPCWSTR)OPENED_FILE_PATH.c_str());
+        wstring path = OPENED_FILE_PATH;
+        handleSaveTextPath(hWnd, (LPCWSTR)path.c_str());
+        handleReadFile_LPCWSTR(hWnd, (LPCWSTR)path.c_str());
         return 0;
     }
     else {
-        INT IDI_SAVE = hanleSaveAsText(hWnd);
-        return IDI_SAVE;
+        hanleSaveAsTextKeepOpen(hWnd);
+        return 1;
     }
 }
 
@@ -716,7 +717,7 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
     //saving edit control fonts
     HFONT prevFont = (HFONT)SendMessage(hwndEdit, WM_GETFONT, 0, 0);
 
-
+    
     MessageBox(
         NULL,
         (LPCWSTR)lpString,

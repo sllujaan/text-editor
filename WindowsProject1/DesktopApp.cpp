@@ -282,7 +282,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_SAVE_MENU:
             //hanleSaveText(hWnd);
-            handleSaveTextPathKeepOpen(hWnd, (LPCWSTR)OPENED_FILE_PATH.c_str());
+            //handleSaveTextPathKeepOpen(hWnd, (LPCWSTR)OPENED_FILE_PATH.c_str());
+            handleSaveFileA(hWnd);
             break;
         case ID_SAVEAS_MENU:
             hanleSaveAsTextKeepOpen(hWnd);
