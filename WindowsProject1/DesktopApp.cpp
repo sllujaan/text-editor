@@ -186,7 +186,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     TCHAR greeting[] = _T("Hello, Windows desktop!");
     //wchar_t msg[50];
     int ID_CLOSE = NULL;
-    int msgboxID_CLOSE = 0;
+    //int msgboxID_CLOSE = 0;
     
 
     switch (message)
@@ -268,8 +268,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             
         case ID_EXIT_MENU:
-            handleDistroyManu();
-            PostQuitMessage(0);
+            return onExit(hWnd);
             break;
         case ID_ABOUT_MENU:
             handleAbout(hWnd);
@@ -367,9 +366,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
     case WM_CLOSE:
-        msgboxID_CLOSE = handleOnClose(hWnd);
-        if (msgboxID_CLOSE == 0 || msgboxID_CLOSE == IDNO || msgboxID_CLOSE == IDI_CLOSE_TEXT_SAVED) DestroyWindow(hWnd);
-        else return 0;
+        return onExit(hWnd);
         /*
         ID_CLOSE = handleOnClose(hWnd);
         if (ID_CLOSE == IDI_CLOSE_OK) {
