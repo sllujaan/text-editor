@@ -735,6 +735,13 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
 
 
 void handleOpenMenu(HWND hWnd) {
+
+    INT msgBoxID = 0;
+
+    msgBoxID = handleNewWindowA(hWnd);
+    if ( msgBoxID == IDI_CLOSE_TEXT_SAVED) {
+        return;
+    }
     
     OPENFILENAME ofn;
 
