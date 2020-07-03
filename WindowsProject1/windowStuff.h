@@ -1006,23 +1006,23 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
 
     case WM_SYSKEYDOWN:
-        OutputDebugStringW((LPCWSTR)L"---------------WM_SYSKEYDOWN called>>>>>>>>>>>>\r\n");
+        OutputDebugStringW((LPCWSTR)L"--------WM_SYSKEYDOWN called>>>>>>>>>>>>\r\n");
         break;
     case WM_KEYDOWN:
         //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
-        OutputDebugStringW((LPCWSTR)L"---------------WM_KEYDOWN called>>>>>>>>>>>>\r\n");
+        OutputDebugStringW((LPCWSTR)L"-----------WM_KEYDOWN called---------------\r\n");
         //SendMessage(hwndEdit, ENM_CHANGE, 0, 0);
 
         break;
     
     case WM_COMMAND:
-        OutputDebugStringW((LPCWSTR)L"---------------WM_COMMAND called>>>>>>>>>>>>\r\n");
+        OutputDebugStringW((LPCWSTR)L"--------------WM_COMMAND called---------------\r\n");
             
         switch (wParam)
         {
 
         case EN_CHANGE:
-            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<");
+            OutputDebugStringW((LPCWSTR)L"-----------------EN_CHANGE called---------------\r\n");
             break;
         }
 
@@ -1049,6 +1049,11 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
             return 0;
         }
+
+    case WM_SYSCHAR:
+        OutputDebugStringW((LPCWSTR)L"--------------------WM_SYSCHAR called---------------\r\n");
+        break;
+        
     }
 
     //  Call the original window procedure for default processing. 
