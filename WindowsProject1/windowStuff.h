@@ -421,8 +421,11 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
         // TODO: add code
         return IDNO;
         break;
-
+    case IDCANCEL:
+        return IDCANCEL;
+        break;
     }
+    
 
     return msgboxID;
 }
@@ -739,7 +742,7 @@ void handleOpenMenu(HWND hWnd) {
     INT msgBoxID = 0;
 
     msgBoxID = handleNewWindowA(hWnd);
-    if ( msgBoxID == IDI_CLOSE_TEXT_SAVED) {
+    if ( msgBoxID == IDCANCEL || msgBoxID == IDI_CLOSE_TEXT_SAVE_CANCEL) {
         return;
     }
     
