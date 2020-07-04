@@ -715,6 +715,7 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
 
 
     //saving edit control fonts
+    //rich edit 4.1 Msftedit.dll doesn't support WM_GETFONT message use EM_GETCHARFORMAT instead REF::(https://docs.microsoft.com/en-us/windows/win32/controls/about-rich-edit-controls#rich-edit-version-41)
     HFONT prevFont = (HFONT)SendMessage(hwndEdit, WM_GETFONT, 0, 0);
 
     

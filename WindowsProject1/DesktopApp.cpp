@@ -263,8 +263,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         
         */
+      
+        switch ( LOWORD(wParam) )
+        {
 
-        switch (wParam)
+            if (HIWORD(wParam) == EN_CHANGE) {
+                MessageBox(0, L"EN_UPDATE!", 0, 0);
+            }
+               
+        default:
+            break;
+        }
+
+        switch ( wParam )
         {
             
         case ID_EXIT_MENU:
