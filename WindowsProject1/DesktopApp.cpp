@@ -13,7 +13,7 @@ using namespace std;
 
 //  Global variables
 HWND    hwndMain;
-WNDPROC lpfnEditWndProc; //  Original wndproc for the combo box 
+WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box 
 
 
 #define MAINWIN_WIDTH 500

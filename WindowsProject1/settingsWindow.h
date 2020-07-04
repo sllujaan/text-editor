@@ -35,7 +35,7 @@ void handleSettingsComboBoxWindow(HWND hWnd) {
 
     hwndEdit1 = ChildWindowFromPoint(hwndCombo1, pt);
 
-    lpfnEditWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit1,
+    lpfnMainWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit1,
         GWLP_WNDPROC, (LONG_PTR)SubClassProcComboBox);
 
 }
@@ -78,7 +78,7 @@ LRESULT CALLBACK SubClassProcComboBox(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
     }
 
     //  Call the original window procedure for default processing. 
-    return CallWindowProc(lpfnEditWndProc, hwnd, msg, wParam, lParam);
+    return CallWindowProc(lpfnMainWndProc, hwnd, msg, wParam, lParam);
 }
 
 

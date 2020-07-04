@@ -610,7 +610,7 @@ void handleRichEditControl(HWND hWnd) {
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
 
 
-    lpfnEditWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit,
+    lpfnMainWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit,
         GWLP_WNDPROC, (LONG_PTR)SubClassProc);
 
     titleUntitled = TRUE;
@@ -1057,5 +1057,5 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
 
     //  Call the original window procedure for default processing. 
-    return CallWindowProc(lpfnEditWndProc, hwnd, msg, wParam, lParam);
+    return CallWindowProc(lpfnMainWndProc, hwnd, msg, wParam, lParam);
 }
