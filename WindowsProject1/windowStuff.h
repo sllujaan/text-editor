@@ -618,24 +618,26 @@ void handleRichEditControl(HWND hWnd) {
 
     //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
     //edit rich event mask
-    SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
-
+    //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
+    //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
 
 
     //sending notify message...
 
 
     
-
     NMHDR nmh;
     nmh.code = CUSTOM_SELCHANGE;    // Message type defined by control.
     nmh.idFrom = GetDlgCtrlID(hwndEdit);
     nmh.hwndFrom = hwndEdit;
 
-    SendMessage(GetParent(hwndMain),
+    SendMessage(GetParent(hwndEdit),
         WM_NOTIFY,
         nmh.idFrom,
         (LPARAM)&nmh);
+    
+
+
 
         
 }
@@ -1005,28 +1007,12 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
-
-    case WM_SYSKEYDOWN:
-        OutputDebugStringW((LPCWSTR)L"--------WM_SYSKEYDOWN called>>>>>>>>>>>>\r\n");
+    case WM_NOTIFY:
+        OutputDebugStringW((LPCWSTR)L"--------------WM_NOTIFY called\r\n");
         break;
-    case WM_KEYDOWN:
-        //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
-        OutputDebugStringW((LPCWSTR)L"-----------WM_KEYDOWN called---------------\r\n");
-        //SendMessage(hwndEdit, ENM_CHANGE, 0, 0);
 
-        break;
-    
     case WM_COMMAND:
-        OutputDebugStringW((LPCWSTR)L"--------------WM_COMMAND called---------------\r\n");
-            
-        switch (wParam)
-        {
-
-        case EN_CHANGE:
-            OutputDebugStringW((LPCWSTR)L"-----------------EN_CHANGE called---------------\r\n");
-            break;
-        }
-
+        OutputDebugStringW((LPCWSTR)L"--------------WM_COMMAND called\r\n");
         break;
     case WM_KEYUP:
     case WM_CHAR:
@@ -1036,23 +1022,20 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case VK_TAB:
             
             handleTitleOnTextModified(hwndMain);
-            OutputDebugStringW((LPCWSTR)L"VK_TAB\r\n");
             handleEnableManues(hwndMain);
             
             break;
         case VK_ESCAPE:
-            OutputDebugStringW((LPCWSTR)L"VK_ESCAPE");
             handleTitleOnTextSaved(hwndMain);
             handleDisableManues(hwndMain);
             break;
         case VK_RETURN:
-            OutputDebugStringW((LPCWSTR)L"VK_RETURN");
             break;
             return 0;
         }
 
     case WM_SYSCHAR:
-        OutputDebugStringW((LPCWSTR)L"--------------------WM_SYSCHAR called---------------\r\n");
+        OutputDebugStringW((LPCWSTR)L"--------------WM_SYSCHAR called\r\n");
         break;
         
     }

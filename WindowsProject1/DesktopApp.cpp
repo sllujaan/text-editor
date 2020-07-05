@@ -187,12 +187,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //wchar_t msg[50];
     int ID_CLOSE = NULL;
     //int msgboxID_CLOSE = 0;
-    
 
     switch (message)
     {
+    case WM_NOTIFY:
+        OutputDebugStringW((LPCWSTR)L"WM_NOTIFY called__________\r\n");
+
+        switch (  ((LPNMHDR)lParam)->code )
+        {
+        
+        case CUSTOM_SELCHANGE:
+            OutputDebugStringW((LPCWSTR)L"CUSTOM_SELCHANGE called__________\r\n");
+            break;
+
+        default:
+            break;
+        }
+
+        break;
+
+
     case WM_CREATE:
-        OutputDebugStringW((LPCWSTR)L"WM_CREATE called....");
         handleCenterWindow(hWnd);
         //handleButton(hWnd);
         //handleNewWidow(hWnd);
@@ -202,69 +217,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         handleRichEditControl(hWnd);
         break;
 
-    case WM_KEYDOWN:
-        OutputDebugStringW((LPCWSTR)L"WM_KEYDOWN called>>>>>>>>>>>>");
-        break;
-    case WM_KEYUP:
-        OutputDebugStringW((LPCWSTR)L"WM_KEYUP called>>>>>>>>>>>>");
-        break;
-    case WM_SYSKEYDOWN:
-        OutputDebugStringW((LPCWSTR)L"WM_SYSKEYDOWN called>>>>>>>>>>>>");
-        break;
-    case WM_SYSKEYUP:
-        OutputDebugStringW((LPCWSTR)L"WM_SYSKEYUP called>>>>>>>>>>>>");
-
-        break;
-
-    case WM_NOTIFY:
-        OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_NOTIFY called<<<<<<<<<<<<\r\n");
-        break;
-
     case WM_COMMAND:
-        //DisplayResourceNAMessageBox(hWnd);
-        OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>WM_COMMAND parent called<<<<<<<<<<<<\r\n");
-        /*
-        case EN_CHANGE:
-            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_CHANGE called<<<<<<<<<<<<\r\n");
-            /*do the stuff text has been changed.*/
-            
-         /*   if (!NewEditRich) {
-                handleTitleOnTextModified(hwndMain);
-                handleEnableManues(hwndMain);
-            }
-            else {
-                //NewEditRich = FALSE;
-
-
-                HWND hwnd = GetFocus();
-                if (hwnd == hwndEdit) {
-                    OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>hwndEdit has focus Now<<<<<<<<<<<<\r\n");
-                }
-
-
-            }
-
-
-
-         
-
-
-
-
-            switch (wParam)
-            {
-            case ID_ABOUT_MENU:
-                handleAbout(hWnd);
-                break;
-            default:
-                break;
-            }
-
-            break;
-        
-        */
       
-        switch ( LOWORD(wParam) )
+        /*
+            switch ( LOWORD(wParam) )
         {
 
             if (HIWORD(wParam) == EN_CHANGE) {
@@ -274,6 +230,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         default:
             break;
         }
+        */
 
         switch ( wParam )
         {
@@ -286,7 +243,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_OPEN_MENU:
             handleOpenMenu(hWnd);
-            OutputDebugStringW((LPCWSTR)L"ID_OPEN_MENU called....");
             break;
         case ID_NEW_MENU:
             handleNewWindowA(hWnd);
@@ -312,15 +268,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_CHANGE_FONT_MENU:
             SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE); 
             break;
-
-        
-
-        case EN_KILLFOCUS:
-            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>EN_KILLFOCUS called<<<<<<<<<<<<");
-            break;
             
         default:
-            OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>wParam parent default called<<<<<<<<<<<<\r\n");
+            OutputDebugStringW((LPCWSTR)L"wParam default called__________\r\n");
             break;
         }
 
@@ -328,21 +278,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         break;
 
-    
-
-    case WM_INITDIALOG:
-        OutputDebugStringW((LPCWSTR)L"WM_INITDIALOG called....");
-        //SetWindowSubclass(hwndEdit, (SUBCLASSPROC)editControlProcedures, 0, 0);
-        //return TRUE;
-        break;
-
     case WM_SETFOCUS:
         SetFocus(hwndEdit);
-        break;
-
-
-    case WM_COPY:
-        OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>>>WM_COPY called<<<<<<<<<");
         break;
 
 
@@ -363,39 +300,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
         EndPaint(hWnd, &ps);
-        /*
-        PAINTSTRUCT ps;
-        HDC hdc;
-        hdc = BeginPaint(hWnd, &ps);
-
-        // Here your application is laid out.
-        FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 5));
-        // End application-specific layout section.
-
-        EndPaint(hWnd, &ps);
-        */
         break;
-
 
     case WM_CLOSE:
         return onExit(hWnd);
-        /*
-        ID_CLOSE = handleOnClose(hWnd);
-        if (ID_CLOSE == IDI_CLOSE_OK) {
-            DestroyWindow(hWnd);
-        }
-        else {
-
-            if (MessageBox(hWnd, L"Really quit?", L"My application", MB_OKCANCEL) == IDOK)
-            {
-                DestroyWindow(hWnd);
-            }
-            else {
-                return 0;
-            }
-            
-        }
-        */
         break;
 
     case WM_DESTROY:
