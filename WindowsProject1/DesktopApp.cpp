@@ -218,23 +218,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_COMMAND:
-      
-        /*
-            switch ( LOWORD(wParam) )
-        {
-
-            if (HIWORD(wParam) == EN_CHANGE) {
-                MessageBox(0, L"EN_UPDATE!", 0, 0);
-            }
-               
-        default:
-            break;
-        }
-        */
 
         switch ( wParam )
         {
-            
+
+        case EN_CHANGE:
+            OutputDebugStringW((LPCWSTR)L"EN_CHANGE called__________\r\n");
+            break;
+
         case ID_EXIT_MENU:
             return onExit(hWnd);
             break;

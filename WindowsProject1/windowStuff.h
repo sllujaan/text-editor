@@ -572,7 +572,7 @@ HWND CreateRichEdit(HWND hwndOwner,        // Dialog box handle.
 
     HWND hwndEdit = CreateWindowEx(0, MSFTEDIT_CLASS, TEXT(""), // TEXT("") was TEXT("Type here")
          WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
-        ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL
+        ES_LEFT | ES_AUTOVSCROLL | ES_AUTOHSCROLL
         ,
         x, y, width, height,
         hwndOwner, NULL, hinst, NULL);
@@ -618,7 +618,7 @@ void handleRichEditControl(HWND hWnd) {
 
     //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
     //edit rich event mask
-    //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
+    SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
     //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
 
 
@@ -1007,13 +1007,14 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
-    case WM_NOTIFY:
-        OutputDebugStringW((LPCWSTR)L"--------------WM_NOTIFY called\r\n");
-        break;
 
     case WM_COMMAND:
         OutputDebugStringW((LPCWSTR)L"--------------WM_COMMAND called\r\n");
         break;
+
+    case WM_KEYDOWN:
+        break;
+
     case WM_KEYUP:
     case WM_CHAR:
         switch (wParam)
