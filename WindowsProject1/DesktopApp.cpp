@@ -9,6 +9,7 @@
 #include<Richedit.h>
 #include<TextServ.h>
 #include<shellapi.h>
+
 using namespace std;
 
 
@@ -192,9 +193,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
 
-    case WM_DROPFILES:
-        OutputDebugStringW((LPCWSTR)L"WM_DROPFILES called__________\r\n");
-        break;
+    
 
     case WM_NOTIFY:
         OutputDebugStringW((LPCWSTR)L"WM_NOTIFY called__________\r\n");
@@ -219,19 +218,47 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //handleNewWidow(hWnd);
         //handleManu(hWnd);
         handleMainMenu(hWnd, hMenuMain);
-        //handleEdit(hWnd, lParam);
-        handleRichEditControl(hWnd);
+        handleEdit(hWnd, lParam);
+        //handleRichEditControl(hWnd);
         break;
 
     case WM_COMMAND:
 
+        //these messages are working fine with simple edit control------------
+        if (HIWORD(wParam) == EN_CHANGE) {
+            OutputDebugStringW((LPCWSTR)L"ENNEN_CHANGE called__________\r\n");
+        }
+
+        if (HIWORD(wParam) == EN_VSCROLL) {
+            OutputDebugStringW((LPCWSTR)L"ENNEN_VSCROLL called__________\r\n");
+        }
+
+        //-----------------------------------------------------------
+
+
         switch ( wParam )
         {
+
 
         case EN_CHANGE:
             OutputDebugStringW((LPCWSTR)L"EN_CHANGE called__________\r\n");
             break;
 
+        case EN_DROPFILES:
+            OutputDebugStringW((LPCWSTR)L"WM_DROPFILES called__________\r\n");
+            break;
+
+        case EN_UPDATE:
+            OutputDebugStringW((LPCWSTR)L"EN_UPDATE called__________\r\n");
+            break;
+
+        case EN_VSCROLL:
+            OutputDebugStringW((LPCWSTR)L"EN_VSCROLL called__________\r\n");
+            break;
+
+        case EN_ALIGNLTR:
+            OutputDebugStringW((LPCWSTR)L"EN_ALIGNLTR called__________\r\n");
+            break;
 
         case ID_EXIT_MENU:
             return onExit(hWnd);
@@ -279,6 +306,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_SETFOCUS:
         SetFocus(hwndEdit);
         break;
+
 
 
 

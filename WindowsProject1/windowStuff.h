@@ -620,6 +620,8 @@ void handleRichEditControl(HWND hWnd) {
     //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
     //edit rich event mask
     SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
+    SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_DROPFILES);
+    SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_UPDATE);
     //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
 
     //accepting drag files......
