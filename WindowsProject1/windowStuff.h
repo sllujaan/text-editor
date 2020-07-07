@@ -616,14 +616,17 @@ void handleRichEditControl(HWND hWnd) {
     titleUntitled = TRUE;
     titleUpdatedOnTextModified = FALSE;
 
+
     //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
     //edit rich event mask
     SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
     //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
 
+    //accepting drag files......
+    DragAcceptFiles(hwndEdit, TRUE);
+
 
     //sending notify message...
-
 
     
     NMHDR nmh;

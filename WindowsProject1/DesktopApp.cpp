@@ -8,6 +8,7 @@
 #include <tchar.h>
 #include<Richedit.h>
 #include<TextServ.h>
+#include<shellapi.h>
 using namespace std;
 
 
@@ -190,6 +191,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+
+    case WM_DROPFILES:
+        OutputDebugStringW((LPCWSTR)L"WM_DROPFILES called__________\r\n");
+        break;
+
     case WM_NOTIFY:
         OutputDebugStringW((LPCWSTR)L"WM_NOTIFY called__________\r\n");
 
@@ -225,6 +231,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case EN_CHANGE:
             OutputDebugStringW((LPCWSTR)L"EN_CHANGE called__________\r\n");
             break;
+
 
         case ID_EXIT_MENU:
             return onExit(hWnd);
