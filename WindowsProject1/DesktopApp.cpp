@@ -198,11 +198,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_NOTIFY:
         OutputDebugStringW((LPCWSTR)L"WM_NOTIFY called__________\r\n");
 
+
+        if ( (((CHANGENOTIFY*)lParam)->dwChangeType) == CN_TEXTCHANGED) {
+            OutputDebugStringW((LPCWSTR)L"CHANGENOTIFY called__________\r\n");
+        }
+
+        
+
         switch (  ((LPNMHDR)lParam)->code )
         {
         
         case CUSTOM_SELCHANGE:
             OutputDebugStringW((LPCWSTR)L"CUSTOM_SELCHANGE called__________\r\n");
+            break;
+
+        case EN_DROPFILES:
+            OutputDebugStringW((LPCWSTR)L"EN_DROPFILES called{__________\r\n");
+            break;
+
+        case EN_VSCROLL:
+            OutputDebugStringW((LPCWSTR)L"EN_VSCROLL called{__________\r\n");
+            break;
+
+        case EN_SELCHANGE:
+            OutputDebugStringW((LPCWSTR)L"EN_SELCHANGE called{__________\r\n");
             break;
 
         case EN_CHANGE:
@@ -231,6 +250,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //these messages are working fine with simple edit control------------
         if (HIWORD(wParam) == EN_CHANGE) {
             OutputDebugStringW((LPCWSTR)L"ENNEN_CHANGE called__________\r\n");
+            handleOnTextChange();
         }
 
         if (HIWORD(wParam) == EN_VSCROLL) {

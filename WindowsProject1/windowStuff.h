@@ -42,6 +42,7 @@ BOOL titleUpdatedOnTextModified = FALSE;
 BOOL titleUntitled = FALSE;
 BOOL NewEditRich = TRUE;
 BOOL EditRichFocus = FALSE;
+BOOL TOKEN_OPEN_SAVEAS = FALSE;
 wstring OPENED_FILE_PATH = L"";
 wstring OPENED_FILE_NAME = L"";
 
@@ -620,7 +621,7 @@ void handleRichEditControl(HWND hWnd) {
     //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
     //edit rich event mask
     SendMessage(hwndEdit, EM_SETEVENTMASK, 0,
-        ENM_CHANGE | ENM_DROPFILES | ENM_KEYEVENTS | ENM_SCROLL | ENM_UPDATE 
+        ENM_KEYEVENTS | ENM_SCROLL | ENM_UPDATE | ENM_SELCHANGE | ENM_CHANGE | ENM_DROPFILES
     );
     //SendMessage(hwndEdit, EM_SETEVENTMASK, 0, ENM_CHANGE);
 
@@ -787,7 +788,7 @@ void handleOpenMenu(HWND hWnd) {
     if (!OPEN) return;
 
     
-
+    TOKEN_OPEN_SAVEAS = TRUE;
     
     handleReadFile_LPCWSTR(hWnd, (LPCWSTR)fileName);
     //handleReadFile(hWnd, (char*)ofn.lpstrFile);
@@ -878,6 +879,19 @@ void handleDistroyManu() {
 
 
 
+void handleOnTextChange() {
+
+    
+
+    if (!TOKEN_OPEN_SAVEAS) {
+        handleTitleOnTextModified(hwndMain);
+        handleEnableManues(hwndMain);  
+    }
+    else {
+        TOKEN_OPEN_SAVEAS = FALSE;
+    }
+    
+}
 
 
 
@@ -1027,8 +1041,7 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         
         case VK_TAB:
             
-            handleTitleOnTextModified(hwndMain);
-            handleEnableManues(hwndMain);
+            
             
             break;
         case VK_ESCAPE:
@@ -1049,3 +1062,111 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     //  Call the original window procedure for default processing. 
     return CallWindowProc(lpfnMainWndProc, hwnd, msg, wParam, lParam);
 }
+
+
+
+
+/*
+random hexadecimal codes--
+03b9
+cb11
+a448
+90c0
+077f
+3e0f
+7a6b
+22eb
+193d
+c7f2
+37b0
+c259
+b3a1
+4146
+e7ae
+66c8
+e192
+093e
+260b
+6cb9
+1841
+7a4c
+6895
+c52a
+f428
+316e
+ebf2
+584b
+3812
+2e97
+5c0e
+8a9d
+6274
+4c7f
+6737
+07c1
+10f7
+10d9
+0cc1
+4dd4
+e245
+5ead
+ca60
+f935
+ca74
+856d
+1d53
+e2c3
+9d6a
+9199
+4645
+ea6b
+d060
+48ad
+17d2
+9993
+1961
+f455
+f876
+36d7
+31f9
+966d
+889b
+8c31
+4fc4
+9ef9
+8933
+d96a
+b718
+1446
+d051
+c484
+4985
+21d5
+f2ad
+da2d
+e50d
+11ec
+d7b7
+e0c0
+f8d4
+3e39
+34f3
+3829
+b665
+ca7e
+239b
+e868
+0599
+0de7
+6e95
+352a
+4667
+5d81
+324a
+0a66
+7c9b
+408a
+84b2
+2ea5
+
+*/
