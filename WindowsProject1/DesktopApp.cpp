@@ -205,6 +205,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             OutputDebugStringW((LPCWSTR)L"CUSTOM_SELCHANGE called__________\r\n");
             break;
 
+        case EN_CHANGE:
+            OutputDebugStringW((LPCWSTR)L"WM_NOTIFY_EN_CHANGE called__________\r\n");
+            break;
+
         default:
             break;
         }
@@ -218,8 +222,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //handleNewWidow(hWnd);
         //handleManu(hWnd);
         handleMainMenu(hWnd, hMenuMain);
-        handleEdit(hWnd, lParam);
-        //handleRichEditControl(hWnd);
+        //handleEdit(hWnd, lParam);
+        handleRichEditControl(hWnd);
         break;
 
     case WM_COMMAND:
