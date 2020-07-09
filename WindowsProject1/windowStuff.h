@@ -182,9 +182,11 @@ void handleSaveTextPath(HWND hWnd, LPCWSTR path) {
     handleDisableManues(hwndMain);
 
     //storing file name globally---
+    /*
     OPENED_FILE_NAME = L"";
     OPENED_FILE_PATH = L"";
     titleUntitled = FALSE;
+    */
 }
 
 
@@ -290,6 +292,8 @@ void hanleSaveAsTextKeepOpen(HWND hWnd) {
 
     //generateNewTextWindow(hWnd);
 
+    TOKEN_OPEN_SAVEAS = TRUE;
+    
     handleReadFile_LPCWSTR(hWnd, (LPCWSTR)fileName);
     handleDisableManues(hwndMain);
 
@@ -438,6 +442,26 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
 }
 
 
+/*
+void handlenewfiletoken(int msgboxid) {
+
+    wstring id = to_wstring(msgboxid);
+
+    messagebox(
+        null,
+        (lpcwstr)id.c_str(),
+        (lpcwstr)l"msgboxid",
+        mb_ok
+    );
+
+    if (msgboxid == 1) {
+        token_open_saveas = true;
+    }
+    else {
+        token_open_saveas = false;
+    }
+}
+*/
 
 
 
@@ -446,6 +470,7 @@ int handleNewWindowA(HWND hWnd) {
 
     if (titleUntitled && titleUpdatedOnTextModified) {
         msgboxID = DisplayResourceNAMessageBox(hWnd, NULL);
+        
         return msgboxID;
     }
     else if (!titleUntitled && titleUpdatedOnTextModified) {
@@ -453,6 +478,7 @@ int handleNewWindowA(HWND hWnd) {
         wstring message = wstr + OPENED_FILE_NAME + L" ?";
 
         msgboxID = DisplayResourceNAMessageBox(hWnd, (LPCSTR)message.c_str());
+        
         return msgboxID;
     }
     else {
@@ -737,6 +763,9 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
     SetWindowText(hWnd, (LPCWSTR)path);
     titleUpdatedOnTextModified = FALSE;
     
+
+    //setting token for before setting text
+    TOKEN_OPEN_SAVEAS = TRUE;
     
     SetWindowTextW(hwndEdit, (LPCWSTR)lpString);
 
@@ -745,6 +774,7 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
 
     if(prevFont) SendMessage(hwndEdit, WM_SETFONT, (WPARAM)prevFont, TRUE);
     if(!prevFont) OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>>>>>font was NULL<<<<<<<<<<<<<<");
+
 }
 
 
