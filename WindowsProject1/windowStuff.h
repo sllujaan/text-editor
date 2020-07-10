@@ -248,14 +248,17 @@ void hanleSaveText(HWND hWnd) {
 
 
 
-void hanleSaveAsTextKeepOpen(HWND hWnd) {
+void hanleSaveAsTextKeepOpen(HWND hWnd, INT saveAs = NULL) {
 
 
-    INT msgBoxID = 0;
 
-    msgBoxID = handleNewWindowA(hWnd);
-    if (msgBoxID == IDCANCEL || msgBoxID == IDI_CLOSE_TEXT_SAVE_CANCEL) {
-        return;
+    if (saveAs == ID_SAVEAS_MENU) {
+        INT msgBoxID = 0;
+
+        msgBoxID = handleNewWindowA(hWnd);
+        if (msgBoxID == IDCANCEL || msgBoxID == IDI_CLOSE_TEXT_SAVE_CANCEL) {
+            return;
+        }
     }
 
 

@@ -302,7 +302,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             handleSaveFileA(hWnd);
             break;
         case ID_SAVEAS_MENU:
-            hanleSaveAsTextKeepOpen(hWnd);
+            hanleSaveAsTextKeepOpen(hWnd, ID_SAVEAS_MENU);
             break;
         case ID_SETTINGS_MENU:
             //handleSettingsWindow(hWnd);
