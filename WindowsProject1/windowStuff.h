@@ -159,8 +159,12 @@ void handleTitleOnTextSaved(HWND hWnd) {
 
 
 void generateNewTextWindow(HWND hWnd) {
+    TOKEN_OPEN_SAVEAS = TRUE;
     SetWindowText(hWnd, L"Untitled - Text-Editor");
     SetWindowText(hwndEdit, L"");
+    
+
+    //storing file name globally---
     titleUpdatedOnTextModified = FALSE;
     titleUntitled = TRUE;
 }
@@ -252,6 +256,7 @@ void hanleSaveAsTextKeepOpen(HWND hWnd, INT saveAs = NULL) {
 
 
 
+    /*
     if (saveAs == ID_SAVEAS_MENU) {
         INT msgBoxID = 0;
 
@@ -260,6 +265,7 @@ void hanleSaveAsTextKeepOpen(HWND hWnd, INT saveAs = NULL) {
             return;
         }
     }
+    */
 
 
     OPENFILENAME ofn;
@@ -497,6 +503,11 @@ int handleNewWindowA(HWND hWnd) {
     else {
         generateNewTextWindow(hWnd);
         handleDisableManues(hwndMain);
+
+        //clearing global variables.
+        OPENED_FILE_NAME = L"";
+        OPENED_FILE_PATH = L"";
+
         return msgboxID;
     }
 }
