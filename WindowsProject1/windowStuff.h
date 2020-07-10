@@ -249,6 +249,16 @@ void hanleSaveText(HWND hWnd) {
 
 
 void hanleSaveAsTextKeepOpen(HWND hWnd) {
+
+
+    INT msgBoxID = 0;
+
+    msgBoxID = handleNewWindowA(hWnd);
+    if (msgBoxID == IDCANCEL || msgBoxID == IDI_CLOSE_TEXT_SAVE_CANCEL) {
+        return;
+    }
+
+
     OPENFILENAME ofn;
 
     LPWSTR fileName[100];
@@ -753,12 +763,14 @@ void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path) {
     HFONT prevFont = (HFONT)SendMessage(hwndEdit, WM_GETFONT, 0, 0);
 
     
+    /*
     MessageBox(
         NULL,
         (LPCWSTR)lpString,
         (LPCWSTR)L"Path .......---",
         MB_OK
     );
+    */
 
     SetWindowText(hWnd, (LPCWSTR)path);
     titleUpdatedOnTextModified = FALSE;
@@ -838,7 +850,7 @@ void handleAbout(HWND hWnd) {
     
     int msgboxID = MessageBox(
         hWnd,
-        (LPCWSTR)L"Developed by M.Salman Altaf.",
+        (LPCWSTR)L"Developed by M.Salman Altaf\r\nVersion: v1.1.0\r\nAddress: Pakistan",
         (LPCWSTR)L"About Us",
         MB_ICONINFORMATION
     );
