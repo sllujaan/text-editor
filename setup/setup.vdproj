@@ -43,6 +43,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -59,6 +67,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -156,23 +172,23 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:setup"
-        "ProductCode" = "8:{B4B8E171-C515-49C4-AB20-6A81DBADE9B3}"
-        "PackageCode" = "8:{717B5429-8B7F-4C52-A8AB-38A9C3F33546}"
+        "ProductCode" = "8:{C360CA49-2614-45C8-8074-0D0912CC2A11}"
+        "PackageCode" = "8:{CA1CEFD2-6B05-49EE-BAE4-86F02D11F5CD}"
         "UpgradeCode" = "8:{C7E0210A-707C-49E7-A0B6-D891506D6377}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Default Company Name"
+        "ProductVersion" = "8:1.1.0"
+        "Manufacturer" = "8:text-editor-techleadpro"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:setup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:Salman Altaf"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
+        "ARPCOMMENTS" = "8:Save You data in text files."
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
@@ -277,6 +293,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2DA526CE9C65492FA10AE6DD233B54D1"
+            {
+            "Name" = "8:Shortcut to Primary Output"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_AB641C67398F4E9185EC7CC772A937DC"
+            "Folder" = "8:_80E68859B64E47FC8CF8B13AEF4C6B38"
+            "WorkingFolder" = "8:_80E68859B64E47FC8CF8B13AEF4C6B38"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_71E1A2AE200F4FDC9C03380F5E6933B3"
             {
             "Name" = "8:Edit Your Text Files"
