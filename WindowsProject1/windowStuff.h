@@ -61,7 +61,7 @@ wstring OPENED_FILE_NAME = L"";
 
 
 void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path);
-int handleNewWindowA(HWND hWnd);
+int handleNewWindowA(HWND hWnd, INT openFileToken = NULL);
 INT hanleSaveAsText(HWND hWnd);
 
 
@@ -484,7 +484,7 @@ void handlenewfiletoken(int msgboxid) {
 
 
 
-int handleNewWindowA(HWND hWnd) {
+int handleNewWindowA(HWND hWnd, INT openFileToken) {
     int msgboxID = 0;
 
     if (titleUntitled && titleUpdatedOnTextModified) {
@@ -500,14 +500,14 @@ int handleNewWindowA(HWND hWnd) {
         
         return msgboxID;
     }
-    else {
+    else if (!openFileToken){
         generateNewTextWindow(hWnd);
         handleDisableManues(hwndMain);
 
         //clearing global variables.
         OPENED_FILE_NAME = L"";
         OPENED_FILE_PATH = L"";
-
+        TOKEN_OPEN_SAVEAS = FALSE;
         return msgboxID;
     }
 }
@@ -812,7 +812,7 @@ void handleOpenMenu(HWND hWnd) {
 
     INT msgBoxID = 0;
 
-    msgBoxID = handleNewWindowA(hWnd);
+    msgBoxID = handleNewWindowA(hWnd, TRUE);
     if ( msgBoxID == IDCANCEL || msgBoxID == IDI_CLOSE_TEXT_SAVE_CANCEL) {
         return;
     }
