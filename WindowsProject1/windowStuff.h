@@ -61,7 +61,7 @@ wstring OPENED_FILE_NAME = L"";
 
 
 void handleReadFile_LPCWSTR(HWND hWnd, LPCWSTR path);
-int handleNewWindowA(HWND hWnd, INT openFileToken = NULL);
+int handleNewWindowA(HWND hWnd, INT openFileToken = NULL, INT tokenNewText = NULL);
 INT hanleSaveAsText(HWND hWnd);
 
 
@@ -396,15 +396,16 @@ INT hanleSaveAsText(HWND hWnd) {
 
 
 
-INT handleSaveFileA(HWND hWnd) {
+INT handleSaveFileA(HWND hWnd, INT tokenNewText = NULL) {
     if (OPENED_FILE_PATH.length() > 0) {
         wstring path = OPENED_FILE_PATH;
         handleSaveTextPath(hWnd, (LPCWSTR)path.c_str());
-        handleReadFile_LPCWSTR(hWnd, (LPCWSTR)path.c_str());
+        if(!tokenNewText) handleReadFile_LPCWSTR(hWnd, (LPCWSTR)path.c_str());
         return 0;
     }
     else {
         hanleSaveAsTextKeepOpen(hWnd);
+        generateNewTextWindow(hWnd);
         return 1;
     }
 }
@@ -413,7 +414,7 @@ INT handleSaveFileA(HWND hWnd) {
 
 
 
-int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
+int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL, INT tokenNewText = NULL)
 {   
     int msgboxID = 0;
     INT IDI_SAVE = 0;
@@ -441,7 +442,7 @@ int DisplayResourceNAMessageBox(HWND hWnd, LPCSTR fileName = NULL)
     case IDYES:
         // TODO: add code
         OutputDebugStringW((LPCWSTR)L"User chose the yes button....");
-        IDI_SAVE = handleSaveFileA(hWnd);
+        IDI_SAVE = handleSaveFileA(hWnd, tokenNewText);
         return IDI_SAVE;
         break;
     case IDNO:
@@ -484,11 +485,11 @@ void handlenewfiletoken(int msgboxid) {
 
 
 
-int handleNewWindowA(HWND hWnd, INT openFileToken) {
+int handleNewWindowA(HWND hWnd, INT openFileToken, INT tokenNewText) {
     int msgboxID = 0;
 
     if (titleUntitled && titleUpdatedOnTextModified) {
-        msgboxID = DisplayResourceNAMessageBox(hWnd, NULL);
+        msgboxID = DisplayResourceNAMessageBox(hWnd, NULL, tokenNewText);
         
         return msgboxID;
     }
@@ -496,7 +497,7 @@ int handleNewWindowA(HWND hWnd, INT openFileToken) {
         wstring wstr = L"Do you want to save changes to ";
         wstring message = wstr + OPENED_FILE_NAME + L" ?";
 
-        msgboxID = DisplayResourceNAMessageBox(hWnd, (LPCSTR)message.c_str());
+        msgboxID = DisplayResourceNAMessageBox(hWnd, (LPCSTR)message.c_str(), tokenNewText);
         
         return msgboxID;
     }
