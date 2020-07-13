@@ -35,8 +35,9 @@ HFONT hFont = CreateFont(18, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHA
     DEFAULT_PITCH | FF_DONTCARE, TEXT("Tahoma"));
 
 
-#include"windowStuff.h"
 
+#include"AppSettings.h"
+#include"windowStuff.h"
 
 
 

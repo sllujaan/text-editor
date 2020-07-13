@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AppSettings.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="framework.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="windowStuff.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AppSettings.cpp" />
     <ClCompile Include="DesktopApp.cpp" />
   </ItemGroup>
   <ItemGroup>

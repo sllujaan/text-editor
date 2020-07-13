@@ -11,6 +11,7 @@
 #include<Shlwapi.h>
 
 
+
 #define PACKVERSION(major,minor) MAKELONG(minor,major)
 
 
@@ -528,6 +529,8 @@ int handleNewWindowA(HWND hWnd, INT openFileToken, INT tokenNewText) {
         TOKEN_OPEN_SAVEAS = FALSE;
         return msgboxID;
     }
+
+    return msgboxID;
 }
 
 
@@ -882,7 +885,7 @@ void handleAbout(HWND hWnd) {
     
     int msgboxID = MessageBox(
         hWnd,
-        (LPCWSTR)L"Developed by M.Salman Altaf\r\nVersion: v1.2.0\r\nAddress: Pakistan",
+        (LPCWSTR)L"Developed by M.Salman Altaf\r\nVersion: v1.9.0\r\nAddress: Pakistan",
         (LPCWSTR)L"About Us",
         MB_ICONINFORMATION
     );

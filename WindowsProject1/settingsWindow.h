@@ -164,6 +164,8 @@ void handleSettingsDialog(HWND hWnd) {
         (LPCWSTR)L"Settings",
         MB_OK | MB_ICONASTERISK
     );
+
+    AppSettings* settings = new AppSettings(hWnd);
 }
 
 
