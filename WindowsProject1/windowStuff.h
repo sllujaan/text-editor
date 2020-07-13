@@ -78,6 +78,9 @@ INT handleOnClose(HWND hWnd) {
     int msgboxID = 0;
 
     msgboxID = handleNewWindowA(hWnd);
+
+    if(msgboxID == IDI_CLOSE_TEXT_SAVED) { DestroyWindow(hWnd); return msgboxID; }
+
     return msgboxID;
     
     /*
@@ -408,7 +411,7 @@ INT handleSaveFileA(HWND hWnd, INT tokenNewText = NULL) {
     else {
         INT ID_SAVEAS = hanleSaveAsTextKeepOpen(hWnd);
         if(ID_SAVEAS == IDI_CLOSE_TEXT_SAVED ) generateNewTextWindow(hWnd);
-        return 1;
+        return ID_SAVEAS;
     }
 }
 
