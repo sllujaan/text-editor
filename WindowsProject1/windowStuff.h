@@ -489,6 +489,18 @@ void handlenewfiletoken(int msgboxid) {
 */
 
 
+void handleNewMenu(HWND hWnd) {
+    INT ID_SAVE = handleNewWindowA(hWnd, NULL, TRUE);
+    
+    if (ID_SAVE == IDNO || ID_SAVE == 0 || ID_SAVE == IDI_CLOSE_TEXT_SAVED) {
+        OPENED_FILE_NAME = L"";
+        OPENED_FILE_PATH = L"";
+        titleUntitled = TRUE;
+        titleUpdatedOnTextModified = FALSE;
+    }
+}
+
+
 
 int handleNewWindowA(HWND hWnd, INT openFileToken, INT tokenNewText) {
     int msgboxID = 0;
