@@ -252,7 +252,7 @@ void hanleSaveText(HWND hWnd) {
 
 
 
-void hanleSaveAsTextKeepOpen(HWND hWnd, INT saveAs = NULL) {
+INT hanleSaveAsTextKeepOpen(HWND hWnd, INT saveAs = NULL) {
 
 
 
@@ -292,7 +292,7 @@ void hanleSaveAsTextKeepOpen(HWND hWnd, INT saveAs = NULL) {
     ofn.Flags = OFN_OVERWRITEPROMPT;
 
     BOOL OPEN = GetSaveFileName(&ofn);
-    if (!OPEN) return;
+    if (!OPEN) return IDI_CLOSE_TEXT_SAVE_CANCEL;
 
 
 
@@ -328,6 +328,8 @@ void hanleSaveAsTextKeepOpen(HWND hWnd, INT saveAs = NULL) {
     titleUntitled = FALSE;
     */
 
+
+    return IDI_CLOSE_TEXT_SAVED;
 
 }
 
@@ -404,8 +406,8 @@ INT handleSaveFileA(HWND hWnd, INT tokenNewText = NULL) {
         return 0;
     }
     else {
-        hanleSaveAsTextKeepOpen(hWnd);
-        generateNewTextWindow(hWnd);
+        INT ID_SAVEAS = hanleSaveAsTextKeepOpen(hWnd);
+        if(ID_SAVEAS == IDI_CLOSE_TEXT_SAVED ) generateNewTextWindow(hWnd);
         return 1;
     }
 }
