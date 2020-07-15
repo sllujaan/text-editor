@@ -165,7 +165,9 @@ void handleSettingsDialog(HWND hWnd) {
         MB_OK | MB_ICONASTERISK
     );
 
-    AppSettings* settings = new AppSettings(hWnd);
+    //handleSettingsWindow(hWnd);
+
+    AppSettings* settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
 }
 
 
