@@ -158,16 +158,16 @@ int CALLBACK handleSettingsWindow(HWND hWnd) {
 
 
 void handleSettingsDialog(HWND hWnd) {
-    /*MessageBox(
+    MessageBox(
         hWnd,
         (LPCWSTR)L"Settings will be available in upcoming versions!",
         (LPCWSTR)L"Settings",
         MB_OK | MB_ICONASTERISK
-    );*/
+    );
 
     //handleSettingsWindow(hWnd);
 
-    AppSettings* settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
+    //AppSettings* settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
 }
 
 

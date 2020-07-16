@@ -158,7 +158,7 @@ int AppSettings::createWindow()
         0,                              // Optional window styles.
         CLASS_NAME,                     // Window class
         L"Settings",    // Window text
-        WS_OVERLAPPEDWINDOW,            // Window style
+        WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
 
         // Size and position
         CW_USEDEFAULT, CW_USEDEFAULT, 200, 300,

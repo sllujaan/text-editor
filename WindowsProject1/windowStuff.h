@@ -885,7 +885,7 @@ void handleAbout(HWND hWnd) {
     
     int msgboxID = MessageBox(
         hWnd,
-        (LPCWSTR)L"Developed by M.Salman Altaf\r\nVersion: v1.9.0\r\nAddress: Pakistan",
+        (LPCWSTR)L"Developed by M.Salman Altaf\r\nVersion: v1.2.4\r\nAddress: Pakistan",
         (LPCWSTR)L"About Us",
         MB_ICONINFORMATION
     );
