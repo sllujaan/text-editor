@@ -155,6 +155,46 @@ int CALLBACK handleSettingsWindow(HWND hWnd) {
 }
 
 
+BOOL CALLBACK GoToProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam);
+
+BOOL CALLBACK GoToProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+
+    OutputDebugStringW((LPCWSTR)L"WM_INITDIALOG called__________\r\n");
+
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        OutputDebugStringW((LPCWSTR)L"WM_INITDIALOG called successfully__________\r\n");
+        break;
+
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+            break;
+        case IDCANCEL:
+            DestroyWindow(hwndDlg);
+            break;
+        }
+    }
+    return FALSE;
+}
+
+
+void handleSearchFile(HWND hWnd) {
+
+
+    MessageBox(
+        hWnd,
+        (LPCWSTR)L"Search feature will be available in upcoming versions!",
+        (LPCWSTR)L"Search",
+        MB_OK | MB_ICONASTERISK
+    );
+
+
+}
+
 
 
 void handleSettingsDialog(HWND hWnd) {

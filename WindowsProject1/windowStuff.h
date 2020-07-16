@@ -28,6 +28,9 @@
 #define ID_SETTINGS_COMBOBOX_MENU 0x123
 #define ID_SELECT_ALL_MENU 0x354
 #define ID_CHANGE_FONT_MENU 0xfde
+#define IDI_SEARCH_FILE 0x3b9
+
+
 
 #define CUSTOM_SELCHANGE 0xabc
 #define IDI_CLOSE_TEXT_SAVED 0x444
@@ -899,23 +902,40 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     HMENU hFileMenu = CreateMenu();
     HMENU hSubFileMenu = CreateMenu();
     HMENU hHelpMenu = CreateMenu();
+    HMENU hToolsMenu = CreateMenu();
     
     
+    //menu items---
     AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hFileMenu, (LPCWSTR)L"File");
+    AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hToolsMenu, (LPCWSTR)L"Tools");
     AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hHelpMenu, (LPCWSTR)L"Help");
-    AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About");
-    AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
-    //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
+
+    
+    //file menu--
     AppendMenu(hFileMenu, MF_STRING, ID_NEW_MENU, (LPCWSTR)L"New");
     AppendMenu(hFileMenu, MF_STRING, ID_OPEN_MENU, (LPCWSTR)L"Open...");
     AppendMenu(hFileMenu, MF_STRING, ID_SAVE_MENU, (LPCWSTR)L"Save");
     AppendMenu(hFileMenu, MF_STRING, ID_SAVEAS_MENU, (LPCWSTR)L"Save As...");
     //AppendMenu(hFileMenu, MF_STRING, ID_SELECT_ALL_MENU, (LPCWSTR)L"Select All...");
     //AppendMenu(hFileMenu, MF_STRING, ID_CHANGE_FONT_MENU, (LPCWSTR)L"Change Font...");
-    AppendMenu(hFileMenu, MF_POPUP, (UINT_PTR)hSubFileMenu, (LPCWSTR)L"Tools");
+    
     AppendMenu(hFileMenu, MF_SEPARATOR, NULL, NULL);
     AppendMenu(hFileMenu, MF_STRING, ID_EXIT_MENU, (LPCWSTR)L"Exit");
+
+
+    //tools menu--
+    AppendMenu(hToolsMenu, MF_STRING, IDI_SEARCH_FILE, (LPCWSTR)L"Search");
+    AppendMenu(hToolsMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings");
+
+
+
+
+    //help menu--
+    AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About");
+    //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
+    //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
+
 
     SetMenu(hWnd, hMenuMain);
 
@@ -1145,7 +1165,7 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 /*
 random hexadecimal codes--
-03b9
+
 cb11
 a448
 90c0
