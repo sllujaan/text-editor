@@ -29,6 +29,9 @@
 #define ID_SELECT_ALL_MENU 0x354
 #define ID_CHANGE_FONT_MENU 0xfde
 #define IDI_SEARCH_FILE 0x3b9
+#define IDI_UNDO 0xa448
+#define IDI_REDO 0x90c0
+
 
 
 
@@ -900,13 +903,17 @@ void handleAbout(HWND hWnd) {
 void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     hMenuMain = CreateMenu();
     HMENU hFileMenu = CreateMenu();
-    HMENU hSubFileMenu = CreateMenu();
-    HMENU hHelpMenu = CreateMenu();
+    HMENU hEditMenu = CreateMenu();
     HMENU hToolsMenu = CreateMenu();
+    HMENU hHelpMenu = CreateMenu();
+    
+
+    HMENU hSubFileMenu = CreateMenu();
     
     
     //menu items---
     AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hFileMenu, (LPCWSTR)L"File");
+    AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hEditMenu, (LPCWSTR)L"Edit");
     AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hToolsMenu, (LPCWSTR)L"Tools");
     AppendMenu(hMenuMain, MF_POPUP, (UINT_PTR)hHelpMenu, (LPCWSTR)L"Help");
 
@@ -922,6 +929,13 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     
     AppendMenu(hFileMenu, MF_SEPARATOR, NULL, NULL);
     AppendMenu(hFileMenu, MF_STRING, ID_EXIT_MENU, (LPCWSTR)L"Exit");
+
+
+    //Edit menu
+    AppendMenu(hEditMenu, MF_STRING, IDI_UNDO, (LPCWSTR)L"Undo");
+    AppendMenu(hEditMenu, MF_STRING, IDI_REDO, (LPCWSTR)L"Undo");
+
+
 
 
     //tools menu--
@@ -1167,8 +1181,7 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 random hexadecimal codes--
 
 
-a448
-90c0
+
 077f
 3e0f
 7a6b
