@@ -34,10 +34,10 @@ HFONT hFont = CreateFont(18, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHA
     OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
     DEFAULT_PITCH | FF_DONTCARE, TEXT("Tahoma"));
 
-
-
+#include"search.h"
 #include"AppSettings.h"
 #include"windowStuff.h"
+
 
 
 

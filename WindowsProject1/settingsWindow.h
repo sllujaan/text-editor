@@ -183,14 +183,15 @@ BOOL CALLBACK GoToProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 void handleSearchFile(HWND hWnd) {
-
-
-    MessageBox(
+    /*MessageBox(
         hWnd,
         (LPCWSTR)L"Search feature will be available in upcoming versions!",
         (LPCWSTR)L"Search",
         MB_OK | MB_ICONASTERISK
-    );
+    );*/
+
+
+    Search* search = new Search(hWnd, hInst, nCmdShowGlobal);
 
 
 }
@@ -198,16 +199,16 @@ void handleSearchFile(HWND hWnd) {
 
 
 void handleSettingsDialog(HWND hWnd) {
-    MessageBox(
+    /*MessageBox(
         hWnd,
         (LPCWSTR)L"Settings will be available in upcoming versions!",
         (LPCWSTR)L"Settings",
         MB_OK | MB_ICONASTERISK
-    );
+    );*/
 
     //handleSettingsWindow(hWnd);
 
-    //AppSettings* settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
+    AppSettings* settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
 }
 
 
@@ -338,3 +339,12 @@ void handleSettingsWindow(HWND hWnd) {
 */
 
 /*(LPCWSTR)L"Settings window creation failed."*/
+
+
+INT_PTR CALLBACK PasswordProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    return FALSE;
+}
+
+
+

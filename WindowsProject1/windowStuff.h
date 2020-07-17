@@ -1166,7 +1166,7 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 /*
 random hexadecimal codes--
 
-cb11
+
 a448
 90c0
 077f

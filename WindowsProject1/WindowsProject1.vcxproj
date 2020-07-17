@@ -157,6 +157,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="mySample.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="search.h" />
     <ClInclude Include="settingsWindow.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WindowsProject1.h" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="AppSettings.cpp" />
     <ClCompile Include="DesktopApp.cpp" />
+    <ClCompile Include="search.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WindowsProject1.rc" />
