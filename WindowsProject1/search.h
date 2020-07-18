@@ -11,7 +11,6 @@ private:
 	HWND hWndSearch;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
-	//HWND hwndEdit;
 	static const int IDI_EDIT_CONTROL = 0xcb11;
 
 public:
@@ -27,6 +26,7 @@ private:
 	static void centerWindow(HWND hwnd);
 	void initEditControl();
 	void initSearchButton();
+	HFONT getFont(size_t size);
 };
 
 

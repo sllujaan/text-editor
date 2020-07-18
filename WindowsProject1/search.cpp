@@ -8,6 +8,8 @@ Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->nCmdShowGlobal = nCmdShow;
 
     this->createWindow();
+    this->initEditControl();
+    this->initSearchButton();
 }
 
 Search::~Search()
@@ -36,10 +38,13 @@ LRESULT Search::WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 
     case WM_SIZE:
 
-        MoveWindow((HWND)lParam,
+        OutputDebugStringW((LPCWSTR)L"WM_SIZE searcg called_______<<><><>___\r\n");
+        
+
+        MoveWindow( (HWND)lParam ,
             0, 0,                  // starting x- and y-coordinates 
-            20,        // width of client area 
-            20,        // height of client area 
+            LOWORD(lParam),        // width of client area 
+            HIWORD(lParam),        // height of client area 
             TRUE);                 // repaint window 
         break;
 
@@ -93,19 +98,46 @@ void Search::initEditControl()
     HWND hwndEdit = CreateWindowEx(
         0, L"EDIT",   // predefined class 
         NULL,         // no window title 
-        WS_CHILD | WS_VISIBLE | ES_LEFT,
-        0, 0, 0, 0,   // set size in WM_SIZE message 
+        WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT,
+        2, 2, 200, 24,   // set size in WM_SIZE message 
         this->hWndSearch,         // parent window 
         NULL,   // edit control ID 
-        (HINSTANCE)GetWindowLongPtr(this->hWndSearch, GWLP_HINSTANCE),
+        (HINSTANCE)GetWindowLongPtr(this->hWndParent, GWLP_HINSTANCE),
         NULL);        // pointer not needed 
 
+
+    //formating edit control..
+    SendMessage(hwndEdit, WM_SETFONT, (WPARAM)this->getFont(18), TRUE);
 
 }
 
 void Search::initSearchButton()
 {
+    HWND hwndButton = CreateWindow( 
+    L"BUTTON",  // Predefined class; Unicode assumed 
+    L"Search",      // Button text 
+    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+    204,         // x position 
+    1,         // y position 
+    80,        // Button width
+    26,        // Button height
+    this->hWndSearch,     // Parent window
+    NULL,       // No menu.
+    (HINSTANCE)GetWindowLongPtr(this->hWndSearch, GWLP_HINSTANCE),
+    NULL);      // Pointer not needed.
 
+
+    //formating button text..
+    SendMessage(hwndButton, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+}
+
+HFONT Search::getFont(size_t size)
+{
+    HFONT hFont = CreateFont(size, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
+        OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+        DEFAULT_PITCH | FF_DONTCARE, TEXT("Tahoma"));
+
+    return hFont;
 }
 
 int Search::createWindow()
@@ -118,27 +150,27 @@ int Search::createWindow()
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
     wcex.lpfnWndProc = this->WndProcSearch;
-    wcex.cbClsExtra = 0;
-    wcex.cbWndExtra = 0;
+    //wcex.cbClsExtra = 0;
+    //wcex.cbWndExtra = 0;
     wcex.hInstance = this->hInst;
     wcex.lpszClassName = CLASS_NAME;
-    wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
+    //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
-    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    wcex.lpszMenuName = NULL;
-    wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
+    //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
+    //wcex.lpszMenuName = NULL;
+    //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
     RegisterClassEx(&wcex);
 
     HWND hwnd = CreateWindowEx(
         0,                              // Optional window styles.
         CLASS_NAME,                     // Window class
-        L"Settings",    // Window text
+        L"Search",    // Window text
         WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
 
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 200, 300,
+        CW_USEDEFAULT, CW_USEDEFAULT, 302, 66,
 
         this->hWndParent,       // Parent window    
         NULL,       // Menu
