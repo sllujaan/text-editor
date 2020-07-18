@@ -81,6 +81,12 @@
     <Image Include="icon2.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="icon3.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\search.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="WindowsProject1.exe.manifest" />

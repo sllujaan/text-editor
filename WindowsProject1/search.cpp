@@ -80,8 +80,8 @@ void Search::centerWindow(HWND hwnd)
     int nScreenHeightCenter = nScreenHeight / 2;
 
     //center handwindow
-    int nX = nScreenWidthCenter - (nWidth);
-    int nY = nScreenHeightCenter - (nHeight / 2);
+    int nX = rectWindow.right;
+    int nY = rectWindow.bottom;
 
 
 
@@ -154,7 +154,6 @@ int Search::createWindow()
     //wcex.cbWndExtra = 0;
     wcex.hInstance = this->hInst;
     wcex.lpszClassName = CLASS_NAME;
-    //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
     wcex.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
