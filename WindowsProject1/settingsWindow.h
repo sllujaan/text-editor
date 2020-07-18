@@ -209,6 +209,9 @@ void handleSettingsDialog(HWND hWnd) {
     //handleSettingsWindow(hWnd);
 
     AppSettings* settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
+
+    //EnableWindow(hWnd, FALSE);
+
 }
 
 

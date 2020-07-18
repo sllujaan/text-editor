@@ -38,8 +38,8 @@ LRESULT Search::WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 
         MoveWindow((HWND)lParam,
             0, 0,                  // starting x- and y-coordinates 
-            LOWORD(lParam),        // width of client area 
-            HIWORD(lParam),        // height of client area 
+            20,        // width of client area 
+            20,        // height of client area 
             TRUE);                 // repaint window 
         break;
 

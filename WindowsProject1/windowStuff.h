@@ -933,13 +933,13 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
 
     //Edit menu
     AppendMenu(hEditMenu, MF_STRING, IDI_UNDO, (LPCWSTR)L"Undo");
-    AppendMenu(hEditMenu, MF_STRING, IDI_REDO, (LPCWSTR)L"Undo");
-
+    AppendMenu(hEditMenu, MF_STRING, IDI_REDO, (LPCWSTR)L"Redo");
+    AppendMenu(hEditMenu, MF_SEPARATOR, NULL, NULL);
+    AppendMenu(hEditMenu, MF_STRING, IDI_SEARCH_FILE, (LPCWSTR)L"Search");
 
 
 
     //tools menu--
-    AppendMenu(hToolsMenu, MF_STRING, IDI_SEARCH_FILE, (LPCWSTR)L"Search");
     AppendMenu(hToolsMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings");
 
 

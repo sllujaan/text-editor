@@ -250,6 +250,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         //these messages are working fine with simple edit control------------
         if (HIWORD(wParam) == EN_CHANGE) {
+                
+            if ((HWND)lParam == hwndEdit) {
+                OutputDebugStringW((LPCWSTR)L"lParam == hwndEdit called__________\r\n");
+            }
+
             OutputDebugStringW((LPCWSTR)L"ENNEN_CHANGE called__________\r\n");
             handleOnTextChange();
         }
