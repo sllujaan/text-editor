@@ -22,6 +22,7 @@ private:
 	int CALLBACK createWindow();
 	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 	static void centerWindow(HWND hwnd);
+	void initListFontSize();
 
 
 };

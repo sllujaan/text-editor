@@ -8,7 +8,8 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->hInst = hInstance;
     this->nCmdShowGlobal = nCmdShow;
     this->createWindow();
-    this->createComboBox();
+
+    //this->createComboBox();
 }
 
 AppSettings::~AppSettings()
@@ -26,6 +27,10 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
     {
     case WM_CREATE:
         AppSettings::centerWindow(hwnd);
+
+        //disable parent window
+        EnableWindow(hwnd, FALSE);
+
         break;
 
     case WM_COMMAND:
@@ -79,6 +84,15 @@ void AppSettings::centerWindow(HWND hwnd)
     OutputDebugStringW((LPCWSTR)L"window centered");
 
     return;
+}
+
+void AppSettings::initListFontSize()
+{
+
+    LPCWSTR fontSize[] = { L"8", L"10", L"12", L"14", L"16", L"18", L"20", L"22", L"24", L"26"};
+
+    
+
 }
 
 
@@ -161,7 +175,7 @@ int AppSettings::createWindow()
         WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
 
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 200, 300,
+        CW_USEDEFAULT, CW_USEDEFAULT, 450, 500,
 
         this->hWndParent,       // Parent window    
         NULL,       // Menu

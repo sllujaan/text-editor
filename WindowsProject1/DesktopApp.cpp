@@ -293,6 +293,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_EXIT_MENU:
             return onExit(hWnd);
             break;
+
+        case IDI_VIEW_HELP:
+            handleViewHelp(hWnd);
+            break;
+
         case ID_ABOUT_MENU:
             handleAbout(hWnd);
             break;

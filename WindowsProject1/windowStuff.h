@@ -31,7 +31,7 @@
 #define IDI_SEARCH_FILE 0x3b9
 #define IDI_UNDO 0xa448
 #define IDI_REDO 0x90c0
-
+#define IDI_VIEW_HELP 0x077f
 
 
 
@@ -885,6 +885,19 @@ void handleOpenMenu(HWND hWnd) {
 
 
 
+void handleViewHelp(HWND hWnd) {
+    
+    WinHelp(
+        hWnd,
+        L"Text Editor",
+        HELP_FINDER,
+        0
+    );
+
+}
+
+
+
 
 void handleAbout(HWND hWnd) {
     OutputDebugStringW((LPCWSTR)L"handleAbout called.");
@@ -946,7 +959,8 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
 
 
     //help menu--
-    AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About");
+    AppendMenu(hHelpMenu, MF_POPUP, IDI_VIEW_HELP, (LPCWSTR)L"View Help");
+    AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About TextEditor");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
@@ -1182,7 +1196,7 @@ random hexadecimal codes--
 
 
 
-077f
+
 3e0f
 7a6b
 22eb
