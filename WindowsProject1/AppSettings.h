@@ -19,10 +19,12 @@ public:
 private:
 	//private stuff
 	void createComboBox();
-	int CALLBACK createWindow();
-	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+	int CALLBACK createWindow();	
 	static void centerWindow(HWND hwnd);
 	void initListFontSize();
 
 
+protected:
+	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+	AppSettings* settings;
 };

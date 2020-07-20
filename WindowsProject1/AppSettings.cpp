@@ -29,7 +29,7 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
         AppSettings::centerWindow(hwnd);
 
         //disable parent window
-        EnableWindow(hwnd, FALSE);
+        //EnableWindow(hwnd, FALSE);
 
         break;
 
