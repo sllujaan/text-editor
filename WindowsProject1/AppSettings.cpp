@@ -7,8 +7,8 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->hWndParent = hWnd;
     this->hInst = hInstance;
     this->nCmdShowGlobal = nCmdShow;
-    this->createWindow();
 
+    this->createWindow();
     //this->createComboBox();
 }
 
@@ -17,8 +17,9 @@ AppSettings::~AppSettings()
 
 }
 
-LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+
     PAINTSTRUCT ps;
     HDC hdc;
 
@@ -26,10 +27,10 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
     switch (message)
     {
     case WM_CREATE:
-        AppSettings::centerWindow(hwnd);
+        this->centerWindow(hwnd);
 
         //disable parent window
-        //EnableWindow(hwnd, FALSE);
+        EnableWindow((HWND)lParam, FALSE);
 
         break;
 
@@ -43,6 +44,8 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
 
     case WM_DESTROY:
         DestroyWindow(hwnd);
+        //Enable parent window
+        //EnableWindow(hWndParent, TRUE);
         //PostQuitMessage(0);
         break;
     default:
@@ -144,7 +147,8 @@ void AppSettings::createComboBox()
 
 }
 
-int AppSettings::createWindow()
+
+void AppSettings::createWindow()
 {
     
     // Register the window class.
@@ -157,9 +161,9 @@ int AppSettings::createWindow()
     wcex.lpfnWndProc = this->WndProcSettings;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
-    wcex.hInstance = hInst;
+    wcex.hInstance = this->hInst;
     wcex.lpszClassName = CLASS_NAME;
-    wcex.hIcon = LoadIcon(hInst, IDI_SHIELD);
+    wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
     wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
@@ -191,11 +195,9 @@ int AppSettings::createWindow()
             (LPCWSTR)L"ERROR",
             MB_ICONERROR
         );
-
-        return 0;
     }
 
-    ShowWindow(hwnd, nCmdShowGlobal);
+    ShowWindow(hwnd, this->nCmdShowGlobal);
 
 
     //handleSettingsComboBoxWindow(hwnd);
@@ -203,6 +205,6 @@ int AppSettings::createWindow()
 
 
     this->hWndSettings = hwnd;
-    return 1;
+
 }
 

@@ -2,8 +2,13 @@
 #include<Windows.h>
 #include<CommCtrl.h>
 
+
+
 class AppSettings {
+
 private:
+
+protected:
 	//private stuff
 	HWND hWndSettings;
 	HWND hWndParent;
@@ -11,20 +16,27 @@ private:
 	int nCmdShowGlobal;
 
 
+
 public:
 	//public stuff
 	AppSettings(HWND hWnd, HINSTANCE hInst, int nCmdShowGlobal);
+	AppSettings() {};
 	~AppSettings();
 
 private:
 	//private stuff
 	void createComboBox();
-	int CALLBACK createWindow();	
+	void createWindow();	
 	static void centerWindow(HWND hwnd);
 	void initListFontSize();
 
 
 protected:
-	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
-	AppSettings* settings;
+
+
+	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
+		return ((AppSettings*)(::GetWindowLongPtr(hwnd, GWLP_USERDATA)))->runProc(hwnd, message, wParam, lParam);
+	};
+
+	LRESULT runProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 };
