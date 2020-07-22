@@ -33,10 +33,9 @@ private:
 
 protected:
 
-
-	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
-		return ((AppSettings*)(::GetWindowLongPtr(hwnd, GWLP_USERDATA)))->runProc(hwnd, message, wParam, lParam);
-	};
-
 	LRESULT runProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
+
+	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+	
 };

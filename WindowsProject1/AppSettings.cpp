@@ -30,8 +30,8 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         this->centerWindow(hwnd);
 
         //disable parent window
-        EnableWindow((HWND)lParam, FALSE);
-
+        EnableWindow(this->hWndParent, FALSE);
+        
         break;
 
     case WM_COMMAND:
@@ -42,10 +42,18 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         EndPaint(hwnd, &ps);
         break;
 
-    case WM_DESTROY:
-        DestroyWindow(hwnd);
+    case WM_CLOSE:
         //Enable parent window
-        //EnableWindow(hWndParent, TRUE);
+        EnableWindow(this->hWndParent, TRUE);
+
+        DestroyWindow(hwnd);
+        return 1;
+        break;
+
+    case WM_DESTROY:
+
+        DestroyWindow(hwnd);
+        
         //PostQuitMessage(0);
         break;
     default:
@@ -55,6 +63,42 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
 
     return 0;
+}
+
+LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+
+    AppSettings* pThis;
+
+    if (message == WM_NCCREATE)
+    {
+        // Recover the "this" pointer which was passed as a parameter
+        // to CreateWindow(Ex).
+        LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>(lParam);
+        pThis = static_cast<AppSettings*>(lpcs->lpCreateParams);
+
+        // Put the value in a safe place for future use
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis));
+
+    }
+    else
+    {
+        // Recover the "this" pointer from where our WM_NCCREATE handler
+        // stashed it.
+        pThis = reinterpret_cast<AppSettings*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+    }
+
+    if (pThis) {
+        // Now that we have recovered our "this" pointer, let the
+        // member function finish the job.
+        return pThis->runProc(hwnd, message, wParam, lParam);
+    }
+
+    // We don't know what our "this" pointer is, so just do the default
+    // thing. Hopefully, we didn't need to customize the behavior yet.
+
+    return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
 void AppSettings::centerWindow(HWND hwnd)
@@ -184,7 +228,7 @@ void AppSettings::createWindow()
         this->hWndParent,       // Parent window    
         NULL,       // Menu
         this->hInst,  // Instance handle
-        NULL        // Additional application data
+        this        // Additional application data
     );
 
     if (hwnd == NULL)
