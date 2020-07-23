@@ -1,6 +1,7 @@
 #pragma once
 
 #include<Windows.h>
+#include<Richedit.h>
 
 #define IDI_SEARCH_BUTTON 0xcb11
 

@@ -222,9 +222,40 @@ void Search::handleSearchText()
 
     GetWindowText(this->hWndEditControl, (LPWSTR)text, size + 1);
 
-    SendMessage(this->hwndRichEditParent, EM_SETSEL, 0, -1);
+    //SendMessage(this->hwndRichEditParent, EM_SETSEL, 0, -1);
 
-    SetFocus(this->hWndParent);
+    
+    //CHARRANGE selectionRange;
+
+    //SendMessage(this->hwndRichEditParent, EM_EXGETSEL, 0, (LPARAM)&selectionRange);
+    
+    FINDTEXTEX ftex;
+    
+    ftex.chrg.cpMin = 0;
+    ftex.chrg.cpMax = -1; //-1 means select entire text
+    ftex.lpstrText = text;
+
+    LRESULT lr = SendMessage(this->hwndRichEditParent, EM_FINDTEXTEXW, (WPARAM)FR_DOWN, (LPARAM)&ftex);
+    
+    if (lr >= 0)
+    {
+        SendMessage(this->hwndRichEditParent, EM_EXSETSEL, 0, (LPARAM)&ftex.chrgText);
+
+        //SendMessage(this->hwndRichEditParent, EM_HIDESELECTION, (LPARAM)FALSE, 0);
+        
+        SetFocus(this->hWndParent);
+    }
+    else {
+        MessageBox(
+            this->hWndParent,
+            (LPCWSTR)L"Not found.",
+            (LPCWSTR)L"Search Result",
+            MB_OK
+        );
+    }
+    
+    
+
 }
 
 void Search::createWindow()
