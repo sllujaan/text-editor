@@ -220,7 +220,7 @@ void AppSettings::createWindow()
         0,                              // Optional window styles.
         CLASS_NAME,                     // Window class
         L"Settings",    // Window text
-        WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
+        WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX,            // Window style
 
         // Size and position
         CW_USEDEFAULT, CW_USEDEFAULT, 450, 500,

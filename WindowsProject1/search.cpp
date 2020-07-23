@@ -17,7 +17,7 @@ Search::~Search()
 
 }
 
-LRESULT Search::WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT ps;
     HDC hdc;
@@ -25,11 +25,38 @@ LRESULT Search::WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
     switch (message)
     {
     case WM_CREATE:
-        Search::centerWindow(hwnd);
+        this->centerWindow(hwnd);
         break;
 
     case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDI_SEARCH_BUTTON:
+            OutputDebugStringW((LPCWSTR)L"IDI_SEARCH_BUTTON called_______<<><><>___\r\n");
+            break;
+
+        case EN_CHANGE:
+            OutputDebugStringW((LPCWSTR)L"changeeeeeeeeee called_______<<><><>___\r\n");
+            break;
+
+        default:
+            break;
+        }
+
+        switch (HIWORD(wParam))
+        {
+        case EN_CHANGE:
+            OutputDebugStringW((LPCWSTR)L"EN_CHANGE called_______<<><><>___\r\n");
+            //EnableWindow(this->hwndButton, TRUE);
+            this->handleEnableDisableSearchButton();
+            break;
+        default:
+            break;
+        }
+
         break;
+
+    
 
     case WM_PAINT:
         hdc = BeginPaint(hwnd, &ps);
@@ -59,6 +86,42 @@ LRESULT Search::WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 
 
     return 0;
+}
+
+LRESULT Search::WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+
+    Search* pThis;
+
+    if (message == WM_NCCREATE)
+    {
+        // Recover the "this" pointer which was passed as a parameter
+        // to CreateWindow(Ex).
+        LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>(lParam);
+        pThis = static_cast<Search*>(lpcs->lpCreateParams);
+
+        // Put the value in a safe place for future use
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis));
+
+    }
+    else
+    {
+        // Recover the "this" pointer from where our WM_NCCREATE handler
+        // stashed it.
+        pThis = reinterpret_cast<Search*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+    }
+
+    if (pThis) {
+        // Now that we have recovered our "this" pointer, let the
+        // member function finish the job.
+        return pThis->runProc(hwnd, message, wParam, lParam);
+    }
+
+    // We don't know what our "this" pointer is, so just do the default
+    // thing. Hopefully, we didn't need to customize the behavior yet.
+
+    return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
 void Search::centerWindow(HWND hwnd)
@@ -106,8 +169,13 @@ void Search::initEditControl()
         NULL);        // pointer not needed 
 
 
+    
+    this->hWndEditControl = hwndEdit;
+
     //formating edit control..
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)this->getFont(18), TRUE);
+
+    SetFocus(hWndEditControl);
 
 }
 
@@ -122,13 +190,17 @@ void Search::initSearchButton()
     80,        // Button width
     26,        // Button height
     this->hWndSearch,     // Parent window
-    NULL,       // No menu.
+    (HMENU)IDI_SEARCH_BUTTON,       // No menu.
     (HINSTANCE)GetWindowLongPtr(this->hWndSearch, GWLP_HINSTANCE),
     NULL);      // Pointer not needed.
 
 
     //formating button text..
     SendMessage(hwndButton, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+
+    this->hwndButton = hwndButton;
+
+    EnableWindow(hwndButton, FALSE);
 }
 
 HFONT Search::getFont(size_t size)
@@ -140,7 +212,14 @@ HFONT Search::getFont(size_t size)
     return hFont;
 }
 
-int Search::createWindow()
+void Search::handleEnableDisableSearchButton()
+{
+    int length = GetWindowTextLength(this->hWndEditControl);
+    if(length == 0) EnableWindow(this->hwndButton, FALSE);
+    else EnableWindow(this->hwndButton, TRUE);
+}
+
+void Search::createWindow()
 {
     // Register the window class.
     const wchar_t CLASS_NAME[] = L"Sample Window Class";
@@ -174,7 +253,7 @@ int Search::createWindow()
         this->hWndParent,       // Parent window    
         NULL,       // Menu
         this->hInst,  // Instance handle
-        NULL        // Additional application data
+        this        // Additional application data
     );
 
     if (hwnd == NULL)
@@ -186,7 +265,7 @@ int Search::createWindow()
             MB_ICONERROR
         );
 
-        return 0;
+        return;
     }
 
     ShowWindow(hwnd, this->nCmdShowGlobal);
@@ -197,7 +276,6 @@ int Search::createWindow()
 
 
     this->hWndSearch = hwnd;
-    return 1;
 }
 
 LRESULT WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

@@ -2,16 +2,17 @@
 
 #include<Windows.h>
 
-
+#define IDI_SEARCH_BUTTON 0xcb11
 
 class Search {
 private:
 	//private stuff
 	HWND hWndParent;
 	HWND hWndSearch;
+	HWND hWndEditControl;
+	HWND hwndButton;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
-	static const int IDI_EDIT_CONTROL = 0xcb11;
 
 public:
 	//public stuff
@@ -20,13 +21,20 @@ public:
 
 
 private:
-	int CALLBACK createWindow();
-	
-	static LRESULT CALLBACK WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+	void createWindow();
 	static void centerWindow(HWND hwnd);
 	void initEditControl();
 	void initSearchButton();
 	HFONT getFont(size_t size);
+	void handleEnableDisableSearchButton();
+
+protected:
+
+	LRESULT runProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
+
+	static LRESULT CALLBACK WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+
 };
 
 
