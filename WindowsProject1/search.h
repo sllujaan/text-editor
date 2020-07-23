@@ -11,12 +11,13 @@ private:
 	HWND hWndSearch;
 	HWND hWndEditControl;
 	HWND hwndButton;
+	HWND hwndRichEditParent;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 
 public:
 	//public stuff
-	Search(HWND hWnd, HINSTANCE hInst, int nCmdShowGlobal);
+	Search(HWND hWnd, HINSTANCE hInst, int nCmdShowGlobal, HWND richEdit);
 	~Search();
 
 
@@ -27,6 +28,7 @@ private:
 	void initSearchButton();
 	HFONT getFont(size_t size);
 	void handleEnableDisableSearchButton();
+	void handleSearchText();
 
 protected:
 

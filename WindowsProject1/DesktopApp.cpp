@@ -22,6 +22,7 @@ WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box
 #define MAINWIN_HEIGHT 400
 HINSTANCE hInst;
 int nCmdShowGlobal;
+HWND hwndEdit;
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM); //declaration of the window procedures method.
 // The main window class name.
 static TCHAR szWindowClass[] = _T("DesktopApp");

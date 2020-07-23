@@ -191,7 +191,7 @@ void handleSearchFile(HWND hWnd) {
     );*/
 
 
-    Search* search = new Search(hWnd, hInst, nCmdShowGlobal);
+    Search* search = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
 
 
 }

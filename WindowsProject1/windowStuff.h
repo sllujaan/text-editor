@@ -43,7 +43,6 @@
 
 
 HMENU hMenu;
-static HWND hwndEdit;
 static HWND hwndRichEdit;
 BOOL titleUpdatedOnTextModified = FALSE;
 BOOL titleUntitled = FALSE;

@@ -1,11 +1,12 @@
 #include "search.h"
 
 
-Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
+Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow, HWND richEdit)
 {
     this->hWndParent = hWnd;
     this->hInst = hInstance;
     this->nCmdShowGlobal = nCmdShow;
+    this->hwndRichEditParent = richEdit;
 
     this->createWindow();
     this->initEditControl();
@@ -32,13 +33,8 @@ LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case IDI_SEARCH_BUTTON:
-            OutputDebugStringW((LPCWSTR)L"IDI_SEARCH_BUTTON called_______<<><><>___\r\n");
+            this->handleSearchText();
             break;
-
-        case EN_CHANGE:
-            OutputDebugStringW((LPCWSTR)L"changeeeeeeeeee called_______<<><><>___\r\n");
-            break;
-
         default:
             break;
         }
@@ -46,8 +42,6 @@ LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (HIWORD(wParam))
         {
         case EN_CHANGE:
-            OutputDebugStringW((LPCWSTR)L"EN_CHANGE called_______<<><><>___\r\n");
-            //EnableWindow(this->hwndButton, TRUE);
             this->handleEnableDisableSearchButton();
             break;
         default:
@@ -217,6 +211,20 @@ void Search::handleEnableDisableSearchButton()
     int length = GetWindowTextLength(this->hWndEditControl);
     if(length == 0) EnableWindow(this->hwndButton, FALSE);
     else EnableWindow(this->hwndButton, TRUE);
+}
+
+void Search::handleSearchText()
+{
+    //get edit window length--
+    const int size = GetWindowTextLength(this->hWndEditControl);
+    //wchar_t* data = new wchar_t[size + 1];
+    LPCWSTR text = new WCHAR[size + 1];
+
+    GetWindowText(this->hWndEditControl, (LPWSTR)text, size + 1);
+
+    SendMessage(this->hwndRichEditParent, EM_SETSEL, 0, -1);
+
+    SetFocus(this->hWndParent);
 }
 
 void Search::createWindow()
