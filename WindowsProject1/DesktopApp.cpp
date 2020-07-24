@@ -191,6 +191,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //wchar_t msg[50];
     int ID_CLOSE = NULL;
     //int msgboxID_CLOSE = 0;
+    ENDROPFILES* penDropFiles;
 
     switch (message)
     {
@@ -215,6 +216,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
 
         case EN_DROPFILES:
+            penDropFiles = (ENDROPFILES*)lParam;
+            LPSTR file[200];
+            memset(file, 0, 200);
+
+            DragQueryFileA((HDROP)penDropFiles->hDrop, 0, (LPSTR)file,  sizeof(file));
+
+            OutputDebugStringW((LPCWSTR)file );
+
             OutputDebugStringW((LPCWSTR)L"EN_DROPFILES called{__________\r\n");
             break;
 

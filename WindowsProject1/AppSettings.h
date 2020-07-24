@@ -2,6 +2,8 @@
 #include<Windows.h>
 #include<CommCtrl.h>
 
+#define IDM_CODE_SAMPLES 0x3e0f
+
 
 
 class AppSettings {
@@ -12,6 +14,7 @@ protected:
 	//private stuff
 	HWND hWndSettings;
 	HWND hWndParent;
+	HWND hwndListView;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 
@@ -29,6 +32,9 @@ private:
 	void createWindow();	
 	static void centerWindow(HWND hwnd);
 	void initListFontSize();
+	void createListView();
+	void insertListViewItems(int cItems);
+	void initListView();
 
 
 protected:

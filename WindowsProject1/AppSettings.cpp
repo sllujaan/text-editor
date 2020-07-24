@@ -9,7 +9,8 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->nCmdShowGlobal = nCmdShow;
 
     this->createWindow();
-    //this->createComboBox();
+    this->createListView();
+    
 }
 
 AppSettings::~AppSettings()
@@ -35,6 +36,16 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         break;
 
     case WM_COMMAND:
+
+        switch (LOWORD(wParam))
+        {
+        case IDM_CODE_SAMPLES:
+            OutputDebugStringW((LPCWSTR)L"IDM_CODE_SAMPLES called____++++__\r\n");
+            break;
+        default:
+            break;
+        }
+
         break;
 
     case WM_PAINT:
@@ -142,6 +153,78 @@ void AppSettings::initListFontSize()
 
 }
 
+void AppSettings::createListView()
+{
+    // CreateListView: Creates a list-view control in report view.
+    // Returns the handle to the new control
+    // TO DO:  The calling procedure should determine whether the handle is NULL, in case 
+    // of an error in creation.
+    //
+    // HINST hInst: The global handle to the applicadtion instance.
+    // HWND  hWndParent: The handle to the control's parent window. 
+    //
+
+    INITCOMMONCONTROLSEX icex;           // Structure for control initialization.
+    icex.dwICC = ICC_LISTVIEW_CLASSES;
+    InitCommonControlsEx(&icex);
+
+    //RECT rcClient;                       // The parent window's client area.
+
+    //GetClientRect(this->hWndSettings, &rcClient);
+
+    // Create the list-view window in report view with label editing enabled.
+    HWND hWndListView = CreateWindow(WC_LISTVIEW,
+        L"List view",
+        WS_CHILD | LVS_REPORT | LVS_EDITLABELS,
+        10, 10,
+        50,
+        50,
+        this->hWndSettings,
+        (HMENU)IDM_CODE_SAMPLES,
+        this->hInst,
+        NULL);
+
+    this->hwndListView = hWndListView;
+    //this->insertListViewItems(10);
+
+}
+
+void AppSettings::insertListViewItems(int cItems)
+{
+    LVITEM lvI;
+
+    // Initialize LVITEM members that are common to all items.
+    lvI.pszText = LPSTR_TEXTCALLBACK; // Sends an LVN_GETDISPINFO message.
+    lvI.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_STATE;
+    lvI.stateMask = 0;
+    lvI.iSubItem = 0;
+    lvI.state = 0;
+
+    // Initialize LVITEM members that are different for each item.
+    for (int index = 0; index < cItems; index++)
+    {
+        lvI.iItem = index;
+        lvI.iImage = index;
+
+        // Insert items into the list.
+        if (ListView_InsertItem(this->hwndListView, &lvI) == -1) {
+            //failed to insert itmes
+            MessageBox(
+                NULL,
+                (LPCWSTR)L"Failed to insert items.",
+                (LPCWSTR)L"List View",
+                MB_OK
+            );
+        }
+            
+    }
+}
+
+void AppSettings::initListView()
+{
+    
+}
+
 
 
 void AppSettings::createComboBox()
@@ -220,7 +303,7 @@ void AppSettings::createWindow()
         0,                              // Optional window styles.
         CLASS_NAME,                     // Window class
         L"Settings",    // Window text
-        WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX,            // Window style
+        WS_SYSMENU,            // Window style
 
         // Size and position
         CW_USEDEFAULT, CW_USEDEFAULT, 450, 500,
