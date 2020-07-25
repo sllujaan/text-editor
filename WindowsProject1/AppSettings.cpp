@@ -9,7 +9,9 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->nCmdShowGlobal = nCmdShow;
 
     this->createWindow();
+    this->createGroupBox();
     this->createListView();
+    
     
 }
 
@@ -168,18 +170,18 @@ void AppSettings::createListView()
     icex.dwICC = ICC_LISTVIEW_CLASSES;
     InitCommonControlsEx(&icex);
 
-    //RECT rcClient;                       // The parent window's client area.
+    RECT rcClient;                       // The parent window's client area.
 
-    //GetClientRect(this->hWndSettings, &rcClient);
+    GetClientRect(this->hWndGroupBox, &rcClient);
 
     // Create the list-view window in report view with label editing enabled.
     HWND hWndListView = CreateWindow(WC_LISTVIEW,
         L"List view",
-        WS_CHILD | LVS_REPORT | LVS_EDITLABELS,
-        10, 10,
-        50,
-        50,
-        this->hWndSettings,
+        WS_CHILD | WS_VISIBLE | LVS_REPORT | LVS_EDITLABELS,
+        10, 20,
+        (rcClient.right - rcClient.left) - 20,
+        (rcClient.bottom - rcClient.top) - 30,
+        this->hWndGroupBox,
         (HMENU)IDM_CODE_SAMPLES,
         this->hInst,
         NULL);
@@ -223,6 +225,41 @@ void AppSettings::insertListViewItems(int cItems)
 void AppSettings::initListView()
 {
     
+}
+
+void AppSettings::createGroupBox()
+{
+    HWND hwndGroupBox = CreateWindowEx(
+        0,
+        L"BUTTON",      // Button text 
+        L"Font",
+        WS_CHILD | WS_VISIBLE | BS_GROUPBOX,  // Styles
+        10,         // x position 
+        10,         // y position 
+        300,        // Button width
+        300,        // Button height
+        this->hWndSettings,     // Parent window
+        NULL,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(this->hWndSettings, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    SendMessage(hwndGroupBox, WM_SETFONT, (WPARAM)this->getFont(12) , TRUE);
+
+    this->hWndGroupBox = hwndGroupBox;
+
+    /*HWND hGr = CreateWindow(L"BUTTON", L"My GRoup Box",
+        WS_CHILD | WS_VISIBLE | BS_GROUPBOX,
+        10, 10, 200, 200, this->hWndSettings, (HMENU)-1, this->hInst, NULL);*/
+
+}
+
+HFONT AppSettings::getFont(size_t size)
+{
+    HFONT hFont = CreateFont(int(size), 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
+        OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+        DEFAULT_PITCH | FF_DONTCARE, TEXT("Tahoma"));
+
+    return hFont;
 }
 
 
@@ -284,18 +321,18 @@ void AppSettings::createWindow()
     WNDCLASSEX wcex = { };
 
     wcex.cbSize = sizeof(WNDCLASSEX);
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    //wcex.style = CS_HREDRAW | CS_VREDRAW;
     wcex.lpfnWndProc = this->WndProcSettings;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = this->hInst;
     wcex.lpszClassName = CLASS_NAME;
-    wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
+    //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
-    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    wcex.lpszMenuName = NULL;
-    wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
+    //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
+    //wcex.lpszMenuName = NULL;
+    //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
     RegisterClassEx(&wcex);
 

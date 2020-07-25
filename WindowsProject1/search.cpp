@@ -155,7 +155,7 @@ void Search::initEditControl()
     HWND hwndEdit = CreateWindowEx(
         0, L"EDIT",   // predefined class 
         NULL,         // no window title 
-        WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT,
+        WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL | ES_LEFT,
         2, 2, 200, 24,   // set size in WM_SIZE message 
         this->hWndSearch,         // parent window 
         NULL,   // edit control ID 
@@ -241,13 +241,13 @@ void Search::handleSearchText()
     {
         SendMessage(this->hwndRichEditParent, EM_EXSETSEL, 0, (LPARAM)&ftex.chrgText);
 
-        //SendMessage(this->hwndRichEditParent, EM_HIDESELECTION, (LPARAM)FALSE, 0);
+        SendMessage(this->hwndRichEditParent, EM_HIDESELECTION, (LPARAM)FALSE, 0);
         
-        SetFocus(this->hWndParent);
+        //SetFocus(this->hWndParent);
     }
     else {
         MessageBox(
-            this->hWndParent,
+            this->hWndSearch,
             (LPCWSTR)L"Not found.",
             (LPCWSTR)L"Search Result",
             MB_OK

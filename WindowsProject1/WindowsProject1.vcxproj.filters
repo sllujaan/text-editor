@@ -48,6 +48,9 @@
     <ClInclude Include="search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="windwManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DesktopApp.cpp">
@@ -57,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="search.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="windwManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

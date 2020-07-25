@@ -162,11 +162,13 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WindowsProject1.h" />
     <ClInclude Include="windowStuff.h" />
+    <ClInclude Include="windwManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppSettings.cpp" />
     <ClCompile Include="DesktopApp.cpp" />
     <ClCompile Include="search.cpp" />
+    <ClCompile Include="windwManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WindowsProject1.rc" />

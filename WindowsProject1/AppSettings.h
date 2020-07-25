@@ -15,6 +15,7 @@ protected:
 	HWND hWndSettings;
 	HWND hWndParent;
 	HWND hwndListView;
+	HWND hWndGroupBox;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 
@@ -35,6 +36,8 @@ private:
 	void createListView();
 	void insertListViewItems(int cItems);
 	void initListView();
+	void createGroupBox();
+	HFONT getFont(size_t size);
 
 
 protected:
