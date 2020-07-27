@@ -686,6 +686,18 @@ void handleRichEditControl(HWND hWnd) {
     //formating editrich control..
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
 
+    //formating using CHARFORMAT structure
+    /*CHARFORMATA chf;
+    chf.cbSize = sizeof(CHARFORMAT);
+    chf.dwMask = CFM_EFFECTS;
+    chf.dwEffects = CFE_ITALIC;
+    chf.yHeight = 500;
+    chf.yOffset = 50;
+    chf.crTextColor = RGB(66, 135, 245);
+
+    SendMessage(hwndEdit, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&chf);*/
+
+
 
     lpfnMainWndProc = (WNDPROC)SetWindowLongPtr(hwndEdit,
         GWLP_WNDPROC, (LONG_PTR)SubClassProc);

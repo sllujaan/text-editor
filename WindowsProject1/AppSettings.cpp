@@ -11,6 +11,10 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->createWindow();
     this->createGroupBox();
     this->createListView();
+
+    this->createGroupBoxSample();
+    this->initSampleText();
+    this->insertListViewItems(5);
     
     
 }
@@ -201,25 +205,12 @@ void AppSettings::insertListViewItems(int cItems)
     lvI.stateMask = 0;
     lvI.iSubItem = 0;
     lvI.state = 0;
+    lvI.pszText = (wchar_t*)"Text";
 
-    // Initialize LVITEM members that are different for each item.
-    for (int index = 0; index < cItems; index++)
-    {
-        lvI.iItem = index;
-        lvI.iImage = index;
+    SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
+    SendMessage(this->hwndListView, LVM_SETITEM, 0, (LPARAM)&lvI); // Enter text to SubItems
 
-        // Insert items into the list.
-        if (ListView_InsertItem(this->hwndListView, &lvI) == -1) {
-            //failed to insert itmes
-            MessageBox(
-                NULL,
-                (LPCWSTR)L"Failed to insert items.",
-                (LPCWSTR)L"List View",
-                MB_OK
-            );
-        }
-            
-    }
+
 }
 
 void AppSettings::initListView()
@@ -229,21 +220,7 @@ void AppSettings::initListView()
 
 void AppSettings::createGroupBox()
 {
-    HWND hwndGroupBox = CreateWindowEx(
-        0,
-        L"BUTTON",      // Button text 
-        L"Font",
-        WS_CHILD | WS_VISIBLE | BS_GROUPBOX,  // Styles
-        10,         // x position 
-        10,         // y position 
-        300,        // Button width
-        300,        // Button height
-        this->hWndSettings,     // Parent window
-        NULL,       // No menu.
-        (HINSTANCE)GetWindowLongPtr(this->hWndSettings, GWLP_HINSTANCE),
-        NULL);      // Pointer not needed.
-
-    SendMessage(hwndGroupBox, WM_SETFONT, (WPARAM)this->getFont(12) , TRUE);
+    HWND hwndGroupBox = this->getGroupBox(L"Font", 10, 10, 300, 300);
 
     this->hWndGroupBox = hwndGroupBox;
 
@@ -251,6 +228,66 @@ void AppSettings::createGroupBox()
         WS_CHILD | WS_VISIBLE | BS_GROUPBOX,
         10, 10, 200, 200, this->hWndSettings, (HMENU)-1, this->hInst, NULL);*/
 
+}
+
+void AppSettings::createGroupBoxSample()
+{
+    HWND hwndGroupBox = this->getGroupBox(L"Sample", 10, 320, 300, 100);
+
+    this->hWndGroupBoxSample = hwndGroupBox;
+}
+
+void AppSettings::initListViewSample()
+{
+
+}
+
+void AppSettings::initSampleText()
+{
+
+    RECT rcClient;                       // The parent window's client area.
+
+    GetClientRect(this->hWndGroupBoxSample, &rcClient);
+
+
+    HWND hwndStatic = CreateWindowEx(
+        0,
+        L"static",      // Button text 
+        L"AaBbYyZz",
+        WS_CHILD | WS_VISIBLE | SS_CENTER | SS_CENTERIMAGE,  // Styles
+        10,         // x position 
+        20,         // y position
+        (rcClient.right - rcClient.left) - 20,  // window width
+        (rcClient.bottom - rcClient.top) - 30,  // window height
+        this->hWndGroupBoxSample,     // Parent window
+        NULL,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(this->hWndGroupBoxSample, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+
+
+    SendMessage(hwndStatic, WM_SETFONT, (WPARAM)this->getFont(14), TRUE);
+}
+
+HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int height)
+{
+    HWND hwndGroupBox = CreateWindowEx(
+        0,
+        L"BUTTON",      // Button text 
+        name,
+        WS_CHILD | WS_VISIBLE | BS_GROUPBOX,  // Styles
+        posX,         // x position 
+        posY,         // y position 
+        width,        // Button width
+        height,        // Button height
+        this->hWndSettings,     // Parent window
+        NULL,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(this->hWndSettings, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    SendMessage(hwndGroupBox, WM_SETFONT, (WPARAM)this->getFont(14), TRUE);
+
+    return hwndGroupBox;
 }
 
 HFONT AppSettings::getFont(size_t size)
