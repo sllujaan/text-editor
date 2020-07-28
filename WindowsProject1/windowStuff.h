@@ -193,7 +193,7 @@ void generateNewTextWindow(HWND hWnd) {
 }
 
 
-void handleSaveTextPath(HWND hWnd, LPCWSTR path) {
+void handleSaveTextPath(HWND hWnd, LPCWSTR path, int tokenSaveText = NULL) {
 
     //get edit window length--
     const int size = GetWindowTextLength(hwndEdit);
@@ -205,7 +205,7 @@ void handleSaveTextPath(HWND hWnd, LPCWSTR path) {
     File file;
     int FILE_ID = file.writeFile_LPCWSTR(text, (LPWSTR)path, TRUE);
 
-    generateNewTextWindow(hWnd);
+    if(!tokenSaveText) generateNewTextWindow(hWnd);
     handleDisableManues(hwndMain);
 
     //storing file name globally---
@@ -424,7 +424,7 @@ INT hanleSaveAsText(HWND hWnd) {
 INT handleSaveFileA(HWND hWnd, INT tokenNewText = NULL, INT tokenSaveText = NULL) {
     if (OPENED_FILE_PATH.length() > 0) {
         wstring path = OPENED_FILE_PATH;
-        handleSaveTextPath(hWnd, (LPCWSTR)path.c_str());
+        handleSaveTextPath(hWnd, (LPCWSTR)path.c_str(), TRUE);
         if(!tokenNewText) handleReadFile_LPCWSTR(hWnd, (LPCWSTR)path.c_str());
         return 0;
     }
