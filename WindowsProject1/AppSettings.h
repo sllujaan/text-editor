@@ -42,6 +42,7 @@ private:
 	void createGroupBoxSample();
 	void initListViewSample();
 	void initSampleText();
+	void createTooltilp();
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 

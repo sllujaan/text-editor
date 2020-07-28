@@ -15,6 +15,7 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->createGroupBoxSample();
     this->initSampleText();
     this->insertListViewItems(5);
+    this->createTooltilp();
     
     
 }
@@ -272,6 +273,23 @@ void AppSettings::initSampleText()
 
 
     SendMessage(hwndStatic, WM_SETFONT, (WPARAM)this->getFont(14), TRUE);
+}
+
+void AppSettings::createTooltilp()
+{
+    HWND hwndTT = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL,
+        WS_POPUP | WS_VISIBLE | TTS_NOPREFIX | TTS_ALWAYSTIP, 0, 0, 0, 0, this->hwndListView, NULL, 0, NULL);
+
+    TTTOOLINFO ti = { 0 };
+    ti.cbSize = sizeof(TTTOOLINFO);
+    ti.uFlags = TTF_SUBCLASS;
+    ti.hwnd = this->hwndListView;
+    ti.lpszText = (wchar_t*)L"Tooltip string";
+    GetClientRect(this->hwndListView, &ti.rect);
+
+    if (!SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM)&ti))
+        MessageBox(0, TEXT("Failed: TTM_ADDTOOL"), 0, 0);
+
 }
 
 HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int height)
