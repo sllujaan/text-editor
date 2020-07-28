@@ -15,7 +15,10 @@ Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow, HWND richEdit)
 
 Search::~Search()
 {
-
+    MessageBox(NULL,
+        TEXT("~Search"),
+        TEXT("~Search"),
+        NULL);
 }
 
 LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

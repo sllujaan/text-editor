@@ -321,7 +321,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_SAVE_MENU:
             //hanleSaveText(hWnd);
             //handleSaveTextPathKeepOpen(hWnd, (LPCWSTR)OPENED_FILE_PATH.c_str());
-            handleSaveFileA(hWnd);
+            handleSaveFile(hWnd);
             break;
         case ID_SAVEAS_MENU:
             hanleSaveAsTextKeepOpen(hWnd, ID_SAVEAS_MENU);
@@ -343,6 +343,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_CHANGE_FONT_MENU:
             SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE); 
+            break;
+        case ID_DIALOG_BOX:
+            handleDialolgBox(hWnd);
             break;
             
         default:

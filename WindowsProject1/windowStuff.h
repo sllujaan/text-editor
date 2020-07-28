@@ -32,8 +32,22 @@
 #define IDI_UNDO 0xa448
 #define IDI_REDO 0x90c0
 #define IDI_VIEW_HELP 0x077f
+#define ID_DIALOG_BOX 0x584b
 
 
+
+
+//3812
+//2e97
+//5c0e
+//8a9d
+//6274
+//4c7f
+//6737
+//07c1
+//10f7
+//10d9
+//0cc1
 
 #define CUSTOM_SELCHANGE 0xabc
 #define IDI_CLOSE_TEXT_SAVED 0x444
@@ -407,7 +421,7 @@ INT hanleSaveAsText(HWND hWnd) {
 
 
 
-INT handleSaveFileA(HWND hWnd, INT tokenNewText = NULL) {
+INT handleSaveFileA(HWND hWnd, INT tokenNewText = NULL, INT tokenSaveText = NULL) {
     if (OPENED_FILE_PATH.length() > 0) {
         wstring path = OPENED_FILE_PATH;
         handleSaveTextPath(hWnd, (LPCWSTR)path.c_str());
@@ -416,10 +430,15 @@ INT handleSaveFileA(HWND hWnd, INT tokenNewText = NULL) {
     }
     else {
         INT ID_SAVEAS = hanleSaveAsTextKeepOpen(hWnd);
-        if(ID_SAVEAS == IDI_CLOSE_TEXT_SAVED ) generateNewTextWindow(hWnd);
+        if(ID_SAVEAS == IDI_CLOSE_TEXT_SAVED && !tokenSaveText) generateNewTextWindow(hWnd);
         return ID_SAVEAS;
     }
 }
+
+void handleSaveFile(HWND hWnd) {
+    handleSaveFileA(hWnd, NULL, TRUE);
+}
+
 
 
 
@@ -972,6 +991,7 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     //help menu--
     AppendMenu(hHelpMenu, MF_POPUP, IDI_VIEW_HELP, (LPCWSTR)L"View Help");
     AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About TextEditor");
+    AppendMenu(hHelpMenu, MF_POPUP, ID_DIALOG_BOX, (LPCWSTR)L"Dialolg");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
@@ -1075,6 +1095,41 @@ INT onExit(HWND hWnd) {
     if (msgboxID_CLOSE == 0 || msgboxID_CLOSE == IDNO || msgboxID_CLOSE == IDI_CLOSE_TEXT_SAVED) { DestroyWindow(hWnd); return 1; }
     else return 0;
 }
+
+
+INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg) /* more compact, each "case" through a single line, easier on the eyes */
+    {
+    case WM_CREATE:
+        OutputDebugStringW((LPCWSTR)L"Dailolg box created Successfully...\r\n");
+        break;
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDCANCEL:  return TRUE; /* call subroutine */
+        }
+        break;
+
+    case WM_CLOSE:   return TRUE; /* call subroutine */
+    case WM_DESTROY: PostQuitMessage(0); return TRUE;
+    }
+
+    return FALSE;
+}
+
+void handleDialolgBox(HWND hWnd) {
+    DialogBox(
+        hInst,
+        L"dialog Box",
+        hWnd,
+        (DLGPROC)DialogProc
+    );
+}
+
+
+
+
 
 
 
@@ -1230,18 +1285,7 @@ c52a
 f428
 316e
 ebf2
-584b
-3812
-2e97
-5c0e
-8a9d
-6274
-4c7f
-6737
-07c1
-10f7
-10d9
-0cc1
+
 4dd4
 e245
 5ead

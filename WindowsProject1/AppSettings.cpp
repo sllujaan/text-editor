@@ -190,6 +190,8 @@ void AppSettings::createListView()
         this->hInst,
         NULL);
 
+    
+
     this->hwndListView = hWndListView;
     //this->insertListViewItems(10);
 
@@ -207,6 +209,9 @@ void AppSettings::insertListViewItems(int cItems)
     lvI.state = 0;
     lvI.pszText = (wchar_t*)"Text";
 
+    SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
+    SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
+    SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
     SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
     SendMessage(this->hwndListView, LVM_SETITEM, 0, (LPARAM)&lvI); // Enter text to SubItems
 
