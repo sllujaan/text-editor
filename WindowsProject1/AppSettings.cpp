@@ -203,18 +203,21 @@ void AppSettings::insertListViewItems(int cItems)
     LVITEM lvI;
 
     // Initialize LVITEM members that are common to all items.
-    lvI.pszText = LPSTR_TEXTCALLBACK; // Sends an LVN_GETDISPINFO message.
-    lvI.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_STATE;
+    //lvI.pszText = LPSTR_TEXTCALLBACK; // Sends an LVN_GETDISPINFO message.
+    lvI.mask = LVIF_TEXT;
     lvI.stateMask = 0;
     lvI.iSubItem = 0;
     lvI.state = 0;
-    lvI.pszText = (wchar_t*)"Text";
+    lvI.pszText = (wchar_t*)L"Text";
 
-    SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
-    SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
-    SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
-    SendMessage(this->hwndListView, LVM_INSERTITEM, 0, (LPARAM)&lvI);
-    SendMessage(this->hwndListView, LVM_SETITEM, 0, (LPARAM)&lvI); // Enter text to SubItems
+    
+    ListView_InsertItem(this->hwndListView, &lvI);
+
+
+
+
+    //MessageBox(0, TEXT("inserting itmes list view "), 0, 0);
+
 
 
 }
@@ -298,7 +301,7 @@ HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int h
         0,
         L"BUTTON",      // Button text 
         name,
-        WS_CHILD | WS_VISIBLE | BS_GROUPBOX,  // Styles
+        WS_CHILD | WS_VISIBLE | BS_GROUPBOX | BS_CENTER,  // Styles
         posX,         // x position 
         posY,         // y position 
         width,        // Button width
