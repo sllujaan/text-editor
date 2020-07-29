@@ -207,7 +207,7 @@ void AppSettings::insertListViewItems(int cItems)
     lvI.mask = LVIF_TEXT;
     lvI.stateMask = 0;
     lvI.iSubItem = 0;
-    lvI.state = 0;
+    lvI.state = 3;
     lvI.iItem = 0;
 
     ListView_InsertItem(this->hwndListView, &lvI);
