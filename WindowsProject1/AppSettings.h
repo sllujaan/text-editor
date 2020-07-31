@@ -43,6 +43,7 @@ private:
 	void initListViewSample();
 	void initSampleText();
 	void createTooltilp();
+	void HandleWM_NOTIFY(LPARAM lParam);
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 

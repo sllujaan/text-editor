@@ -30,10 +30,22 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
     PAINTSTRUCT ps;
     HDC hdc;
+    NMLVDISPINFO* plvdi;
+
+
+
+    
+    OutputDebugStringW((LPCWSTR)L"setings procedure---------------------------------------\r\n");
+
+    
 
 
     switch (message)
     {
+    case WM_NOTIFY:
+        this->HandleWM_NOTIFY(lParam);
+        break;
+
     case WM_CREATE:
         this->centerWindow(hwnd);
 
@@ -43,7 +55,7 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         break;
 
     case WM_COMMAND:
-
+        OutputDebugStringW((LPCWSTR)L"*********COMMAND*************__\r\n");
         switch (LOWORD(wParam))
         {
         case IDM_CODE_SAMPLES:
@@ -75,6 +87,7 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         //PostQuitMessage(0);
         break;
     default:
+        OutputDebugStringW((LPCWSTR)L"=================default===============\r\n");
         return DefWindowProc(hwnd, message, wParam, lParam);
         break;
     }
@@ -182,11 +195,11 @@ void AppSettings::createListView()
     // Create the list-view window in report view with label editing enabled.
     HWND hWndListView = CreateWindow(WC_LISTVIEW,
         L"List view",
-        WS_CHILD | WS_VISIBLE | LVS_LIST | WS_BORDER ,
+        WS_CHILD | WS_VISIBLE | LVS_LIST | WS_BORDER | LVS_SINGLESEL,
         10, 20,
         (rcClient.right - rcClient.left) - 20,
         (rcClient.bottom - rcClient.top) - 30,
-        this->hWndGroupBox,
+        this->hWndSettings,
         (HMENU)IDM_CODE_SAMPLES,
         this->hInst,
         NULL);
@@ -295,6 +308,21 @@ void AppSettings::createTooltilp()
 
     if (!SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM)&ti))
         MessageBox(0, TEXT("Failed: TTM_ADDTOOL"), 0, 0);
+
+}
+
+void AppSettings::HandleWM_NOTIFY(LPARAM lParam)
+{
+
+    switch (((LPNMHDR)lParam)->code)
+    {
+    case NM_CLICK:
+        OutputDebugStringW((LPCWSTR)L"------++++++++LVN_BEGINDRAG-------------------\r\n");
+        break;
+    default:
+        break;
+    }
+
 
 }
 

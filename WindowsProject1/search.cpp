@@ -11,6 +11,8 @@ Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow, HWND richEdit)
     this->createWindow();
     this->initEditControl();
     this->initSearchButton();
+
+
 }
 
 Search::~Search()
@@ -81,8 +83,10 @@ LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
 
-
+    //  Call the original window procedure for default processing. 
+    //return CallWindowProc(this->lpfnMainWndProc, hwnd, message, wParam, lParam);
     return 0;
+    //return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
 LRESULT Search::WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

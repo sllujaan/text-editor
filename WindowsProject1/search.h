@@ -16,6 +16,8 @@ private:
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 
+	WNDPROC lpfnMainWndProc;
+
 public:
 	//public stuff
 	Search(HWND hWnd, HINSTANCE hInst, int nCmdShowGlobal, HWND richEdit);
