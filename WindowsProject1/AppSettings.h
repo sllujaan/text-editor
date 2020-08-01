@@ -1,6 +1,7 @@
 #pragma once
 #include<Windows.h>
 #include<CommCtrl.h>
+#include <string>
 
 #define IDM_CODE_SAMPLES 0x3e0f
 
@@ -20,6 +21,8 @@ protected:
 	HWND hWndGroupBoxSampleText;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
+
+	WNDPROC lpfnSettingWndProc;
 
 
 
@@ -44,6 +47,8 @@ private:
 	void initSampleText();
 	void createTooltilp();
 	void HandleWM_NOTIFY(LPARAM lParam);
+	int getFontSizeFromIndex(int index);
+	void handleFocuses();
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 
@@ -56,5 +61,6 @@ protected:
 
 	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+	LRESULT SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 	
 };

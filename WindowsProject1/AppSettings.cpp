@@ -16,6 +16,9 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->initSampleText();
     this->insertListViewItems(5);
     this->createTooltilp();
+
+    this->handleFocuses();
+
     
     
 }
@@ -132,6 +135,12 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
     return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
+LRESULT AppSettings::SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+{
+    OutputDebugStringW((LPCWSTR)L"00000000000000LIST_VIEW1111111111111111\r\n");
+    return LRESULT();
+}
+
 void AppSettings::centerWindow(HWND hwnd)
 {
     RECT rectWindow;
@@ -199,7 +208,7 @@ void AppSettings::createListView()
         10, 20,
         (rcClient.right - rcClient.left) - 20,
         (rcClient.bottom - rcClient.top) - 30,
-        this->hWndSettings,
+        this->hWndGroupBox,
         (HMENU)IDM_CODE_SAMPLES,
         this->hInst,
         NULL);
@@ -209,6 +218,9 @@ void AppSettings::createListView()
     this->hwndListView = hWndListView;
     //this->insertListViewItems(10);
 
+    /*lpfnSettingWndProc = (WNDPROC)SetWindowLongPtr(this->hwndListView,
+        GWLP_WNDPROC, (LONG_PTR)this->SubClassListViewProc);*/
+
 }
 
 void AppSettings::insertListViewItems(int cItems)
@@ -216,7 +228,7 @@ void AppSettings::insertListViewItems(int cItems)
     LVITEM lvI;
 
     // Initialize LVITEM members that are common to all items.
-    lvI.pszText = (wchar_t*)L"item 1"; // Sends an LVN_GETDISPINFO message.
+    lvI.pszText = (wchar_t*)L"8"; // Sends an LVN_GETDISPINFO message.
     lvI.mask = LVIF_TEXT;
     lvI.stateMask = 0;
     lvI.iSubItem = 0;
@@ -226,9 +238,10 @@ void AppSettings::insertListViewItems(int cItems)
     ListView_InsertItem(this->hwndListView, &lvI);
 
 
-    for (int i = 1; i < 50; i++) {
+    for (int i = 9; i <= 72; i++) {
         lvI.iItem = i;
-        lvI.pszText = (wchar_t*)L"item indexed";
+        std::wstring str = std::to_wstring(i);
+        lvI.pszText = (wchar_t*)str.c_str();
         ListView_InsertItem(this->hwndListView, &lvI);
     }
     
@@ -292,6 +305,9 @@ void AppSettings::initSampleText()
 
 
     SendMessage(hwndStatic, WM_SETFONT, (WPARAM)this->getFont(14), TRUE);
+
+    this->hWndGroupBoxSampleText = hwndStatic;
+   
 }
 
 void AppSettings::createTooltilp()
@@ -313,17 +329,61 @@ void AppSettings::createTooltilp()
 
 void AppSettings::HandleWM_NOTIFY(LPARAM lParam)
 {
+    LPNMITEMACTIVATE lpnmitem;
+    std::wstring str;
+    int fontSize;
 
-    switch (((LPNMHDR)lParam)->code)
-    {
-    case NM_CLICK:
-        OutputDebugStringW((LPCWSTR)L"------++++++++LVN_BEGINDRAG-------------------\r\n");
-        break;
-    default:
-        break;
-    }
+    int index = ListView_GetSelectionMark(this->hwndListView);
+    if (index == -1) return;
+
+    fontSize = index + 8;
+
+    SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(fontSize), TRUE);
+
+    return;
+    //below code is just for reference pupose
+
+    //switch (((LPNMHDR)lParam)->code)
+    //{
+    //case NM_CLICK:
+    //    lpnmitem = (LPNMITEMACTIVATE)lParam;
+    //    lpnmitem->iItem;
+
+    //    //fontSize = this->getFontSizeFromIndex(lpnmitem->iItem+8);
+
+    //    //SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(fontSize), TRUE);
+
+    //    ///*if (lpnmitem->iItem == FONT_SIZE_8) {
+    //    //    SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(18), TRUE);
+    //    //    OutputDebugStringW((LPCWSTR)L"FONT_SIZE_8\r\n");
+    //    //}*/
+
+    //    //str = L"" + std::to_wstring(lpnmitem->iItem);
+
+    //    //OutputDebugStringW( (LPCWSTR)str.c_str() );
+    //    //
+    //    //OutputDebugStringW((LPCWSTR)L"------++++++++LVN_BEGINDRAG-------------------\r\n");
+    //    break;
+    //default:
+    //    break;
+    //}
 
 
+}
+
+int AppSettings::getFontSizeFromIndex(int index)
+{
+    if (index % 2 == 0) return ++index;
+    else return index;
+}
+
+void AppSettings::handleFocuses()
+{
+
+    //SendMessage(this->hwndListView, LVM_EDITLABEL, 0, 0);
+    ListView_EditLabel(this->hwndListView, 0);
+    //SetFocus(this->hwndListView);
+    //ListView_SetSelectionMark(this->hwndListView, (72-8));
 }
 
 HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int height)
