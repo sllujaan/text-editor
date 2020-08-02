@@ -34,7 +34,7 @@
 #define IDI_VIEW_HELP 0x077f
 #define ID_DIALOG_BOX 0x584b
 
-#define MAX_PATH 100
+#define MAX_PATH 200
 
 
 //3812
