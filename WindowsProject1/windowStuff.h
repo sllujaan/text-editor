@@ -34,7 +34,7 @@
 #define IDI_VIEW_HELP 0x077f
 #define ID_DIALOG_BOX 0x584b
 
-
+#define MAX_PATH 100
 
 
 //3812
@@ -1128,6 +1128,53 @@ void handleDialolgBox(HWND hWnd) {
 }
 
 
+
+void onDropFiles(HDROP hdrop) {
+    UINT  uNumFiles;
+    TCHAR szNextFile[MAX_PATH];
+
+    // Get the # of files being dropped.
+    uNumFiles = DragQueryFile(hdrop, -1, NULL, 0);
+
+    for (UINT uFile = 0; uFile < uNumFiles; uFile++)
+    {
+        // Get the next filename from the HDROP info.
+        if (DragQueryFile(hdrop, uFile, szNextFile, MAX_PATH) > 0)
+        {
+            // ***
+            // Do whatever you want with the filename in szNextFile.
+            // ***
+            OutputDebugStringW((LPCWSTR)L"{{{{{{{{{{{{{{{{{{{{{\r\n");
+            OutputDebugStringW((LPCWSTR)szNextFile);
+            OutputDebugStringW((LPCWSTR)L"}}}}}}}}}}}}}}}}}}}}}\r\n");
+        }
+    }
+
+    // Free up memory.
+    DragFinish(hdrop);
+
+}
+
+void onDropFileSingle(HDROP hdrop) {
+    UINT  uNumFiles;
+    TCHAR szNextFile[MAX_PATH];
+
+    // Get the # of files being dropped.
+    uNumFiles = DragQueryFile(hdrop, -1, NULL, 0);
+
+    if (DragQueryFile(hdrop, 0, szNextFile, MAX_PATH) > 0) {
+        // ***
+            // Do whatever you want with the filename in szNextFile.
+            // ***
+        OutputDebugStringW((LPCWSTR)L"{{{{{{{{{{{{{{{{{{{{{\r\n");
+        OutputDebugStringW((LPCWSTR)szNextFile);
+        OutputDebugStringW((LPCWSTR)L"}}}}}}}}}}}}}}}}}}}}}\r\n");
+    }
+
+    // Free up memory.
+    DragFinish(hdrop);
+
+}
 
 
 

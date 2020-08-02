@@ -216,15 +216,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
 
         case EN_DROPFILES:
+
             penDropFiles = (ENDROPFILES*)lParam;
-            LPSTR file[200];
-            memset(file, 0, 200);
+            onDropFileSingle((HDROP)penDropFiles->hDrop);
+            //onDropFiles((HDROP)penDropFiles->hDrop);
 
-            DragQueryFileA((HDROP)penDropFiles->hDrop, 0, (LPSTR)file,  sizeof(file));
+            ////int uNumFiles = DragQueryFile(hdrop, -1, NULL, 0);
 
-            OutputDebugStringW((LPCWSTR)file );
 
-            OutputDebugStringW((LPCWSTR)L"EN_DROPFILES called{__________\r\n");
+            //LPCWSTR file[200];
+            ////memset(file, 0, 200);
+
+            //DragQueryFileA((HDROP)penDropFiles->hDrop, 0, (LPSTR)file,  200);
+
+            //OutputDebugStringW((LPCWSTR)file );
+
+            //// Free up memory.
+            //DragFinish((HDROP)penDropFiles->hDrop);
+
+            //OutputDebugStringW((LPCWSTR)L"EN_DROPFILES called{__________\r\n");
             break;
 
         case EN_VSCROLL:
