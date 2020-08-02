@@ -22,7 +22,7 @@ protected:
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 
-	WNDPROC lpfnSettingWndProc;
+	static WNDPROC lpfnSettingWndProc;
 
 
 
@@ -61,6 +61,6 @@ protected:
 
 	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	LRESULT SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 	
 };

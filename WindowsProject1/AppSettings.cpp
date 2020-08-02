@@ -33,7 +33,7 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
     PAINTSTRUCT ps;
     HDC hdc;
-    NMLVDISPINFO* plvdi;
+    //NMLVDISPINFO* plvdi;
 
 
 
@@ -78,8 +78,9 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
     case WM_CLOSE:
         //Enable parent window
         EnableWindow(this->hWndParent, TRUE);
-
+        SetFocus(this->hWndParent);
         DestroyWindow(hwnd);
+        
         return 1;
         break;
 
@@ -137,8 +138,12 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
 
 LRESULT AppSettings::SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
+    
     OutputDebugStringW((LPCWSTR)L"00000000000000LIST_VIEW1111111111111111\r\n");
-    return LRESULT();
+    
+    return 0;
+    //Call the original window procedure for default processing. 
+    //return CallWindowProc( , hwnd, Message, wParam, lParam);
 }
 
 void AppSettings::centerWindow(HWND hwnd)
@@ -208,7 +213,7 @@ void AppSettings::createListView()
         10, 20,
         (rcClient.right - rcClient.left) - 20,
         (rcClient.bottom - rcClient.top) - 30,
-        this->hWndGroupBox,
+        this->hWndSettings,
         (HMENU)IDM_CODE_SAMPLES,
         this->hInst,
         NULL);
@@ -329,8 +334,8 @@ void AppSettings::createTooltilp()
 
 void AppSettings::HandleWM_NOTIFY(LPARAM lParam)
 {
-    LPNMITEMACTIVATE lpnmitem;
-    std::wstring str;
+    /*LPNMITEMACTIVATE lpnmitem;
+    std::wstring str;*/
     int fontSize;
 
     int index = ListView_GetSelectionMark(this->hwndListView);
