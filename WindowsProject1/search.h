@@ -26,7 +26,7 @@ public:
 
 private:
 	void createWindow();
-	static void centerWindow(HWND hwnd);
+	void centerWindow(HWND hwnd);
 	void initEditControl();
 	void initSearchButton();
 	HFONT getFont(size_t size);

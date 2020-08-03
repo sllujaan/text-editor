@@ -22,9 +22,7 @@ protected:
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 
-	static WNDPROC lpfnSettingWndProc;
-
-
+	WNDPROC oldProc;
 
 public:
 	//public stuff
