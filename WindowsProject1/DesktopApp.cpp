@@ -218,7 +218,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case EN_DROPFILES:
 
             penDropFiles = (ENDROPFILES*)lParam;
-            onDropFileSingle((HDROP)penDropFiles->hDrop);
+            onDropFileSingle(hWnd, (HDROP)penDropFiles->hDrop);
             //onDropFiles((HDROP)penDropFiles->hDrop);
 
             ////int uNumFiles = DragQueryFile(hdrop, -1, NULL, 0);

@@ -34,8 +34,6 @@
 #define IDI_VIEW_HELP 0x077f
 #define ID_DIALOG_BOX 0x584b
 
-#define MAX_PATH 200
-
 
 //3812
 //2e97
@@ -1155,7 +1153,36 @@ void onDropFiles(HDROP hdrop) {
 
 }
 
-void onDropFileSingle(HDROP hdrop) {
+//opens a file on drag drop
+void handleDragOpenFile(HWND hWnd, LPCWSTR path) {
+    INT msgBoxID = 0;
+
+    msgBoxID = handleNewWindowA(hWnd, TRUE);
+    if (msgBoxID == IDCANCEL || msgBoxID == IDI_CLOSE_TEXT_SAVE_CANCEL) {
+        return;
+    }
+
+    TOKEN_OPEN_SAVEAS = TRUE;
+
+    handleReadFile_LPCWSTR(hWnd, (LPCWSTR)path);
+    //handleReadFile(hWnd, (char*)ofn.lpstrFile);
+
+    //find file name from path---
+    LPCSTR fileName = PathFindFileNameA((LPCSTR)path);
+    OutputDebugStringW((LPCWSTR)L"<<<<<<<<\r\n");
+    OutputDebugStringW((LPCWSTR)fileName);
+    OutputDebugStringW((LPCWSTR)L">>>>>>>>>>>>\r\n");
+
+    //storing file name globally---
+    OPENED_FILE_NAME = (LPCWSTR)path;
+    OPENED_FILE_PATH = (LPCWSTR)path;
+    titleUntitled = FALSE;
+
+    return;
+}
+
+
+void onDropFileSingle(HWND hWnd, HDROP hdrop) {
     UINT  uNumFiles;
     TCHAR szNextFile[MAX_PATH];
 
@@ -1169,6 +1196,10 @@ void onDropFileSingle(HDROP hdrop) {
         OutputDebugStringW((LPCWSTR)L"{{{{{{{{{{{{{{{{{{{{{\r\n");
         OutputDebugStringW((LPCWSTR)szNextFile);
         OutputDebugStringW((LPCWSTR)L"}}}}}}}}}}}}}}}}}}}}}\r\n");
+
+        handleDragOpenFile(hWnd, szNextFile);
+
+
     }
 
     // Free up memory.
