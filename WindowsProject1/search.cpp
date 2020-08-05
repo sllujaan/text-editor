@@ -268,7 +268,7 @@ void Search::handleSearchText()
 void Search::createWindow()
 {
     // Register the window class.
-    const wchar_t CLASS_NAME[] = L"Sample Window Class";
+    const wchar_t CLASS_NAME[] = L"Search Window";
 
     WNDCLASSEX wcex = { };
 
@@ -285,7 +285,16 @@ void Search::createWindow()
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
-    RegisterClassEx(&wcex);
+    //RegisterClassEx(&wcex);
+
+    if (!RegisterClassEx(&wcex))
+    {
+        MessageBox(NULL,
+            TEXT("Call to RegisterClassEx failed!"),
+            TEXT("Windows Desktop Guided Tour"),
+            NULL);
+    }
+
 
     HWND hwnd = CreateWindowEx(
         0,                              // Optional window styles.

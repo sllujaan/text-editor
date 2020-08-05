@@ -85,10 +85,9 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         break;
 
     case WM_DESTROY:
-
         DestroyWindow(hwnd);
-        
         //PostQuitMessage(0);
+
         break;
     default:
         OutputDebugStringW((LPCWSTR)L"=================default===============\r\n");
@@ -484,7 +483,7 @@ void AppSettings::createWindow()
 {
     
     // Register the window class.
-    const wchar_t CLASS_NAME[] = L"Sample Window Class";
+    const wchar_t CLASS_NAME[] = L"Settings Window";
 
     WNDCLASSEX wcex = { };
 
@@ -502,7 +501,15 @@ void AppSettings::createWindow()
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
-    RegisterClassEx(&wcex);
+    //RegisterClassEx(&wcex);
+    if (!RegisterClassEx(&wcex))
+    {
+        MessageBox(NULL,
+            TEXT("Call to RegisterClassEx failed!"),
+            TEXT("Windows Desktop Guided Tour"),
+            NULL);
+    }
+
 
     HWND hwnd = CreateWindowEx(
         0,                              // Optional window styles.
