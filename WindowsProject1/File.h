@@ -143,10 +143,6 @@ struct File {
 
 	string readFile_LPCWSTR_A(LPCWSTR fileName) {
 
-		//LPCWSTR is cosnt wchar_t*
-
-
-		//converting WCHAR* to CHAR*
 		_bstr_t b(fileName);
 		const char* fileNamePtr = b;
 

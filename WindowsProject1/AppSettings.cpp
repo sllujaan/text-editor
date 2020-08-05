@@ -135,12 +135,13 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
     return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
-LRESULT AppSettings::SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+LRESULT AppSettings::SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
 {
     
     OutputDebugStringW((LPCWSTR)L"00000000000000LIST_VIEW1111111111111111\r\n");
+
     
-    return 0;
+    return DefSubclassProc(hwnd, Message, wParam, lParam);
     //  Call the original window procedure for default processing. 
 
 
@@ -225,7 +226,7 @@ void AppSettings::createListView()
     
 
     this->hwndListView = hWndListView;
-    //this->insertListViewItems(10);
+
 
     /*this->oldProc = (WNDPROC)SetWindowLongPtr(this->hwndListView,
         GWLP_WNDPROC, (LONG_PTR)this->SubClassListViewProc);
@@ -233,6 +234,8 @@ void AppSettings::createListView()
     if (this->oldProc == 0) {
         OutputDebugStringW((LPCWSTR)L"SetWindowLongPtr Failed \r\n");
     }*/
+
+
     
 }
 

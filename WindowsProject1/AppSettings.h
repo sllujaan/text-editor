@@ -59,6 +59,6 @@ protected:
 
 	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	static LRESULT CALLBACK SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
 	
 };
