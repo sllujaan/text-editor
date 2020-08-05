@@ -424,7 +424,7 @@ HFONT AppSettings::getFont(size_t size)
 {
     HFONT hFont = CreateFont(int(size), 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
         OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-        DEFAULT_PITCH | FF_DONTCARE, TEXT("Tahoma"));
+        DEFAULT_PITCH | FF_DONTCARE, TEXT("Arial"));
 
     return hFont;
 }

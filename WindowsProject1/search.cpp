@@ -331,6 +331,7 @@ void Search::createWindow()
 
 
     this->hWndSearch = hwnd;
+
 }
 
 LRESULT WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
