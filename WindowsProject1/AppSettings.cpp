@@ -9,6 +9,22 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->nCmdShowGlobal = nCmdShow;
 }
 
+void AppSettings::initWindow()
+{
+    this->createWindow();
+    this->createGroupBox();
+    this->createListView();
+
+    this->createGroupBoxSample();
+    this->initSampleText();
+    this->insertListViewItems(5);
+    this->createTooltilp();
+
+    this->handleFocuses();
+    this->createListBox();
+    this->initListViewBox();
+}
+
 AppSettings::~AppSettings()
 {
 
@@ -45,21 +61,7 @@ void AppSettings::registerWindow()
     }
 }
 
-void AppSettings::initWindow()
-{
-    this->createWindow();
-    this->createGroupBox();
-    this->createListView();
 
-    this->createGroupBoxSample();
-    this->initSampleText();
-    this->insertListViewItems(5);
-    this->createTooltilp();
-
-    this->handleFocuses();
-    this->createListBox();
-    this->initListViewBox();
-}
 
 LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -290,6 +292,7 @@ void AppSettings::insertListViewItems(int cItems)
 
     for (int i = 9; i <= 72; i++) {
         lvI.iItem = i;
+        //converting int to wstring--
         std::wstring str = std::to_wstring(i);
         lvI.pszText = (wchar_t*)str.c_str();
         ListView_InsertItem(this->hwndListView, &lvI);
@@ -441,7 +444,7 @@ void AppSettings::createListBox()
     // Adding a ListBox.
     HWND hListBox = CreateWindowEx(WS_EX_CLIENTEDGE
         , L"LISTBOX", NULL
-        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL
+        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL
         , 450, 30, 100, 200
         , this->hWndSettings, NULL, this->hInst, NULL);
 
@@ -450,7 +453,16 @@ void AppSettings::createListBox()
 
 void AppSettings::initListViewBox()
 {
-    
+    int pos = 0;
+
+    for (int i = 8; i <= 72; i++) {
+        //converting int to wstring.
+        std::wstring str = std::to_wstring(i);
+        pos = (int)SendMessage(this->hWndListBox_FontSize, LB_ADDSTRING, 0,
+            (LPARAM)(wchar_t*)str.c_str());
+    }
+
+    SendMessage(this->hWndListBox_FontSize, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
 }
 
 HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int height)

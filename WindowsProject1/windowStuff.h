@@ -1117,12 +1117,23 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 void handleDialolgBox(HWND hWnd) {
-    DialogBox(
+    /*DialogBox(
         hInst,
         L"dialog Box",
         hWnd,
         (DLGPROC)DialogProc
-    );
+    );*/
+
+    // Adding a ListBox.
+    HWND comboBox = CreateWindowEx(NULL
+        , L"ComboBox", NULL
+        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL
+        , 30, 30, 100, 200
+        , hWnd, NULL, hInst, NULL);
+
+
+
+
 }
 
 

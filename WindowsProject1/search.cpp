@@ -7,8 +7,13 @@ Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow, HWND richEdit)
     this->hInst = hInstance;
     this->nCmdShowGlobal = nCmdShow;
     this->hwndRichEditParent = richEdit;
+}
 
-
+void Search::initWindow()
+{
+    this->createWindow();
+    this->initEditControl();
+    this->initSearchButton();
 }
 
 Search::~Search()
@@ -48,12 +53,6 @@ void Search::registerWindow()
 
 }
 
-void Search::initWindow()
-{
-    this->createWindow();
-    this->initEditControl();
-    this->initSearchButton();
-}
 
 LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -87,7 +86,17 @@ LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         break;
 
-    
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_RETURN:
+            this->handleSearchText();
+            break;
+        default:
+            break;
+        }
+        OutputDebugStringW((LPCWSTR)L"_WM_KEYDOWN searchlll_\r\n");
+        break;
 
     case WM_PAINT:
         hdc = BeginPaint(hwnd, &ps);
