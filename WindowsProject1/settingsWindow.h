@@ -183,35 +183,13 @@ BOOL CALLBACK GoToProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 void handleSearchFile(HWND hWnd) {
-    /*MessageBox(
-        hWnd,
-        (LPCWSTR)L"Search feature will be available in upcoming versions!",
-        (LPCWSTR)L"Search",
-        MB_OK | MB_ICONASTERISK
-    );*/
-
-
-    Search* search = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
-
-
+    search->initWindow();
 }
 
 
 
 void handleSettingsDialog(HWND hWnd) {
-    /*MessageBox(
-        hWnd,
-        (LPCWSTR)L"Settings will be available in upcoming versions!",
-        (LPCWSTR)L"Settings",
-        MB_OK | MB_ICONASTERISK
-    );*/
-
-    //handleSettingsWindow(hWnd);
-
-    AppSettings* settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
-
-    //EnableWindow(hWnd, FALSE);
-
+    settings->initWindow();
 }
 
 

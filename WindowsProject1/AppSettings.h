@@ -21,6 +21,11 @@ protected:
 	HWND hWndGroupBoxSampleText;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
+	HWND hWndListBox_FontSize;
+
+	//const wchar_t* arr = L"ab";
+
+	const wchar_t* CLASS_NAME = L"Settings Window";
 
 	WNDPROC oldProc;
 
@@ -29,6 +34,8 @@ public:
 	AppSettings(HWND hWnd, HINSTANCE hInst, int nCmdShowGlobal);
 	AppSettings() {};
 	~AppSettings();
+	void registerWindow();
+	void initWindow();
 
 private:
 	//private stuff
@@ -47,6 +54,8 @@ private:
 	void HandleWM_NOTIFY(LPARAM lParam);
 	int getFontSizeFromIndex(int index);
 	void handleFocuses();
+	void createListBox();
+	void initListViewBox();
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 
@@ -59,6 +68,6 @@ protected:
 
 	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	LRESULT CALLBACK SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
+	static LRESULT CALLBACK SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 	
 };

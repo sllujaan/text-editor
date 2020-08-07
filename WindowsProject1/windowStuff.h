@@ -1207,10 +1207,6 @@ void onDropFileSingle(HWND hWnd, HDROP hdrop) {
 
 }
 
-
-
-
-
 /*
 
 int getWindowWidth(HWND hWnd) {

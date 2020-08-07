@@ -8,10 +8,6 @@ Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow, HWND richEdit)
     this->nCmdShowGlobal = nCmdShow;
     this->hwndRichEditParent = richEdit;
 
-    this->createWindow();
-    this->initEditControl();
-    this->initSearchButton();
-
 
 }
 
@@ -21,6 +17,42 @@ Search::~Search()
         TEXT("~Search"),
         TEXT("~Search"),
         NULL);
+}
+
+void Search::registerWindow()
+{
+    WNDCLASSEX wcex = { };
+
+    wcex.cbSize = sizeof(WNDCLASSEX);
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = this->WndProcSearch;
+    //wcex.cbClsExtra = 0;
+    //wcex.cbWndExtra = 0;
+    wcex.hInstance = this->hInst;
+    wcex.lpszClassName = this->CLASS_NAME;
+
+    //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
+    //wcex.lpszMenuName = NULL;
+    //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
+
+    //RegisterClassEx(&wcex);
+
+    if (!RegisterClassEx(&wcex))
+    {
+        MessageBox(NULL,
+            TEXT("Call to RegisterClassEx failed!"),
+            TEXT("Windows Desktop Guided Tour"),
+            NULL);
+    }
+
+}
+
+void Search::initWindow()
+{
+    this->createWindow();
+    this->initEditControl();
+    this->initSearchButton();
 }
 
 LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -76,6 +108,8 @@ LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_DESTROY:
         DestroyWindow(hwnd);
+        this->hWndSearch = NULL;
+        
         //PostQuitMessage(0);
         break;
     default:
@@ -267,70 +301,43 @@ void Search::handleSearchText()
 
 void Search::createWindow()
 {
-    // Register the window class.
-    const wchar_t CLASS_NAME[] = L"Search Window";
 
-    WNDCLASSEX wcex = { };
+    if (this->hWndSearch == NULL) {
+        HWND hwnd = CreateWindowEx(
+            0,                              // Optional window styles.
+            this->CLASS_NAME,                     // Window class
+            L"Search",    // Window text
+            WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = this->WndProcSearch;
-    //wcex.cbClsExtra = 0;
-    //wcex.cbWndExtra = 0;
-    wcex.hInstance = this->hInst;
-    wcex.lpszClassName = CLASS_NAME;
+            // Size and position
+            CW_USEDEFAULT, CW_USEDEFAULT, 302, 66,
 
-    //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
-    //wcex.lpszMenuName = NULL;
-    //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
-
-    //RegisterClassEx(&wcex);
-
-    if (!RegisterClassEx(&wcex))
-    {
-        MessageBox(NULL,
-            TEXT("Call to RegisterClassEx failed!"),
-            TEXT("Windows Desktop Guided Tour"),
-            NULL);
-    }
-
-
-    HWND hwnd = CreateWindowEx(
-        0,                              // Optional window styles.
-        CLASS_NAME,                     // Window class
-        L"Search",    // Window text
-        WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
-
-        // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 302, 66,
-
-        this->hWndParent,       // Parent window    
-        NULL,       // Menu
-        this->hInst,  // Instance handle
-        this        // Additional application data
-    );
-
-    if (hwnd == NULL)
-    {
-        MessageBox(
-            this->hWndParent,
-            (LPCWSTR)L"Settings window creation failed.",
-            (LPCWSTR)L"ERROR",
-            MB_ICONERROR
+            this->hWndParent,       // Parent window    
+            NULL,       // Menu
+            this->hInst,  // Instance handle
+            this        // Additional application data
         );
 
-        return;
+        if (hwnd == NULL)
+        {
+            MessageBox(
+                this->hWndParent,
+                (LPCWSTR)L"Settings window creation failed.",
+                (LPCWSTR)L"ERROR",
+                MB_ICONERROR
+            );
+
+            return;
+        }
+
+        this->hWndSearch = hwnd;
+
     }
 
-    ShowWindow(hwnd, this->nCmdShowGlobal);
+    
+    ShowWindow(this->hWndSearch, this->nCmdShowGlobal);
 
-
-    //handleSettingsComboBoxWindow(hwnd);
-
-
-
-    this->hWndSearch = hwnd;
+    
 
 }
 

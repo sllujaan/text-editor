@@ -7,7 +7,46 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->hWndParent = hWnd;
     this->hInst = hInstance;
     this->nCmdShowGlobal = nCmdShow;
+}
 
+AppSettings::~AppSettings()
+{
+
+}
+
+void AppSettings::registerWindow()
+{
+    // Register the window class.
+    //const wchar_t CLASS_NAME[] = L"Settings Window";
+
+    WNDCLASSEX wcex = { };
+
+    wcex.cbSize = sizeof(WNDCLASSEX);
+    //wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = this->WndProcSettings;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = this->hInst;
+    wcex.lpszClassName = this->CLASS_NAME;
+    //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
+
+    //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
+    //wcex.lpszMenuName = NULL;
+    //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
+
+    //RegisterClassEx(&wcex);
+    if (!RegisterClassEx(&wcex))
+    {
+        MessageBox(NULL,
+            TEXT("Call to RegisterClassEx failed!"),
+            TEXT("Windows Desktop Guided Tour"),
+            NULL);
+    }
+}
+
+void AppSettings::initWindow()
+{
     this->createWindow();
     this->createGroupBox();
     this->createListView();
@@ -18,14 +57,8 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
     this->createTooltilp();
 
     this->handleFocuses();
-
-    
-    
-}
-
-AppSettings::~AppSettings()
-{
-
+    this->createListBox();
+    this->initListViewBox();
 }
 
 LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -135,7 +168,7 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
     return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
-LRESULT AppSettings::SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+LRESULT AppSettings::SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
     
     OutputDebugStringW((LPCWSTR)L"00000000000000LIST_VIEW1111111111111111\r\n");
@@ -218,7 +251,8 @@ void AppSettings::createListView()
         10, 20,
         (rcClient.right - rcClient.left) - 20,
         (rcClient.bottom - rcClient.top) - 30,
-        this->hWndGroupBox,
+        //100, 200,
+        this->hWndSettings,
         (HMENU)IDM_CODE_SAMPLES,
         this->hInst,
         NULL);
@@ -229,9 +263,9 @@ void AppSettings::createListView()
 
 
     /*this->oldProc = (WNDPROC)SetWindowLongPtr(this->hwndListView,
-        GWLP_WNDPROC, (LONG_PTR)this->SubClassListViewProc);
+        GWLP_WNDPROC, (LONG_PTR)this->SubClassListViewProc);*/
 
-    if (this->oldProc == 0) {
+    /*if (this->oldProc == 0) {
         OutputDebugStringW((LPCWSTR)L"SetWindowLongPtr Failed \r\n");
     }*/
 
@@ -402,6 +436,23 @@ void AppSettings::handleFocuses()
     //ListView_SetSelectionMark(this->hwndListView, (72-8));
 }
 
+void AppSettings::createListBox()
+{
+    // Adding a ListBox.
+    HWND hListBox = CreateWindowEx(WS_EX_CLIENTEDGE
+        , L"LISTBOX", NULL
+        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL
+        , 450, 30, 100, 200
+        , this->hWndSettings, NULL, this->hInst, NULL);
+
+    this->hWndListBox_FontSize = hListBox;
+}
+
+void AppSettings::initListViewBox()
+{
+    
+}
+
 HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int height)
 {
     HWND hwndGroupBox = CreateWindowEx(
@@ -484,44 +535,14 @@ void AppSettings::createComboBox()
 
 void AppSettings::createWindow()
 {
-    
-    // Register the window class.
-    const wchar_t CLASS_NAME[] = L"Settings Window";
-
-    WNDCLASSEX wcex = { };
-
-    wcex.cbSize = sizeof(WNDCLASSEX);
-    //wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = this->WndProcSettings;
-    wcex.cbClsExtra = 0;
-    wcex.cbWndExtra = 0;
-    wcex.hInstance = this->hInst;
-    wcex.lpszClassName = CLASS_NAME;
-    //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
-
-    //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
-    //wcex.lpszMenuName = NULL;
-    //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
-
-    //RegisterClassEx(&wcex);
-    if (!RegisterClassEx(&wcex))
-    {
-        MessageBox(NULL,
-            TEXT("Call to RegisterClassEx failed!"),
-            TEXT("Windows Desktop Guided Tour"),
-            NULL);
-    }
-
-
     HWND hwnd = CreateWindowEx(
         0,                              // Optional window styles.
-        CLASS_NAME,                     // Window class
+        this->CLASS_NAME,                     // Window class
         L"Settings",    // Window text
         WS_SYSMENU,            // Window style
 
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 450, 500,
+        CW_USEDEFAULT, CW_USEDEFAULT, 650, 500,
 
         this->hWndParent,       // Parent window    
         NULL,       // Menu

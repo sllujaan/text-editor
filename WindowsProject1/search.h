@@ -16,12 +16,17 @@ private:
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 
+	const wchar_t* CLASS_NAME = L"Search Window";
+
 	WNDPROC lpfnMainWndProc;
 
 public:
 	//public stuff
 	Search(HWND hWnd, HINSTANCE hInst, int nCmdShowGlobal, HWND richEdit);
+	Search() {}
 	~Search();
+	void registerWindow();
+	void initWindow();
 
 
 private:

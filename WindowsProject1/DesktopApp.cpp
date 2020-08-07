@@ -9,13 +9,20 @@
 #include<Richedit.h>
 #include<TextServ.h>
 #include<shellapi.h>
+#include"search.h"
+#include"AppSettings.h"
 
 using namespace std;
 
 
 //  Global variables
 HWND    hwndMain;
-WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box 
+WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box
+
+//global sub windows instances---
+AppSettings* settings;
+Search* search;
+
 
 
 #define MAINWIN_WIDTH 500
@@ -35,8 +42,7 @@ HFONT hFont = CreateFont(18, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHA
     OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
     DEFAULT_PITCH | FF_DONTCARE, TEXT("Tahoma"));
 
-#include"search.h"
-#include"AppSettings.h"
+
 #include"windowStuff.h"
 
 
@@ -151,6 +157,10 @@ int CALLBACK WinMain(
 
     //stroring the handle to global variable--
     hwndMain = hWnd;
+    settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
+    settings->registerWindow();
+    search = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
+    search->registerWindow();
 
     // The parameters to ShowWindow explained:
     // hWnd: the value returned from CreateWindow
