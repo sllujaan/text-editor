@@ -19,6 +19,7 @@ protected:
 	HWND hWndGroupBox;
 	HWND hWndGroupBoxSample;
 	HWND hWndGroupBoxSampleText;
+	HWND hWndEditControlFontStyles;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 	HWND hWndListBox_FontSize;
@@ -39,7 +40,6 @@ public:
 
 private:
 	//private stuff
-	void createComboBox();
 	void createWindow();	
 	static void centerWindow(HWND hwnd);
 	void initListFontSize();
@@ -58,6 +58,11 @@ private:
 	void initListViewBox();
 	void setSampleTextFontSize(size_t size);
 	void handleListBoxSelectionChange();
+	HWND getListBox(int posX, int posY, int width, int height);
+	//fontStyles methods--
+	void createComboBox();
+	void createEditControlFontStyles();
+	void createListBox_FontStyles();
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 

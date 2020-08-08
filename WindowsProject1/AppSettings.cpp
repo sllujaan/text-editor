@@ -13,16 +13,20 @@ void AppSettings::initWindow()
 {
     this->createWindow();
     this->createGroupBox();
-    this->createListView();
+    //this->createListView();
 
     this->createGroupBoxSample();
     this->initSampleText();
-    this->insertListViewItems(5);
+    //this->insertListViewItems(5);
     this->createTooltilp();
 
     this->handleFocuses();
+    
     this->createListBox();
     this->initListViewBox();
+
+    this->createEditControlFontStyles();
+    this->createListBox_FontStyles();
 }
 
 AppSettings::~AppSettings()
@@ -257,7 +261,7 @@ void AppSettings::createListView()
     icex.dwICC = ICC_LISTVIEW_CLASSES;
     InitCommonControlsEx(&icex);
 
-    RECT rcClient;                       // The parent window's client area.
+    RECT rcClient;     // The parent window's client area.
 
     GetClientRect(this->hWndGroupBox, &rcClient);
 
@@ -326,7 +330,7 @@ void AppSettings::initListView()
 
 void AppSettings::createGroupBox()
 {
-    HWND hwndGroupBox = this->getGroupBox(L"Font", 10, 10, 300, 300);
+    HWND hwndGroupBox = this->getGroupBox(L"Font", 10, 10, 100, 200);
 
     this->hWndGroupBox = hwndGroupBox;
 
@@ -386,9 +390,9 @@ void AppSettings::createTooltilp()
     TTTOOLINFO ti = { 0 };
     ti.cbSize = sizeof(TTTOOLINFO);
     ti.uFlags = TTF_SUBCLASS;
-    ti.hwnd = this->hwndListView;
+    ti.hwnd = this->hWndGroupBoxSampleText;
     ti.lpszText = (wchar_t*)L"Tooltip string";
-    GetClientRect(this->hwndListView, &ti.rect);
+    GetClientRect(this->hWndGroupBoxSampleText, &ti.rect);
 
     if (!SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM)&ti))
         MessageBox(0, TEXT("Failed: TTM_ADDTOOL"), 0, 0);
@@ -456,12 +460,16 @@ void AppSettings::handleFocuses()
 
 void AppSettings::createListBox()
 {
+    RECT rcClient;     // The parent window's client area.
+    GetClientRect(this->hWndGroupBox, &rcClient);
+
+    size_t posX = 20;
+    size_t posY = 30;
+    size_t width = (rcClient.right - rcClient.left) - 20;
+    size_t height = (rcClient.bottom - rcClient.top) - 30;
+
     // Adding a ListBox.
-    HWND hListBox = CreateWindowEx(WS_EX_CLIENTEDGE
-        , L"LISTBOX", NULL
-        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL | LBS_NOTIFY
-        , 450, 30, 100, 200
-        , this->hWndSettings, NULL, this->hInst, NULL);
+    HWND hListBox = this->getListBox((int)posX, (int)posY, (int)width, (int)height);
 
     this->hWndListBox_FontSize = hListBox;
 }
@@ -477,6 +485,8 @@ void AppSettings::initListViewBox()
             (LPARAM)(wchar_t*)str.c_str());
     }
 
+
+
     SendMessage(this->hWndListBox_FontSize, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
     SendMessage(this->hWndListBox_FontSize, LB_SETCURSEL, 0, 0);
     SetFocus(this->hWndListBox_FontSize);
@@ -489,8 +499,20 @@ void AppSettings::setSampleTextFontSize(size_t size)
 
 void AppSettings::handleListBoxSelectionChange()
 {
-    int index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
+    LRESULT index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
     this->setSampleTextFontSize(index+8);
+}
+
+HWND AppSettings::getListBox(int posX, int posY, int width, int height)
+{
+    // Adding a ListBox.
+    HWND hListBox = CreateWindowEx(WS_EX_CLIENTEDGE
+        , L"LISTBOX", NULL
+        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL | LBS_NOTIFY,
+        posX, posY, width, height,
+        this->hWndSettings, NULL, this->hInst, NULL);
+    
+    return hListBox;
 }
 
 HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int height)
@@ -527,6 +549,7 @@ HFONT AppSettings::getFont(size_t size)
 
 void AppSettings::createComboBox()
 {
+
     // Create the Combobox
 //
 // Uses the CreateWindow function to create a child window of 
@@ -541,35 +564,41 @@ void AppSettings::createComboBox()
 
     HWND hWndComboBox = CreateWindow(WC_COMBOBOX, TEXT(""),
         CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
-        xpos, ypos, nwidth, nheight, hwndParent, NULL, NULL,
+        xpos, ypos, nwidth, nheight, hwndParent, NULL, this->hInst,
         NULL);
 
 
 
-    //loading combobox with data
-    TCHAR Planets[9][10] =
-    {
-        TEXT("Mercury"), TEXT("Venus"), TEXT("Terra"), TEXT("Mars"),
-        TEXT("Jupiter"), TEXT("Saturn"), TEXT("Uranus"), TEXT("Neptune"),
-        TEXT("Pluto??")
-    };
 
-    TCHAR A[16];
-    int  k = 0;
 
-    memset(&A, 0, sizeof(A));
-    for (k = 0; k <= 8; k += 1)
-    {
-        wcscpy_s(A, sizeof(A) / sizeof(TCHAR), (TCHAR*)Planets[k]);
 
-        // Add string to combobox.
-        SendMessage(hWndComboBox, (UINT)CB_ADDSTRING, (WPARAM)0, (LPARAM)A);
-    }
 
-    // Send the CB_SETCURSEL message to display an initial item 
-    //  in the selection field  
-    SendMessage(hWndComboBox, CB_SETCURSEL, (WPARAM)2, (LPARAM)0);
 
+    //CreateWindowEx(WS_EX_STATICEDGE, L"COMBOBOX", L"MyCombo1",
+    //    CBS_DROPDOWN | WS_CHILD | WS_VISIBLE,
+    //    200, 10, 100, 209, this->hWndSettings, NULL, this->hInst, NULL); // 100 = ID of this control
+
+
+
+}
+
+void AppSettings::createEditControlFontStyles()
+{
+    HWND hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"text",
+        WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
+        200, 10, 100, 22, this->hWndSettings, NULL, this->hInst, NULL);
+
+    this->hWndEditControlFontStyles = hwndEdit;
+    SendMessage(this->hWndEditControlFontStyles, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+
+}
+
+void AppSettings::createListBox_FontStyles()
+{
+    // Adding a ListBox.
+    HWND hListBox = this->getListBox((int)posX, (int)posY, (int)width, (int)height);
+
+    this->hWndListBox_FontSize = hListBox;
 }
 
 
