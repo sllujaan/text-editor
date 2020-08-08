@@ -56,6 +56,8 @@ private:
 	void handleFocuses();
 	void createListBox();
 	void initListViewBox();
+	void setSampleTextFontSize(size_t size);
+	void handleListBoxSelectionChange();
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 

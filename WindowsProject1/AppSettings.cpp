@@ -73,7 +73,7 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
 
     
-    OutputDebugStringW((LPCWSTR)L"setings procedure---------------------------------------\r\n");
+    //OutputDebugStringW((LPCWSTR)L"setings procedure---------------------------------------\r\n");
 
     
 
@@ -103,6 +103,21 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
             break;
         }
 
+        switch (HIWORD(wParam))
+        {
+        case LBN_SETFOCUS:
+            OutputDebugStringW((LPCWSTR)L"_))))))))))))))))))LBN_SETFOCUS_\r\n");
+            break;
+        case LBN_SELCHANGE:
+            this->handleListBoxSelectionChange();
+            OutputDebugStringW((LPCWSTR)L"LBN_SELCHANGE\r\n");
+            
+            break;
+
+        default:
+            break;
+        }
+
         break;
 
     case WM_PAINT:
@@ -125,7 +140,7 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
         break;
     default:
-        OutputDebugStringW((LPCWSTR)L"=================default===============\r\n");
+        //OutputDebugStringW((LPCWSTR)L"=================default===============\r\n");
         return DefWindowProc(hwnd, message, wParam, lParam);
         break;
     }
@@ -444,7 +459,7 @@ void AppSettings::createListBox()
     // Adding a ListBox.
     HWND hListBox = CreateWindowEx(WS_EX_CLIENTEDGE
         , L"LISTBOX", NULL
-        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL
+        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL | LBS_NOTIFY
         , 450, 30, 100, 200
         , this->hWndSettings, NULL, this->hInst, NULL);
 
@@ -463,6 +478,19 @@ void AppSettings::initListViewBox()
     }
 
     SendMessage(this->hWndListBox_FontSize, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+    SendMessage(this->hWndListBox_FontSize, LB_SETCURSEL, 0, 0);
+    SetFocus(this->hWndListBox_FontSize);
+}
+
+void AppSettings::setSampleTextFontSize(size_t size)
+{
+    SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(size), TRUE);
+}
+
+void AppSettings::handleListBoxSelectionChange()
+{
+    int index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
+    this->setSampleTextFontSize(index+8);
 }
 
 HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int height)
