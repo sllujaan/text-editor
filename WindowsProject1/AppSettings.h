@@ -57,16 +57,17 @@ private:
 	void createListBox();
 	void initListViewBox();
 	void setSampleTextFontSize(size_t size);
-	void handleListBoxSelectionChange();
+	void handleListBoxSelectionChange(HWND hWnd);
 	HWND getListBox(int posX, int posY, int width, int height);
 	//fontStyles methods--
 	void createComboBox();
 	void createEditControlFontStyles();
 	void createListBox_FontStyles();
+	size_t getFontSizeSampleText();
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 
-	HFONT getFont(size_t size);
+	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Arial");
 
 
 protected:

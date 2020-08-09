@@ -113,7 +113,7 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
             OutputDebugStringW((LPCWSTR)L"_))))))))))))))))))LBN_SETFOCUS_\r\n");
             break;
         case LBN_SELCHANGE:
-            this->handleListBoxSelectionChange();
+            this->handleListBoxSelectionChange((HWND)lParam);
             OutputDebugStringW((LPCWSTR)L"LBN_SELCHANGE\r\n");
             
             break;
@@ -497,10 +497,15 @@ void AppSettings::setSampleTextFontSize(size_t size)
     SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(size), TRUE);
 }
 
-void AppSettings::handleListBoxSelectionChange()
+void AppSettings::handleListBoxSelectionChange(HWND hWnd)
 {
-    LRESULT index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
-    this->setSampleTextFontSize(index+8);
+    if (hWnd == this->hWndListBox_FontSize) {
+        LRESULT index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
+        this->setSampleTextFontSize(index + 8);
+    }
+    
+    
+    
 }
 
 HWND AppSettings::getListBox(int posX, int posY, int width, int height)
@@ -536,11 +541,11 @@ HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int h
     return hwndGroupBox;
 }
 
-HFONT AppSettings::getFont(size_t size)
+HFONT AppSettings::getFont(size_t size, LPCWSTR fontFamily)
 {
     HFONT hFont = CreateFont(int(size), 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
         OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-        DEFAULT_PITCH | FF_DONTCARE, TEXT("Arial"));
+        DEFAULT_PITCH | FF_DONTCARE, fontFamily);
 
     return hFont;
 }
@@ -595,10 +600,39 @@ void AppSettings::createEditControlFontStyles()
 
 void AppSettings::createListBox_FontStyles()
 {
-    // Adding a ListBox.
-    HWND hListBox = this->getListBox((int)posX, (int)posY, (int)width, (int)height);
+    int posX = 200;
+    int posY = 50;
+    int width = 100;
+    int height = 200;
 
-    this->hWndListBox_FontSize = hListBox;
+    // Adding a ListBox.
+    HWND hListBox = this->getListBox(posX, posY, width, height);
+
+    this->hWndEditControlFontStyles = hListBox;
+
+
+
+    //inserting items-----------------
+    int pos = 0;
+
+    for (int i = 8; i <= 72; i++) {
+        //converting int to wstring.
+        std::wstring str = std::to_wstring(i);
+        pos = (int)SendMessage(this->hWndEditControlFontStyles, LB_ADDSTRING, 0,
+            (LPARAM)(wchar_t*)str.c_str());
+    }
+
+
+
+    SendMessage(this->hWndEditControlFontStyles, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+    SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, 0, 0);
+    //SetFocus(this->hWndEditControlFontStyles);
+
+}
+
+size_t AppSettings::getFontSizeSampleText()
+{
+    return size_t();
 }
 
 
