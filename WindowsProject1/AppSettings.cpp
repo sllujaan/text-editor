@@ -501,24 +501,27 @@ void AppSettings::handleListBoxSelectionChange(HWND hWnd)
 {
     if (hWnd == this->hWndListBox_FontSize) {
         LRESULT index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
-        this->setSampleTextFontSize(index + 8);
+        LPCWSTR itemText = this->getSelectedFontFamily();
+        //this->setSampleTextFontSize(index + 8);
+        SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(index + 8, itemText), TRUE);
+
+        //free up memory
+        delete itemText;
     }
     else if (hWnd == this->hWndEditControlFontStyles){
-        LRESULT index = SendMessage(this->hWndEditControlFontStyles, LB_GETCURSEL, 0, 0);
-        if (index < 0) return;
+        /*LRESULT index = SendMessage(this->hWndEditControlFontStyles, LB_GETCURSEL, 0, 0);
+        if (index < 0) return;*/
         
         //get text lenght
-        LRESULT length = SendMessage(this->hWndEditControlFontStyles, LB_GETTEXTLEN, index, 0);
-
-        //std::wstring str = std::to_wstring((int)length);
-
-        //OutputDebugStringW((LPCWSTR)str.c_str());
+        /*LRESULT length = SendMessage(this->hWndEditControlFontStyles, LB_GETTEXTLEN, index, 0);
 
         LPCWSTR itemText = new WCHAR[(int)length + 1];
 
         SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
-        
+        */
         //OutputDebugStringW((LPCWSTR)itemText);
+
+        LPCWSTR itemText = this->getSelectedFontFamily();
 
         if (!itemText) return;
 
@@ -526,6 +529,8 @@ void AppSettings::handleListBoxSelectionChange(HWND hWnd)
         LRESULT indexFontSize = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
         SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(indexFontSize+8, itemText), TRUE);
         
+
+        delete itemText;
 
     }
 
@@ -668,6 +673,20 @@ void AppSettings::createListBox_FontStyles()
 size_t AppSettings::getFontSizeSampleText()
 {
     return size_t();
+}
+
+LPCWSTR AppSettings::getSelectedFontFamily()
+{
+    LRESULT index = SendMessage(this->hWndEditControlFontStyles, LB_GETCURSEL, 0, 0);
+
+    //get text lenght
+    LRESULT length = SendMessage(this->hWndEditControlFontStyles, LB_GETTEXTLEN, (int)index, 0);
+
+    LPCWSTR itemText = new WCHAR[(int)length + 1];
+
+    SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
+
+    return itemText;
 }
 
 

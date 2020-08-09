@@ -64,6 +64,7 @@ private:
 	void createEditControlFontStyles();
 	void createListBox_FontStyles();
 	size_t getFontSizeSampleText();
+	LPCWSTR getSelectedFontFamily();
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 
