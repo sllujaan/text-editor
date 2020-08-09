@@ -503,6 +503,33 @@ void AppSettings::handleListBoxSelectionChange(HWND hWnd)
         LRESULT index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
         this->setSampleTextFontSize(index + 8);
     }
+    else if (hWnd == this->hWndEditControlFontStyles){
+        LRESULT index = SendMessage(this->hWndEditControlFontStyles, LB_GETCURSEL, 0, 0);
+        if (index < 0) return;
+        
+        //get text lenght
+        LRESULT length = SendMessage(this->hWndEditControlFontStyles, LB_GETTEXTLEN, index, 0);
+
+        //std::wstring str = std::to_wstring((int)length);
+
+        //OutputDebugStringW((LPCWSTR)str.c_str());
+
+        LPCWSTR itemText = new WCHAR[(int)length + 1];
+
+        SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
+        
+        //OutputDebugStringW((LPCWSTR)itemText);
+
+        if (!itemText) return;
+
+        
+        LRESULT indexFontSize = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
+        SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(indexFontSize+8, itemText), TRUE);
+        
+
+    }
+
+    
     
     
     
@@ -611,15 +638,23 @@ void AppSettings::createListBox_FontStyles()
     this->hWndEditControlFontStyles = hListBox;
 
 
+    //data for font families-----------
+    LPCWSTR fontFamilies[] = {
+        L"Arial", L"Arial Black", L"Calibri", L"Cambria", L"Cambria Math", L"MS New Tai Lue",
+        L"MS PhagsPa", L"Times New Roman", L"DaunPenh", L"Georgia Pro", L"Shonar Bangla", L"Vrinda",
+        L"Simplified Arabic", L"Sakkal Majalla", L"Andalus", L"Yu Gothic", L"Tahoma", L"SimSun"
+    };
 
     //inserting items-----------------
     int pos = 0;
 
-    for (int i = 8; i <= 72; i++) {
-        //converting int to wstring.
-        std::wstring str = std::to_wstring(i);
+    for (int i = 0; i < ARRAYSIZE(fontFamilies) ; i++) {
+
         pos = (int)SendMessage(this->hWndEditControlFontStyles, LB_ADDSTRING, 0,
-            (LPARAM)(wchar_t*)str.c_str());
+            (LPARAM)fontFamilies[i]);
+        
+        //set font for indidual item----
+
     }
 
 

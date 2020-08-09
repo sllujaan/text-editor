@@ -67,7 +67,7 @@ private:
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 
-	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Arial");
+	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Microsoft New Tai Lue");
 
 
 protected:
