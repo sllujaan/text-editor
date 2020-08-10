@@ -221,6 +221,37 @@ LRESULT AppSettings::SubClassEditControl(HWND hwnd, UINT message, WPARAM wParam,
 
 }
 
+LRESULT AppSettings::LB_FontSize_WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    AppSettings* pThis;
+
+    //OutputDebugStringW((LPCWSTR)L"&&&&&&&&&&& SubClassEditControl ]]]]]]]\r\n");
+
+    // Recover the "this" pointer from where our WM_NCCREATE handler
+        // stashed it.
+    pThis = reinterpret_cast<AppSettings*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+
+    switch (message)
+    {
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_RETURN:
+            //Do your stuff
+            OutputDebugStringW((LPCWSTR)L"Enter^^^^\r\n");
+            break;  //or return 0; if you don't want to pass it further to def proc
+            //If not your key, skip to default:
+        }
+    default:
+        OutputDebugStringW((LPCWSTR)L"default^^^^^\r\n");
+        return CallWindowProc(pThis->oldProc, hwnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
+}
+
 void AppSettings::centerWindow(HWND hwnd)
 {
     RECT rectWindow;
@@ -486,9 +517,15 @@ void AppSettings::createListBox()
     size_t height = (rcClient.bottom - rcClient.top) - 30;
 
     // Adding a ListBox.
-    HWND hListBox = this->getListBox((int)posX, (int)posY, (int)width, (int)height);
+    HWND hListBox = this->getListBox(this->hWndGroupBox, (int)posX, (int)posY, (int)width, (int)height);
 
     this->hWndListBox_FontSize = hListBox;
+
+    // Put the value in a safe place for future use
+    SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+
+    this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_WNDPROC, (LONG_PTR)this->LB_FontSize_WndProc);
+
 }
 
 void AppSettings::initListViewBox()
@@ -555,14 +592,14 @@ void AppSettings::handleListBoxSelectionChange(HWND hWnd)
     
 }
 
-HWND AppSettings::getListBox(int posX, int posY, int width, int height)
+HWND AppSettings::getListBox(HWND hWndParent, int posX, int posY, int width, int height)
 {
     // Adding a ListBox.
     HWND hListBox = CreateWindowEx(WS_EX_CLIENTEDGE
         , L"LISTBOX", NULL
         , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL | LBS_NOTIFY,
         posX, posY, width, height,
-        this->hWndSettings, NULL, this->hInst, NULL);
+        hWndParent, NULL, this->hInst, NULL);
     
     return hListBox;
 }
@@ -659,7 +696,7 @@ void AppSettings::createListBox_FontStyles()
     int height = 200;
 
     // Adding a ListBox.
-    HWND hListBox = this->getListBox(posX, posY, width, height);
+    HWND hListBox = this->getListBox(this->hWndSettings, posX, posY, width, height);
 
     this->hWndEditControlFontStyles = hListBox;
 

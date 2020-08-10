@@ -63,7 +63,7 @@ private:
 	void initListViewBox();
 	void setSampleTextFontSize(size_t size);
 	void handleListBoxSelectionChange(HWND hWnd);
-	HWND getListBox(int posX, int posY, int width, int height);
+	HWND getListBox(HWND hWndParent, int posX, int posY, int width, int height);
 	//fontStyles methods--
 	void createComboBox();
 	void createEditControlFontStyles();
@@ -84,5 +84,6 @@ protected:
 	static LRESULT CALLBACK WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static LRESULT CALLBACK SubClassEditControl(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
-	
+
+	static LRESULT CALLBACK LB_FontSize_WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 };
