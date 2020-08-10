@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Validator">
       <UniqueIdentifier>{a819bf8a-3d1a-41f6-b427-f677c0e6983e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AppConfiguration">
+      <UniqueIdentifier>{861fdd90-95bc-44df-90d6-3f781e38369d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -56,6 +59,9 @@
     </ClInclude>
     <ClInclude Include="Validator.h">
       <Filter>Header Files\Validator</Filter>
+    </ClInclude>
+    <ClInclude Include="AppConfigure.h">
+      <Filter>Header Files\AppConfiguration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

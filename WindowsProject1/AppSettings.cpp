@@ -189,19 +189,35 @@ LRESULT AppSettings::WndProcSettings(HWND hwnd, UINT message, WPARAM wParam, LPA
     return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
-LRESULT AppSettings::SubClassListViewProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+LRESULT AppSettings::SubClassEditControl(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    
-    OutputDebugStringW((LPCWSTR)L"00000000000000LIST_VIEW1111111111111111\r\n");
+    AppSettings* pThis;
 
-    
-    return DefSubclassProc(hwnd, Message, wParam, lParam);
-    //  Call the original window procedure for default processing. 
+    //OutputDebugStringW((LPCWSTR)L"&&&&&&&&&&& SubClassEditControl ]]]]]]]\r\n");
+
+    // Recover the "this" pointer from where our WM_NCCREATE handler
+        // stashed it.
+    pThis = reinterpret_cast<AppSettings*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 
-    //Call the original window procedure for default processing. 
-    //return CallWindowProc( , hwnd, Message, wParam, lParam);
+    switch (message)
+    {
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_RETURN:
+            //Do your stuff
+            OutputDebugStringW((LPCWSTR)L"Enter~~~~\r\n");
+            break;  //or return 0; if you don't want to pass it further to def proc
+            //If not your key, skip to default:
+        }
+    default:
+        OutputDebugStringW((LPCWSTR)L"default~~~~\r\n");
+        return CallWindowProc(pThis->oldProc, hwnd, message, wParam, lParam);
+        break;
+    }
 
+    return 0;
 
 }
 
@@ -626,6 +642,12 @@ void AppSettings::createEditControlFontStyles()
 
     this->hWndEditControlFontStyles = hwndEdit;
     SendMessage(this->hWndEditControlFontStyles, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+
+    
+    // Put the value in a safe place for future use
+    SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+
+    this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_WNDPROC, (LONG_PTR)this->SubClassEditControl);
 
 }
 
