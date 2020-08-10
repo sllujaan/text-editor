@@ -375,8 +375,9 @@ void AppSettings::initSampleText()
         NULL);      // Pointer not needed.
 
 
+    HFONT font = this->getFont(this->fontSize, this->fontFamily);
 
-    SendMessage(hwndStatic, WM_SETFONT, (WPARAM)this->getFont(14), TRUE);
+    SendMessage(hwndStatic, WM_SETFONT, (WPARAM)font, TRUE);
 
     this->hWndGroupBoxSampleText = hwndStatic;
    
@@ -485,10 +486,8 @@ void AppSettings::initListViewBox()
             (LPARAM)(wchar_t*)str.c_str());
     }
 
-
-
     SendMessage(this->hWndListBox_FontSize, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-    SendMessage(this->hWndListBox_FontSize, LB_SETCURSEL, 0, 0);
+    SendMessage(this->hWndListBox_FontSize, LB_SETCURSEL, (size_t)this->fontSize-8, 0);
     SetFocus(this->hWndListBox_FontSize);
 }
 
@@ -662,12 +661,13 @@ void AppSettings::createListBox_FontStyles()
 
     }
 
-
+    //find string from list box--
+    LRESULT searchIndex = SendMessage(this->hWndEditControlFontStyles, LB_FINDSTRING, -1, (LPARAM)this->fontFamily);
+    if(searchIndex == LB_ERR) searchIndex = 0;
 
     SendMessage(this->hWndEditControlFontStyles, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-    SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, 0, 0);
+    SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, (size_t)searchIndex, 0);
     //SetFocus(this->hWndEditControlFontStyles);
-
 }
 
 size_t AppSettings::getFontSizeSampleText()
@@ -687,6 +687,13 @@ LPCWSTR AppSettings::getSelectedFontFamily()
     SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
 
     return itemText;
+}
+
+void AppSettings::setSettings(size_t fontSize, LPCWSTR fontFamily, LPCWSTR fontSyle)
+{
+    this->fontSize = fontSize;
+    this->fontFamily = fontFamily;
+    this->fontSyle = fontSyle;
 }
 
 

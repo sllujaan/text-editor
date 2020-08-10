@@ -24,6 +24,10 @@ protected:
 	int nCmdShowGlobal;
 	HWND hWndListBox_FontSize;
 
+	size_t fontSize = 14;
+	LPCWSTR fontFamily = L"Arial Black";
+	LPCWSTR fontSyle = L"Regular";
+
 	//const wchar_t* arr = L"ab";
 
 	const wchar_t* CLASS_NAME = L"Settings Window";
@@ -37,6 +41,7 @@ public:
 	~AppSettings();
 	void registerWindow();
 	void initWindow();
+	void setSettings(size_t fonstSize, LPCWSTR fontFamily, LPCWSTR fontSyle);
 
 private:
 	//private stuff
@@ -65,6 +70,7 @@ private:
 	void createListBox_FontStyles();
 	size_t getFontSizeSampleText();
 	LPCWSTR getSelectedFontFamily();
+	
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 

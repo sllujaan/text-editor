@@ -157,8 +157,12 @@ int CALLBACK WinMain(
 
     //stroring the handle to global variable--
     hwndMain = hWnd;
+
+    //registering component windows--
     settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
     settings->registerWindow();
+    settings->setSettings(50, L"Times", L"italic");
+
     search = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
     search->registerWindow();
 
