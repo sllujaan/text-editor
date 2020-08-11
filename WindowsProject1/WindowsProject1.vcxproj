@@ -167,6 +167,7 @@
     <ClInclude Include="windwManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AppConfigure.cpp" />
     <ClCompile Include="AppSettings.cpp" />
     <ClCompile Include="DesktopApp.cpp" />
     <ClCompile Include="search.cpp" />

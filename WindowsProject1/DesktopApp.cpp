@@ -9,6 +9,7 @@
 #include<Richedit.h>
 #include<TextServ.h>
 #include<shellapi.h>
+#include"AppConfigure.h"
 #include"search.h"
 #include"AppSettings.h"
 

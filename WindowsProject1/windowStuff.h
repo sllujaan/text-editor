@@ -1125,14 +1125,21 @@ void handleDialolgBox(HWND hWnd) {
     );*/
 
     // Adding a ListBox.
-    HWND comboBox = CreateWindowEx(NULL
+    /*HWND comboBox = CreateWindowEx(NULL
         , L"ComboBox", NULL
         , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL
         , 30, 30, 100, 200
-        , hWnd, NULL, hInst, NULL);
+        , hWnd, NULL, hInst, NULL);*/
 
-
-
+    appConfig ac;
+    LPCWSTR path = ac.getAppConfigPath();
+    
+    MessageBox(NULL,
+        (LPCWSTR)path,
+        _T("env"),
+        NULL);
+    delete path;
+    
 
 }
 

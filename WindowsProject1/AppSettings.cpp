@@ -234,6 +234,25 @@ LRESULT AppSettings::LB_FontSize_WndProc(HWND hwnd, UINT message, WPARAM wParam,
 
     switch (message)
     {
+        OutputDebugStringW((LPCWSTR)L"massage__\r\n");
+    case WM_COMMAND:
+        OutputDebugStringW((LPCWSTR)L"COMMAND__\r\n");
+        switch (HIWORD(wParam))
+        {
+        case LBN_SETFOCUS:
+            OutputDebugStringW((LPCWSTR)L"_))))))))))))))))))LBN_SETFOCUS_\r\n");
+            break;
+        case LBN_SELCHANGE:
+            pThis->handleListBoxSelectionChange((HWND)lParam);
+            OutputDebugStringW((LPCWSTR)L"LBN_SELCHANGE\r\n");
+
+            break;
+
+        default:
+            break;
+        }
+        break;
+
     case WM_KEYDOWN:
         switch (wParam)
         {
@@ -417,6 +436,11 @@ void AppSettings::createGroupBox()
         WS_CHILD | WS_VISIBLE | BS_GROUPBOX,
         10, 10, 200, 200, this->hWndSettings, (HMENU)-1, this->hInst, NULL);*/
 
+        // Put the value in a safe place for future use
+        SetWindowLongPtr(this->hWndGroupBox, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+
+        this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndGroupBox, GWLP_WNDPROC, (LONG_PTR)this->LB_FontSize_WndProc);
+
 }
 
 void AppSettings::createGroupBoxSample()
@@ -554,9 +578,9 @@ void AppSettings::createListBox()
     this->hWndListBox_FontSize = hListBox;
 
     // Put the value in a safe place for future use
-    SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+    //SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-    this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_WNDPROC, (LONG_PTR)this->LB_FontSize_WndProc);
+    //this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_WNDPROC, (LONG_PTR)this->LB_FontSize_WndProc);
 
 }
 
@@ -785,6 +809,21 @@ void AppSettings::setSettings(size_t fontSize, LPCWSTR fontFamily, LPCWSTR fontS
     this->fontSize = fontSize;
     this->fontFamily = fontFamily;
     this->fontSyle = fontSyle;
+}
+
+size_t AppSettings::getFontSize()
+{
+    return this->fontSize;
+}
+
+LPCWSTR AppSettings::getFontFamily()
+{
+    return this->fontFamily;
+}
+
+LPCWSTR AppSettings::getFontStyle()
+{
+    return this->fontSyle;
 }
 
 

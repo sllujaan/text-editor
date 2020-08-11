@@ -43,6 +43,9 @@ public:
 	void registerWindow();
 	void initWindow();
 	void setSettings(size_t fonstSize, LPCWSTR fontFamily, LPCWSTR fontSyle);
+	size_t getFontSize();
+	LPCWSTR getFontFamily();
+	LPCWSTR getFontStyle();
 
 private:
 	//private stuff
