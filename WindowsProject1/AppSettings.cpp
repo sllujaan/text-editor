@@ -252,6 +252,38 @@ LRESULT AppSettings::LB_FontSize_WndProc(HWND hwnd, UINT message, WPARAM wParam,
     return 0;
 }
 
+LRESULT AppSettings::EC_fontFamily_WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+
+    AppSettings* pThis;
+
+    //OutputDebugStringW((LPCWSTR)L"&&&&&&&&&&& SubClassEditControl ]]]]]]]\r\n");
+
+    // Recover the "this" pointer from where our WM_NCCREATE handler
+        // stashed it.
+    pThis = reinterpret_cast<AppSettings*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+
+    switch (message)
+    {
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_RETURN:
+            //Do your stuff
+            OutputDebugStringW((LPCWSTR)L"Enter////\r\n");
+            break;  //or return 0; if you don't want to pass it further to def proc
+            //If not your key, skip to default:
+        }
+    default:
+        OutputDebugStringW((LPCWSTR)L"default/////\r\n");
+        return CallWindowProc(pThis->oldProc_EC_fontFamily, hwnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
+}
+
 void AppSettings::centerWindow(HWND hwnd)
 {
     RECT rectWindow;
@@ -684,8 +716,8 @@ void AppSettings::createEditControlFontStyles()
     // Put the value in a safe place for future use
     SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-    this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_WNDPROC, (LONG_PTR)this->SubClassEditControl);
-
+    this->oldProc_EC_fontFamily = (WNDPROC)SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_WNDPROC, (LONG_PTR)this->EC_fontFamily_WndProc);
+    
 }
 
 void AppSettings::createListBox_FontStyles()

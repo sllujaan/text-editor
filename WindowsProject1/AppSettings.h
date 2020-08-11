@@ -33,6 +33,7 @@ protected:
 	const wchar_t* CLASS_NAME = L"Settings Window";
 
 	WNDPROC oldProc;
+	WNDPROC oldProc_EC_fontFamily;
 
 public:
 	//public stuff
@@ -86,4 +87,6 @@ protected:
 	static LRESULT CALLBACK SubClassEditControl(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 
 	static LRESULT CALLBACK LB_FontSize_WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
+
+	static LRESULT CALLBACK EC_fontFamily_WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //EC is edit control
 };
