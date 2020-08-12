@@ -1132,13 +1132,26 @@ void handleDialolgBox(HWND hWnd) {
         , hWnd, NULL, hInst, NULL);*/
 
     appConfig ac;
-    LPCWSTR path = ac.getAppConfigPath();
+    wchar_t* path;
+    size_t size;
+
+    errno_t err = ac.getAppConfigPath_secure(&path, &size);
     
+    if (err) {
+        MessageBox(NULL,
+            (LPCWSTR)L"Failed to read environment variable.",
+            _T("env"),
+            NULL);
+        return;
+    }
+
     MessageBox(NULL,
         (LPCWSTR)path,
         _T("env"),
         NULL);
-    delete path;
+    
+    
+    free(path);
     
 
 }
