@@ -90,9 +90,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="WindowsProject1.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -106,9 +103,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="icon3.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Desktop\search.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
