@@ -29,7 +29,7 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 	errno_t err = _wdupenv_s(buffer, buffCount, L"appdata");
 	if (!*buffCount) return 1;
 
-	size_t appDirSize = wcslen(this->appDir);
+	size_t appDirSize = wcslen(this->appDir) + 1;
 	size_t totalSize = *buffCount + appDirSize + 1;
 
 	wchar_t* newStr = new wchar_t[totalSize];
@@ -41,10 +41,32 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 
 	*buffer = newStr;
 
+
+	//check if file exists
+	config::FILE f;
+	const BOOL file = f.isFile(newStr);
+	if (!file) {
+		MessageBox(NULL,
+			(LPCWSTR)L"file does not exist.",
+			(LPCWSTR)L"env",
+			NULL);
+	}
+
 	//MessageBox(NULL,
 	//	(LPCWSTR)newStr,
 	//	(LPCWSTR)L"env",
 	//	NULL);
 
 	return 0;
+}
+
+BOOL config::FILE::isFile(const wchar_t* filePath)
+{
+	//converting wchar_t* to char*
+	_bstr_t b(filePath);
+	const char* path = b;
+	//now check for file.
+	this->file.open(path, ios::in);
+	if (!this->file) return FALSE;
+	return TRUE;
 }

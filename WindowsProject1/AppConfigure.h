@@ -1,6 +1,8 @@
 #pragma once
 #include<Windows.h>
 #include<string>
+#include<fstream>
+#include<comdef.h>
 using namespace std;
 
 
@@ -18,14 +20,17 @@ public:
 };
 
 
-namespace appConfig {
+namespace config {
 	class FILE {
 	private:
 		//private stuff
-		FILE();
+		fstream file;
+		
 
 	public:
 		//public stuff
+		FILE() {}
+		BOOL isFile(const wchar_t* filePath);
 		
 	};
 };
