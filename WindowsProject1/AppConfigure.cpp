@@ -30,21 +30,30 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 	if (!*buffCount) return 1;
 
 	size_t appDirSize = wcslen(this->appDir) + 1;
-	size_t totalSize = *buffCount + appDirSize + 1;
+	size_t totalSize = *buffCount + 1 + appDirSize + 1;
 
-	wchar_t* newStr = new wchar_t[totalSize];
-	memset(newStr, 0, totalSize);
+	wchar_t* newBuffer = new wchar_t[totalSize];
+	memset(newBuffer, 0, totalSize);
+	
 
-	errno_t err_cpy = wcscpy_s(newStr, *buffCount, *buffer);
+	errno_t err_cpy = wcscpy_s(newBuffer, *buffCount, *buffer);
 
-	errno_t err_cat = wcscat_s(newStr, totalSize, this->appDir);
+	errno_t err_cat = wcscat_s(newBuffer, totalSize, this->appDir);
 
-	*buffer = newStr;
+	//free up buffer
+	free(*buffer);
+
+
+	//reaclocation of memory for concatenation---------
+	//*buffer = (wchar_t*)realloc(*buffer, totalSize + 1 );
+	//errno_t err_cat = wcscat_s(*buffer, totalSize + 1, this->appDir);
+
+	*buffer = newBuffer;
 
 
 	//check if file exists
-	config::FILE f;
-	const BOOL file = f.isFile(newStr);
+	config::FILE f(*buffer);
+	const BOOL file = f.isFile();
 	if (!file) {
 		MessageBox(NULL,
 			(LPCWSTR)L"file does not exist.",
@@ -52,21 +61,54 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 			NULL);
 	}
 
-	//MessageBox(NULL,
-	//	(LPCWSTR)newStr,
-	//	(LPCWSTR)L"env",
-	//	NULL);
+	f.getKeyValue();
 
 	return 0;
 }
 
-BOOL config::FILE::isFile(const wchar_t* filePath)
+config::FILE::FILE(const wchar_t* path)
+{
+	size_t len = wcslen(path) + 1;
+	this->filePath = new wchar_t[len + 1];
+	errno_t err = wcscpy_s(this->filePath, len, path);
+}
+
+BOOL config::FILE::isFile()
 {
 	//converting wchar_t* to char*
-	_bstr_t b(filePath);
+	_bstr_t b(this->filePath);
 	const char* path = b;
 	//now check for file.
 	this->file.open(path, ios::in);
 	if (!this->file) return FALSE;
 	return TRUE;
+}
+
+errno_t config::FILE::getKeyValue()//wchar_t** destination, const wchar_t* key
+{
+	//if (!this->isFile()) return 1;
+
+	//close the stream if already open
+	this->CLOSE();
+
+	this->file.open(this->filePath, ios::in);
+	
+	string line;
+	getline(this->file, line);
+
+	wstring wstr = wstring(line.begin(), line.end());
+
+	MessageBox(NULL,
+		(LPCWSTR)wstr.c_str(),
+		(LPCWSTR)L"env",
+		NULL);
+
+
+	return 0;
+}
+
+errno_t config::FILE::CLOSE()
+{
+	this->file.close();
+	return 0;
 }

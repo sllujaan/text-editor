@@ -3,6 +3,7 @@
 #include<string>
 #include<fstream>
 #include<comdef.h>
+#include<regex>
 using namespace std;
 
 
@@ -25,12 +26,15 @@ namespace config {
 	private:
 		//private stuff
 		fstream file;
+		wchar_t* filePath;
 		
 
 	public:
 		//public stuff
-		FILE() {}
-		BOOL isFile(const wchar_t* filePath);
+		FILE(const wchar_t* path);
+		BOOL isFile();
+		errno_t getKeyValue();//wchar_t** destination, const wchar_t* key
+		errno_t CLOSE();
 		
 	};
 };

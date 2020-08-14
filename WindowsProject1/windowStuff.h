@@ -1151,7 +1151,7 @@ void handleDialolgBox(HWND hWnd) {
         NULL);
     
     //free up memory
-    free(path);
+    //free(path);
     
 
 }
