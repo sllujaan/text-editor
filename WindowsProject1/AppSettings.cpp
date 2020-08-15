@@ -285,15 +285,29 @@ LRESULT AppSettings::EC_fontFamily_WndProc(HWND hwnd, UINT message, WPARAM wPara
 
     switch (message)
     {
-    case WM_KEYDOWN:
+    //case WM_KEYDOWN:
+    //    switch (wParam)
+    //    {
+    //    case VK_RETURN:
+    //        //Do your stuff
+    //        OutputDebugStringW((LPCWSTR)L"Enter////\r\n");
+    //        break;  //or return 0; if you don't want to pass it further to def proc
+    //        //If not your key, skip to default:
+    //    }
+    //    break;
+    case WM_KEYUP:
+        
         switch (wParam)
         {
         case VK_RETURN:
             //Do your stuff
             OutputDebugStringW((LPCWSTR)L"Enter////\r\n");
+            pThis->handleSearchControls((HWND)lParam);
             break;  //or return 0; if you don't want to pass it further to def proc
             //If not your key, skip to default:
         }
+        break;
+
     default:
         OutputDebugStringW((LPCWSTR)L"default/////\r\n");
         return CallWindowProc(pThis->oldProc_EC_fontFamily, hwnd, message, wParam, lParam);
@@ -802,6 +816,33 @@ LPCWSTR AppSettings::getSelectedFontFamily()
     SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
 
     return itemText;
+}
+
+void AppSettings::handleSearchControls(HWND hWnd)
+{
+    ////if (hWnd == this->hWndEditControlFontStyles) {
+    //    //get main window text lenght--
+    //    const int size = GetWindowTextLength(this->hWndEditControlFontStyles);
+    //    //wchar_t* data = new wchar_t[size + 1];
+    //    LPCWSTR data = new WCHAR[size + 1];
+
+    //    GetWindowText(this->hWndEditControlFontStyles, (LPWSTR)data, size + 1);
+
+    //    MessageBox(
+    //        this->hWndSettings,
+    //        (LPCWSTR)data,
+    //        (LPCWSTR)L"search",
+    //        MB_OK
+    //    );
+    ////}
+
+    const int size = GetWindowTextLength(this->hWndSettings);
+
+    LOG(L"searhing.....");
+    LOG_INT(size);
+
+    //delete data;
+
 }
 
 void AppSettings::setSettings(size_t fontSize, LPCWSTR fontFamily, LPCWSTR fontSyle)

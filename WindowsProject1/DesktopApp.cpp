@@ -22,7 +22,12 @@ WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box
 
 //global sub windows instances---
 AppSettings* settings;
-Search* search;
+Search* _search_app;
+
+#ifndef LOG 
+#define LOG(x) OutputDebugStringW((LPCWSTR)x) \
+			;OutputDebugStringW((LPCWSTR)L"\r\n") //for new line
+#endif // !LOG(x)
 
 
 
@@ -164,8 +169,8 @@ int CALLBACK WinMain(
     settings->registerWindow();
     settings->setSettings(50, L"Times", L"italic");
 
-    search = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
-    search->registerWindow();
+    _search_app = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
+    _search_app->registerWindow();
 
     // The parameters to ShowWindow explained:
     // hWnd: the value returned from CreateWindow
@@ -272,6 +277,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
     case WM_CREATE:
+        LOG(L"window created......");
         handleCenterWindow(hWnd);
         //handleButton(hWnd);
         //handleNewWidow(hWnd);

@@ -183,7 +183,7 @@ BOOL CALLBACK GoToProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 void handleSearchFile(HWND hWnd) {
-    search->initWindow();
+    _search_app->initWindow();
 }
 
 

@@ -2,8 +2,29 @@
 #include<Windows.h>
 #include<CommCtrl.h>
 #include <string>
+using namespace std;
 
 #define IDM_CODE_SAMPLES 0x3e0f
+
+
+//inline void logNumValue(double number) {
+//	wstring ws = to_wstring(number);
+//	OutputDebugStringW((LPCWSTR)ws.c_str());
+//	OutputDebugStringW((LPCWSTR)L"\r\n"); //for new line
+//}
+
+#ifndef LOG 
+	#define LOG(x) OutputDebugStringW((LPCWSTR)x); \
+			OutputDebugStringW((LPCWSTR)L"\r\n") //for new line
+#endif // !LOG(x)
+
+#ifndef LOG_INT 
+#define LOG_INT(x) \
+	wstring ws = to_wstring(x); \
+	OutputDebugStringW((LPCWSTR)ws.c_str()); \
+	OutputDebugStringW((LPCWSTR)L"\r\n"); //for new line
+#endif // !LOG_INT 
+
 
 
 
@@ -74,6 +95,8 @@ private:
 	void createListBox_FontStyles();
 	size_t getFontSizeSampleText();
 	LPCWSTR getSelectedFontFamily();
+
+	void handleSearchControls(HWND hWnd);
 	
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
