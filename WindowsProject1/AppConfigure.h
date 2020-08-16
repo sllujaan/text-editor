@@ -39,6 +39,7 @@ while (0);
 
 
 
+
 class appConfig {
 
 private:
@@ -60,15 +61,16 @@ namespace config {
 		fstream file;
 		wchar_t* filePath;
 		string fileText;
+		string readText();
 		
 
 	public:
 		//public stuff
 		FILE(const wchar_t* path);
 		BOOL isFile();
-		errno_t getKeyValue(string key);//wchar_t** destination, const wchar_t* key
+		errno_t getKeyValue(string key, int* value);//wchar_t** destination, const wchar_t* key
 		errno_t CLOSE();
-		string readText();
+		wstring getText();
 		
 	};
 };
