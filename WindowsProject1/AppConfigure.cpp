@@ -61,6 +61,8 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 			NULL);
 	}
 
+
+	//read key value.
 	f.getKeyValue();
 
 	return 0;
@@ -93,8 +95,31 @@ errno_t config::FILE::getKeyValue()//wchar_t** destination, const wchar_t* key
 
 	this->file.open(this->filePath, ios::in);
 	
-	string line;
-	getline(this->file, line);
+	string line = "        fontSize      = 10 \n;";
+	//getline(this->file, line);
+
+	//remove all white spaces--
+	regex reg_spaces("\\s");
+	line = regex_replace(line, reg_spaces, "");
+	LOG_STR(line);
+	
+
+	//check if valid kay pair values--
+	regex reg_valid("fontSize=\\d{1,2};", regex_constants::icase);
+	regex reg_digits("[a-zA-Z=]+|;");
+	if (regex_match(line, reg_valid)) {
+		LOG_WCHAR(L"valid expression");
+		string digits = regex_replace(line, reg_digits, "");
+		//LOG_STR(digits);
+		
+		INT num = stoi(digits);
+		LOG_INT(num);
+
+		LOG_STR(line);
+	}
+
+	
+
 
 	wstring wstr = wstring(line.begin(), line.end());
 
