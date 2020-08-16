@@ -59,14 +59,16 @@ namespace config {
 		//private stuff
 		fstream file;
 		wchar_t* filePath;
+		string fileText;
 		
 
 	public:
 		//public stuff
 		FILE(const wchar_t* path);
 		BOOL isFile();
-		errno_t getKeyValue();//wchar_t** destination, const wchar_t* key
+		errno_t getKeyValue(string key);//wchar_t** destination, const wchar_t* key
 		errno_t CLOSE();
+		string readText();
 		
 	};
 };

@@ -73,6 +73,9 @@ config::FILE::FILE(const wchar_t* path)
 	size_t len = wcslen(path) + 1;
 	this->filePath = new wchar_t[len + 1];
 	errno_t err = wcscpy_s(this->filePath, len, path);
+
+	//read text and store it as attribute variable
+	this->readText();
 }
 
 BOOL config::FILE::isFile()
@@ -86,14 +89,12 @@ BOOL config::FILE::isFile()
 	return TRUE;
 }
 
-errno_t config::FILE::getKeyValue()//wchar_t** destination, const wchar_t* key
+errno_t config::FILE::getKeyValue(string key)//wchar_t** destination, const wchar_t* key
 {
-	//if (!this->isFile()) return 1;
+	if (!this->isFile()) return 1;
 
 	//close the stream if already open
 	this->CLOSE();
-
-	this->file.open(this->filePath, ios::in);
 	
 	string line = "        fontSize      = 10 \n;";
 	//getline(this->file, line);
@@ -136,4 +137,24 @@ errno_t config::FILE::CLOSE()
 {
 	this->file.close();
 	return 0;
+}
+
+string config::FILE::readText()
+{
+	if (!this->isFile()) return nullptr;
+
+	//close the stream if already open
+	this->CLOSE();
+
+	this->file.open(this->filePath, ios::in);
+
+	string wholeText;
+	string lineText;
+
+	while (getline(this->file, lineText)) {
+		wholeText = lineText + "\n";
+	}
+
+	this->fileText = wholeText;
+	return wholeText;
 }
