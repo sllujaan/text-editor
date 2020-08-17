@@ -67,16 +67,11 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 
 	//f.getText();
 	int value;
-	errno_t err_val = f.getKeyValue("fontSize", &value);
+	errno_t err_val = f.getKeyValueTemp("fontSizeIndex", &value);
 	if (!err_val) {
 		LOG_WCHAR(L"key value found =>>");
 		LOG_INT(value);
 	}
-
-	MessageBox(NULL,
-		(LPCWSTR)f.getText().c_str(),
-		(LPCWSTR)L"text---",
-		NULL);
 
 	return 0;
 }
@@ -108,6 +103,7 @@ BOOL config::FILE::isFile()
 
 errno_t config::FILE::getKeyValue(string key, int* value)//wchar_t** destination, const wchar_t* key
 {
+
 	if (!this->isFile()) return 1;
 
 	//close the stream if already open
@@ -124,13 +120,17 @@ errno_t config::FILE::getKeyValue(string key, int* value)//wchar_t** destination
 	
 
 	//check if valid kay pair values--
-	string str_reg_valid = key + "=\\d{1,2};";
+	string str_reg_valid = ".*("+ key +"=\\d{1,2};).*";
 	LOG_STR(str_reg_valid);
 	regex reg_valid(str_reg_valid, regex_constants::icase);
 	regex reg_digits("[a-zA-Z=]+|;");
 	
 	if (regex_match(text, reg_valid)) {
 		LOG_WCHAR(L"valid expression");
+		
+		//take the valid expression from text
+		
+
 		string digits = regex_replace(text, reg_digits, "");
 		//LOG_STR(digits);
 		
@@ -169,6 +169,22 @@ wstring config::FILE::getText()
 	//converting string to wstring
 	wstring ws = wstring(this->fileText.begin(), this->fileText.end());
 	return ws;
+}
+
+errno_t config::FILE::getKeyValueTemp(string key, int* value)
+{
+	if (key == "fontSizeIndex") { *value = 5; return 0; } //0 is no error
+	if (key == "fontFamilyIndex") { *value = 7; return 0; }//0 is no error
+	if (key == "fontStyleIndex") { *value = 3; return 0; }//0 is no error
+	return 1; //1 is error
+}
+
+errno_t config::FILE::initReadConfigKeys()
+{
+	errno_t err = 0;
+	this->getKeyValueTemp(this->_key_fSize, &this->fontSizeIndex);
+	this->getKeyValueTemp(this->_key_fFamily, &this->fontFamilyIndex);
+	this->getKeyValueTemp(this->_key_fStyle, &this->fontStyleIndex);
 }
 
 string config::FILE::readText()
