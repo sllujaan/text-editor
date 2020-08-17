@@ -1149,9 +1149,11 @@ void handleDialolgBox(HWND hWnd) {
         (LPCWSTR)path,
         _T("env"),
         NULL);
+
+    
     
     //free up memory
-    //free(path);
+    free(path);
     
 
 }
@@ -1235,6 +1237,30 @@ void onDropFileSingle(HWND hWnd, HDROP hdrop) {
 
     // Free up memory.
     DragFinish(hdrop);
+
+}
+
+void handleAppConfiguration()
+{
+    
+
+    appConfig ac;
+    wchar_t* path;
+    size_t size;
+
+    errno_t err = ac.getAppConfigPath_secure(&path, &size);
+
+    if (err) {
+        MessageBox(NULL,
+            (LPCWSTR)L"Failed to read environment variable.",
+            _T("env"),
+            NULL);
+        return;
+    }
+
+    config::FILE file(path);
+    //free up memory
+    free(path);
 
 }
 

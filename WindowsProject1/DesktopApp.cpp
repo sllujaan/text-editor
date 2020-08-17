@@ -21,8 +21,12 @@ HWND    hwndMain;
 WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box
 
 //global sub windows instances---
+
 AppSettings* settings;
 Search* _search_app;
+config::FILE _config_file;
+void handleAppConfiguration();
+
 
 #ifndef LOG 
 #define LOG(x) OutputDebugStringW((LPCWSTR)x) \
@@ -167,8 +171,8 @@ int CALLBACK WinMain(
     //registering component windows--
     settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
     settings->registerWindow();
+    
     settings->setSettings(50, L"Times", L"italic");
-
     _search_app = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
     _search_app->registerWindow();
 

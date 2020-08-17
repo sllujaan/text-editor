@@ -66,12 +66,18 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 	//f.getKeyValue();
 
 	//f.getText();
-	int value;
-	errno_t err_val = f.getKeyValueTemp("fontSizeIndex", &value);
+	//int value;
+	/*errno_t err_val = f.getKeyValueTemp("fontSizeIndex", &value);
 	if (!err_val) {
 		LOG_WCHAR(L"key value found =>>");
 		LOG_INT(value);
+	}*/
+
+	errno_t err_config = f.initReadConfigKeys();
+	if (!err_config) {
+		LOG_WCHAR(L"config success =>>");
 	}
+
 
 	return 0;
 }
@@ -88,6 +94,8 @@ config::FILE::FILE(const wchar_t* path)
 
 BOOL config::FILE::isFile()
 {
+	if (this->filePath == NULL) return FALSE;
+	
 	//close the stream if already open by other function
 	this->CLOSE();
 
@@ -182,9 +190,19 @@ errno_t config::FILE::getKeyValueTemp(string key, int* value)
 errno_t config::FILE::initReadConfigKeys()
 {
 	errno_t err = 0;
-	this->getKeyValueTemp(this->_key_fSize, &this->fontSizeIndex);
-	this->getKeyValueTemp(this->_key_fFamily, &this->fontFamilyIndex);
-	this->getKeyValueTemp(this->_key_fStyle, &this->fontStyleIndex);
+	if(!this->isFile()) return ERROR_CONFIG;
+	err = this->getKeyValueTemp(this->_key_fSize, &this->fontSizeIndex); if (err) { this->resetConfigKeys();return ERROR_CONFIG; };
+	err = this->getKeyValueTemp(this->_key_fFamily, &this->fontFamilyIndex); if (err) { this->resetConfigKeys();return ERROR_CONFIG; };
+	err = this->getKeyValueTemp(this->_key_fStyle, &this->fontStyleIndex); if (err) { this->resetConfigKeys();return ERROR_CONFIG; };
+
+	return SUCCESS_CONFIG;
+}
+
+void config::FILE::resetConfigKeys()
+{
+	this->_key_fSize = -1;
+	this->_key_fFamily = -1;
+	this->_key_fStyle = -1;
 }
 
 string config::FILE::readText()

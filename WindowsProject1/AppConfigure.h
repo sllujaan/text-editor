@@ -6,6 +6,9 @@
 #include<regex>
 using namespace std;
 
+#define ERROR_CONFIG 1
+#define SUCCESS_CONFIG 0
+
 
 
 
@@ -79,12 +82,14 @@ namespace config {
 	public:
 		//public stuff
 		FILE(const wchar_t* path);
+		FILE() {}
 		BOOL isFile();
 		errno_t getKeyValue(string key, int* value);//wchar_t** destination, const wchar_t* key
 		errno_t CLOSE();
 		wstring getText();
 		errno_t getKeyValueTemp(string key, int* value);
 		errno_t initReadConfigKeys();
+		void resetConfigKeys();
 
 	};
 };
