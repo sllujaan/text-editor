@@ -29,6 +29,18 @@ void AppSettings::initWindow()
     this->createListBox_FontStyles();
 }
 
+void AppSettings::setSettings(size_t fonstSizeIndex, size_t fontFamilyIndex, size_t fontSyleIndex)
+{
+
+    //1. validate parameters indexs with listbox total index items.
+    this->isValidIndex(this->_fFamilyTotalItems, fonstSizeIndex);
+
+    //2. if step 1 is true then assgin them as properties.
+    this->_fSizeIndex = fonstSizeIndex;
+    this->_fFamilyIndex = fontFamilyIndex;
+    this->_fStyleIndex = fontSyleIndex;
+}
+
 AppSettings::~AppSettings()
 {
 
@@ -610,7 +622,7 @@ void AppSettings::initListViewBox()
     }
 
     SendMessage(this->hWndListBox_FontSize, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-    SendMessage(this->hWndListBox_FontSize, LB_SETCURSEL, (size_t)this->fontSize-8, 0);
+    SendMessage(this->hWndListBox_FontSize, LB_SETCURSEL, this->_fSizeIndex, 0);
     SetFocus(this->hWndListBox_FontSize);
 }
 
@@ -772,16 +784,16 @@ void AppSettings::createListBox_FontStyles()
 
 
     //data for font families-----------
-    LPCWSTR fontFamilies[] = {
+    /*LPCWSTR fontFamilies[] = {
         L"Arial", L"Arial Black", L"Calibri", L"Cambria", L"Cambria Math", L"MS New Tai Lue",
         L"MS PhagsPa", L"Times New Roman", L"DaunPenh", L"Georgia Pro", L"Shonar Bangla", L"Vrinda",
         L"Simplified Arabic", L"Sakkal Majalla", L"Andalus", L"Yu Gothic", L"Tahoma", L"SimSun"
-    };
+    };*/
 
     //inserting items-----------------
     int pos = 0;
 
-    for (int i = 0; i < ARRAYSIZE(fontFamilies) ; i++) {
+    for (int i = 0; i < ARRAYSIZE(this->fontFamilies) ; i++) {
 
         pos = (int)SendMessage(this->hWndEditControlFontStyles, LB_ADDSTRING, 0,
             (LPARAM)fontFamilies[i]);
@@ -795,7 +807,7 @@ void AppSettings::createListBox_FontStyles()
     if(searchIndex == LB_ERR) searchIndex = 0;
 
     SendMessage(this->hWndEditControlFontStyles, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-    SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, (size_t)searchIndex, 0);
+    SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, this->_fFamilyIndex, 0);
     //SetFocus(this->hWndEditControlFontStyles);
 }
 
@@ -816,6 +828,20 @@ LPCWSTR AppSettings::getSelectedFontFamily()
     SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
 
     return itemText;
+}
+
+BOOL AppSettings::isValidIndex(size_t totalItems, size_t index)
+{
+    if (index < totalItems) return TRUE;
+    return FALSE;
+}
+
+void AppSettings::showConfigKeysCorrupted()
+{
+    MessageBox(this->hWndParent,
+        (LPCWSTR)L"Configuratin variables were corrupted!\r\nThe App has adapted default Settings.",
+        (LPCWSTR)"env",
+        MB_ICONERROR);
 }
 
 void AppSettings::handleSearchControls(HWND hWnd)
@@ -843,13 +869,6 @@ void AppSettings::handleSearchControls(HWND hWnd)
 
     //delete data;
 
-}
-
-void AppSettings::setSettings(size_t fontSize, LPCWSTR fontFamily, LPCWSTR fontSyle)
-{
-    this->fontSize = fontSize;
-    this->fontFamily = fontFamily;
-    this->fontSyle = fontSyle;
 }
 
 size_t AppSettings::getFontSize()

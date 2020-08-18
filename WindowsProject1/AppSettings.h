@@ -7,6 +7,42 @@ using namespace std;
 #define IDM_CODE_SAMPLES 0x3e0f
 
 
+#define ERROR_CONFIG 1
+#define SUCCESS_CONFIG 0
+
+
+
+
+#ifndef LOG_WCHAR 
+#define LOG_WCHAR(x) OutputDebugStringW((LPCWSTR)x); \
+			OutputDebugStringW((LPCWSTR)L"\r\n") //for new line
+#endif // !LOG(x)
+
+#ifndef LOG_INT 
+#define LOG_INT(x) \
+do { \
+	wstring ws = to_wstring(x); \
+	OutputDebugStringW((LPCWSTR)ws.c_str()); \
+	OutputDebugStringW((LPCWSTR)L"\r\n"); /*for new line*/ \
+} \
+while (0);
+#endif // !LOG_INT 
+
+#ifndef LOG_STR
+#define LOG_STR(x) \
+do { \
+	wstring ws = wstring(x.begin(), x.end()); \
+	OutputDebugStringW((LPCWSTR)ws.c_str()); \
+	OutputDebugStringW((LPCWSTR)L"\r\n"); /*for new line*/ \
+} \
+while (0);
+#endif // !LOG_STR
+
+
+
+
+
+
 //inline void logNumValue(double number) {
 //	wstring ws = to_wstring(number);
 //	OutputDebugStringW((LPCWSTR)ws.c_str());
@@ -29,8 +65,15 @@ using namespace std;
 
 
 class AppSettings {
-
+	//attributes--------
 private:
+
+	//data for font families-----------
+	LPCWSTR fontFamilies[18] = {
+		L"Arial", L"Arial Black", L"Calibri", L"Cambria", L"Cambria Math", L"MS New Tai Lue",
+		L"MS PhagsPa", L"Times New Roman", L"DaunPenh", L"Georgia Pro", L"Shonar Bangla", L"Vrinda",
+		L"Simplified Arabic", L"Sakkal Majalla", L"Andalus", L"Yu Gothic", L"Tahoma", L"SimSun"
+	};
 
 protected:
 	//private stuff
@@ -49,12 +92,23 @@ protected:
 	LPCWSTR fontFamily = L"Arial Black";
 	LPCWSTR fontSyle = L"Regular";
 
+	size_t _fSizeIndex = 0;
+	size_t _fFamilyIndex = 0;
+	size_t _fStyleIndex = 0;
+
+	size_t _fSizeTotalItems = 64;
+	size_t _fFamilyTotalItems = ARRAYSIZE(this->fontFamilies);
+	size_t _fStyleTotalItems = 5;
+
 	//const wchar_t* arr = L"ab";
 
 	const wchar_t* CLASS_NAME = L"Settings Window";
 
 	WNDPROC oldProc;
 	WNDPROC oldProc_EC_fontFamily;
+
+
+	//methods----------------
 
 public:
 	//public stuff
@@ -63,7 +117,7 @@ public:
 	~AppSettings();
 	void registerWindow();
 	void initWindow();
-	void setSettings(size_t fonstSize, LPCWSTR fontFamily, LPCWSTR fontSyle);
+	void setSettings(size_t fonstSizeIndex, size_t fontFamilyIndex, size_t fontSyleIndex);
 	size_t getFontSize();
 	LPCWSTR getFontFamily();
 	LPCWSTR getFontStyle();
@@ -95,6 +149,8 @@ private:
 	void createListBox_FontStyles();
 	size_t getFontSizeSampleText();
 	LPCWSTR getSelectedFontFamily();
+	BOOL isValidIndex(size_t totalItems, size_t index);
+	void showConfigKeysCorrupted();
 
 	void handleSearchControls(HWND hWnd);
 	

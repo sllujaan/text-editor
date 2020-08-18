@@ -171,8 +171,10 @@ int CALLBACK WinMain(
     //registering component windows--
     settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
     settings->registerWindow();
+
+
     
-    settings->setSettings(50, L"Times", L"italic");
+    settings->setSettings(1, 1, 1);
     _search_app = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
     _search_app->registerWindow();
 
