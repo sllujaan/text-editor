@@ -43,23 +43,7 @@ while (0);
 
 
 
-//inline void logNumValue(double number) {
-//	wstring ws = to_wstring(number);
-//	OutputDebugStringW((LPCWSTR)ws.c_str());
-//	OutputDebugStringW((LPCWSTR)L"\r\n"); //for new line
-//}
 
-#ifndef LOG 
-	#define LOG(x) OutputDebugStringW((LPCWSTR)x); \
-			OutputDebugStringW((LPCWSTR)L"\r\n") //for new line
-#endif // !LOG(x)
-
-#ifndef LOG_INT 
-#define LOG_INT(x) \
-	wstring ws = to_wstring(x); \
-	OutputDebugStringW((LPCWSTR)ws.c_str()); \
-	OutputDebugStringW((LPCWSTR)L"\r\n"); //for new line
-#endif // !LOG_INT 
 
 
 
@@ -96,7 +80,7 @@ protected:
 	size_t _fFamilyIndex = 0;
 	size_t _fStyleIndex = 0;
 
-	size_t _fSizeTotalItems = 64;
+	size_t _fSizeTotalItems = 65;
 	size_t _fFamilyTotalItems = ARRAYSIZE(this->fontFamilies);
 	size_t _fStyleTotalItems = 5;
 
@@ -127,7 +111,7 @@ private:
 	void createWindow();	
 	static void centerWindow(HWND hwnd);
 	void initListFontSize();
-	void createListView();
+	//void createListView();
 	void insertListViewItems(int cItems);
 	void initListView();
 	void createGroupBox();

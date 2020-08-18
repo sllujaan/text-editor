@@ -372,53 +372,53 @@ void AppSettings::initListFontSize()
 
 }
 
-void AppSettings::createListView()
-{
-    // CreateListView: Creates a list-view control in report view.
-    // Returns the handle to the new control
-    // TO DO:  The calling procedure should determine whether the handle is NULL, in case 
-    // of an error in creation.
-    //
-    // HINST hInst: The global handle to the applicadtion instance.
-    // HWND  hWndParent: The handle to the control's parent window. 
-    //
-
-    INITCOMMONCONTROLSEX icex;           // Structure for control initialization.
-    icex.dwICC = ICC_LISTVIEW_CLASSES;
-    InitCommonControlsEx(&icex);
-
-    RECT rcClient;     // The parent window's client area.
-
-    GetClientRect(this->hWndGroupBox, &rcClient);
-
-    // Create the list-view window in report view with label editing enabled.
-    HWND hWndListView = CreateWindow(WC_LISTVIEW,
-        L"List view",
-        WS_CHILD | WS_VISIBLE | LVS_LIST | WS_BORDER | LVS_SINGLESEL,
-        10, 20,
-        (rcClient.right - rcClient.left) - 20,
-        (rcClient.bottom - rcClient.top) - 30,
-        //100, 200,
-        this->hWndSettings,
-        (HMENU)IDM_CODE_SAMPLES,
-        this->hInst,
-        NULL);
-
-    
-
-    this->hwndListView = hWndListView;
-
-
-    /*this->oldProc = (WNDPROC)SetWindowLongPtr(this->hwndListView,
-        GWLP_WNDPROC, (LONG_PTR)this->SubClassListViewProc);*/
-
-    /*if (this->oldProc == 0) {
-        OutputDebugStringW((LPCWSTR)L"SetWindowLongPtr Failed \r\n");
-    }*/
-
-
-    
-}
+//void AppSettings::createListView()
+//{
+//    // CreateListView: Creates a list-view control in report view.
+//    // Returns the handle to the new control
+//    // TO DO:  The calling procedure should determine whether the handle is NULL, in case 
+//    // of an error in creation.
+//    //
+//    // HINST hInst: The global handle to the applicadtion instance.
+//    // HWND  hWndParent: The handle to the control's parent window. 
+//    //
+//
+//    INITCOMMONCONTROLSEX icex;           // Structure for control initialization.
+//    icex.dwICC = ICC_LISTVIEW_CLASSES;
+//    InitCommonControlsEx(&icex);
+//
+//    RECT rcClient;     // The parent window's client area.
+//
+//    GetClientRect(this->hWndGroupBox, &rcClient);
+//
+//    // Create the list-view window in report view with label editing enabled.
+//    HWND hWndListView = CreateWindow(WC_LISTVIEW,
+//        L"List view",
+//        WS_CHILD | WS_VISIBLE | LVS_LIST | WS_BORDER | LVS_SINGLESEL,
+//        10, 20,
+//        (rcClient.right - rcClient.left) - 20,
+//        (rcClient.bottom - rcClient.top) - 30,
+//        //100, 200,
+//        this->hWndSettings,
+//        (HMENU)IDM_CODE_SAMPLES,
+//        this->hInst,
+//        NULL);
+//
+//    
+//
+//    this->hwndListView = hWndListView;
+//
+//
+//    /*this->oldProc = (WNDPROC)SetWindowLongPtr(this->hwndListView,
+//        GWLP_WNDPROC, (LONG_PTR)this->SubClassListViewProc);*/
+//
+//    /*if (this->oldProc == 0) {
+//        OutputDebugStringW((LPCWSTR)L"SetWindowLongPtr Failed \r\n");
+//    }*/
+//
+//
+//    
+//}
 
 void AppSettings::insertListViewItems(int cItems)
 {
@@ -757,7 +757,7 @@ void AppSettings::createComboBox()
 
 void AppSettings::createEditControlFontStyles()
 {
-    HWND hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"text",
+    HWND hwndEdit = CreateWindowEx(0, L"EDIT", L"text",
         WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
         200, 10, 100, 22, this->hWndSettings, NULL, this->hInst, NULL);
 
@@ -864,10 +864,12 @@ void AppSettings::handleSearchControls(HWND hWnd)
     //    );
     ////}
 
-    const int size = GetWindowTextLength(this->hWndSettings);
+    LPWSTR text[50];
 
-    LOG(L"searhing.....");
-    LOG_INT(size);
+    GetWindowText(this->hWndEditControlFontStyles, (LPWSTR)text, 50);
+
+    LOG_WCHAR(L"searhing.....");
+    LOG_WCHAR(text);
 
     //delete data;
 
