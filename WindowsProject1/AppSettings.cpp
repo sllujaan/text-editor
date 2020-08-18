@@ -33,7 +33,9 @@ void AppSettings::setSettings(size_t fonstSizeIndex, size_t fontFamilyIndex, siz
 {
 
     //1. validate parameters indexs with listbox total index items.
-    this->isValidIndex(this->_fFamilyTotalItems, fonstSizeIndex);
+    if (!this->isValidIndex(this->_fSizeTotalItems, fonstSizeIndex)) return this->showConfigKeysCorrupted();
+    if (!this->isValidIndex(this->_fFamilyTotalItems, fontFamilyIndex)) return this->showConfigKeysCorrupted();
+    if (!this->isValidIndex(this->_fStyleTotalItems, fontSyleIndex)) return this->showConfigKeysCorrupted();
 
     //2. if step 1 is true then assgin them as properties.
     this->_fSizeIndex = fonstSizeIndex;
@@ -839,9 +841,9 @@ BOOL AppSettings::isValidIndex(size_t totalItems, size_t index)
 void AppSettings::showConfigKeysCorrupted()
 {
     MessageBox(this->hWndParent,
-        (LPCWSTR)L"Configuratin variables were corrupted!\r\nThe App has adapted default Settings.",
-        (LPCWSTR)"env",
-        MB_ICONERROR);
+        (LPCWSTR)L"Configuratin variables were corrupted! The App has adapted default Settings.",
+        (LPCWSTR)L"App Configuration",
+        MB_ICONEXCLAMATION);
 }
 
 void AppSettings::handleSearchControls(HWND hWnd)

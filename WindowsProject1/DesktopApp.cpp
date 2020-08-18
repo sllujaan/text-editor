@@ -174,7 +174,7 @@ int CALLBACK WinMain(
 
 
     
-    settings->setSettings(1, 1, 1);
+    settings->setSettings(5, 17, 0);
     _search_app = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
     _search_app->registerWindow();
 
