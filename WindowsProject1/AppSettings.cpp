@@ -2,7 +2,7 @@
 #include "AppSettings.h"
 
 
-AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow)
+AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow) : WindowControls(this->hWndSettings, hInstance)
 {
     this->hWndParent = hWnd;
     this->hInst = hInstance;
@@ -27,6 +27,8 @@ void AppSettings::initWindow()
 
     this->createEditControlFontStyles();
     this->createListBox_FontStyles();
+
+    this->createEditControlTest();
 }
 
 void AppSettings::setSettings(size_t fonstSizeIndex, size_t fontFamilyIndex, size_t fontSyleIndex)
@@ -325,6 +327,51 @@ LRESULT AppSettings::EC_fontFamily_WndProc(HWND hwnd, UINT message, WPARAM wPara
     default:
         OutputDebugStringW((LPCWSTR)L"default/////\r\n");
         return CallWindowProc(pThis->oldProc_EC_fontFamily, hwnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
+}
+
+LRESULT AppSettings::_ec_test_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+
+    AppSettings* pThis;
+
+    // Recover the "this" pointer from where our WM_NCCREATE handler
+        // stashed it.
+    pThis = reinterpret_cast<AppSettings*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+    switch (message)
+    {
+        //case WM_KEYDOWN:
+        //    switch (wParam)
+        //    {
+        //    case VK_RETURN:
+        //        //Do your stuff
+        //        OutputDebugStringW((LPCWSTR)L"Enter////\r\n");
+        //        break;  //or return 0; if you don't want to pass it further to def proc
+        //        //If not your key, skip to default:
+        //    }
+        //    break;
+    case WM_KEYUP:
+
+        switch (wParam)
+        {
+        case VK_RETURN:
+            //Do your stuff
+            OutputDebugStringW((LPCWSTR)L"Enter$$$\r\n");
+            
+            int len = GetWindowTextLength(pThis->_hwnd_editControlTest);
+            LOG_INT(len);
+
+            break;  //or return 0; if you don't want to pass it further to def proc
+            //If not your key, skip to default:
+        }
+        break;
+
+    default:
+        OutputDebugStringW((LPCWSTR)L"default$$$\r\n");
+        return CallWindowProc(pThis->_ec_test_oldProc, hwnd, message, wParam, lParam);
         break;
     }
 
@@ -709,17 +756,6 @@ HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int h
     return hwndGroupBox;
 }
 
-HFONT AppSettings::getFont(size_t size, LPCWSTR fontFamily)
-{
-    HFONT hFont = CreateFont(int(size), 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
-        OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-        DEFAULT_PITCH | FF_DONTCARE, fontFamily);
-
-    return hFont;
-}
-
-
-
 void AppSettings::createComboBox()
 {
 
@@ -875,6 +911,18 @@ void AppSettings::handleSearchControls(HWND hWnd)
 
 }
 
+void AppSettings::createEditControlTest()
+{
+    HWND hwndEdit = this->getEditControl(350, 100, 150, 18);
+    this->_hwnd_editControlTest = hwndEdit;
+
+    // Put the value in a safe place for future use
+    SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+
+    this->_ec_test_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_WNDPROC, (LONG_PTR)this->_ec_test_proc);
+
+}
+
 size_t AppSettings::getFontSize()
 {
     return this->fontSize;
@@ -926,6 +974,8 @@ void AppSettings::createWindow()
 
 
     this->hWndSettings = hwnd;
+    //give this handle to base class i.e. (WindowControls).
+    this->setWindowControlsHandle(this->hWndSettings);
 
 }
 

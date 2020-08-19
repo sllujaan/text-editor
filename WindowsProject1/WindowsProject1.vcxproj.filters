@@ -19,6 +19,9 @@
     <Filter Include="Header Files\AppConfiguration">
       <UniqueIdentifier>{861fdd90-95bc-44df-90d6-3f781e38369d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AppSettings">
+      <UniqueIdentifier>{1af52bc4-35d4-4d17-9f76-b359e9caf912}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,9 +51,6 @@
     <ClInclude Include="debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AppSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -62,6 +62,12 @@
     </ClInclude>
     <ClInclude Include="AppConfigure.h">
       <Filter>Header Files\AppConfiguration</Filter>
+    </ClInclude>
+    <ClInclude Include="AppSettings.h">
+      <Filter>AppSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowControls.h">
+      <Filter>AppSettings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +87,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppConfigure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowControls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -162,6 +162,7 @@
     <ClInclude Include="settingsWindow.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Validator.h" />
+    <ClInclude Include="WindowControls.h" />
     <ClInclude Include="WindowsProject1.h" />
     <ClInclude Include="windowStuff.h" />
     <ClInclude Include="windwManager.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="DesktopApp.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="Validator.cpp" />
+    <ClCompile Include="WindowControls.cpp" />
     <ClCompile Include="windwManager.cpp" />
   </ItemGroup>
   <ItemGroup>

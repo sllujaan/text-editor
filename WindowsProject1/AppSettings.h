@@ -2,6 +2,7 @@
 #include<Windows.h>
 #include<CommCtrl.h>
 #include <string>
+#include"WindowControls.h"
 using namespace std;
 
 #define IDM_CODE_SAMPLES 0x3e0f
@@ -48,7 +49,7 @@ while (0);
 
 
 
-class AppSettings {
+class AppSettings: public WindowControls {
 	//attributes--------
 private:
 
@@ -72,6 +73,9 @@ protected:
 	int nCmdShowGlobal;
 	HWND hWndListBox_FontSize;
 
+	//test edit control
+	HWND _hwnd_editControlTest;
+	WNDPROC _ec_test_oldProc;
 	size_t fontSize = 14;
 	LPCWSTR fontFamily = L"Arial Black";
 	LPCWSTR fontSyle = L"Regular";
@@ -97,7 +101,7 @@ protected:
 public:
 	//public stuff
 	AppSettings(HWND hWnd, HINSTANCE hInst, int nCmdShowGlobal);
-	AppSettings() {};
+	AppSettings() :WindowControls(NULL, NULL) {};
 	~AppSettings();
 	void registerWindow();
 	void initWindow();
@@ -137,11 +141,11 @@ private:
 	void showConfigKeysCorrupted();
 
 	void handleSearchControls(HWND hWnd);
+	void createEditControlTest();
 	
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
 
-	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Microsoft New Tai Lue");
 
 
 protected:
@@ -155,4 +159,6 @@ protected:
 	static LRESULT CALLBACK LB_FontSize_WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 
 	static LRESULT CALLBACK EC_fontFamily_WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //EC is edit control
+
+	static LRESULT CALLBACK _ec_test_proc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //EC is edit control
 };
