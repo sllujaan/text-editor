@@ -20,7 +20,7 @@ HWND WindowControls::getEditControl(size_t posX, size_t posY, size_t width, size
     if (!this->canCreateWindow()) { this->showWindowCreationError(); return NULL; }
 
     HWND hwndEdit = CreateWindowEx(0, L"EDIT", L"text",
-        WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
+        WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_BORDER,
         (int)posX, (int)posY, (int)width, (int)height, this->_hwndSelf, NULL, this->_hInst, NULL);
 
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);

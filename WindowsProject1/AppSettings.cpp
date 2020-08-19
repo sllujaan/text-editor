@@ -29,6 +29,10 @@ void AppSettings::initWindow()
     this->createListBox_FontStyles();
 
     this->createEditControlTest();
+
+
+    //when every thing is ready start window
+    ShowWindow(this->hWndSettings, this->nCmdShowGlobal);
 }
 
 void AppSettings::setSettings(size_t fonstSizeIndex, size_t fontFamilyIndex, size_t fontSyleIndex)
@@ -67,7 +71,7 @@ void AppSettings::registerWindow()
     //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
@@ -360,9 +364,7 @@ LRESULT AppSettings::_ec_test_proc(HWND hwnd, UINT message, WPARAM wParam, LPARA
         case VK_RETURN:
             //Do your stuff
             OutputDebugStringW((LPCWSTR)L"Enter$$$\r\n");
-            
-            int len = GetWindowTextLength(pThis->_hwnd_editControlTest);
-            LOG_INT(len);
+            pThis->handleSearchControls(hwnd);
 
             break;  //or return 0; if you don't want to pass it further to def proc
             //If not your key, skip to default:
@@ -900,14 +902,19 @@ void AppSettings::handleSearchControls(HWND hWnd)
     //    );
     ////}
 
+    int len = GetWindowTextLength(hWnd); //this->_hwnd_editControlTest
+    LOG_INT(len);
+
     LPWSTR text[50];
 
-    GetWindowText(this->hWndEditControlFontStyles, (LPWSTR)text, 50);
+    GetWindowText(hWnd, (LPWSTR)text, 50);
+
+    //SendMessage(this->hWndEditControlFontStyles, LB_FINDSTRING, )
 
     LOG_WCHAR(L"searhing.....");
     LOG_WCHAR(text);
 
-    //delete data;
+    ////delete data;
 
 }
 
@@ -966,7 +973,7 @@ void AppSettings::createWindow()
         );
     }
 
-    ShowWindow(hwnd, this->nCmdShowGlobal);
+    //ShowWindow(hwnd, this->nCmdShowGlobal);
 
 
     //handleSettingsComboBoxWindow(hwnd);

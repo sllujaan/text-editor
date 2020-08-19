@@ -76,6 +76,8 @@ protected:
 	//test edit control
 	HWND _hwnd_editControlTest;
 	WNDPROC _ec_test_oldProc;
+
+
 	size_t fontSize = 14;
 	LPCWSTR fontFamily = L"Arial Black";
 	LPCWSTR fontSyle = L"Regular";

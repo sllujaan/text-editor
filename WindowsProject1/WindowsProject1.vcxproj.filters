@@ -69,6 +69,9 @@
     <ClInclude Include="WindowControls.h">
       <Filter>AppSettings</Filter>
     </ClInclude>
+    <ClInclude Include="AppSettingsProc.h">
+      <Filter>AppSettings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DesktopApp.cpp">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WindowControls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppSettingsProc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
