@@ -71,7 +71,7 @@ void AppSettings::registerWindow()
     //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
@@ -364,11 +364,12 @@ LRESULT AppSettings::_ec_test_proc(HWND hwnd, UINT message, WPARAM wParam, LPARA
         case VK_RETURN:
             //Do your stuff
             OutputDebugStringW((LPCWSTR)L"Enter$$$\r\n");
-            pThis->handleSearchControls(hwnd);
+            //pThis->handleSearchControls(hwnd);
 
             break;  //or return 0; if you don't want to pass it further to def proc
             //If not your key, skip to default:
         }
+        pThis->handleSearchControls(hwnd);
         break;
 
     default:
@@ -909,10 +910,18 @@ void AppSettings::handleSearchControls(HWND hWnd)
 
     GetWindowText(hWnd, (LPWSTR)text, 50);
 
-    //SendMessage(this->hWndEditControlFontStyles, LB_FINDSTRING, )
+    LRESULT searchIndex = SendMessage(this->hWndEditControlFontStyles, LB_FINDSTRING, 0,  (LPARAM)text);
 
-    LOG_WCHAR(L"searhing.....");
-    LOG_WCHAR(text);
+    if (searchIndex != LB_ERR) {
+        SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, searchIndex, 0);
+        SendMessage(this->hWndEditControlFontStyles, LB_SETTOPINDEX, searchIndex, 0);
+    }
+    else {
+        SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, -1, 0);
+    }
+
+    LOG_WCHAR(L"searchIndex ==>");
+    LOG_INT(searchIndex);
 
     ////delete data;
 
