@@ -12,6 +12,7 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow) : WindowC
 void AppSettings::initWindow()
 {
     this->createWindow();
+
     this->createGroupBox();
     //this->createListView();
 
@@ -71,7 +72,7 @@ void AppSettings::registerWindow()
     //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
@@ -796,13 +797,8 @@ void AppSettings::createComboBox()
 
 void AppSettings::createEditControlFontStyles()
 {
-    HWND hwndEdit = CreateWindowEx(0, L"EDIT", L"text",
-        WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
-        200, 10, 100, 22, this->hWndSettings, NULL, this->hInst, NULL);
-
+    HWND hwndEdit = this->getEditControl(200, 10, 100, 20);
     this->hWndEditControlFontStyles = hwndEdit;
-    SendMessage(this->hWndEditControlFontStyles, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-
     
     // Put the value in a safe place for future use
     SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
@@ -904,7 +900,7 @@ void AppSettings::handleSearchControls(HWND hWnd)
     ////}
 
     int len = GetWindowTextLength(hWnd); //this->_hwnd_editControlTest
-    LOG_INT(len);
+    //LOG_INT(len);
 
     LPWSTR text[50];
 
@@ -920,8 +916,8 @@ void AppSettings::handleSearchControls(HWND hWnd)
         SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, -1, 0);
     }
 
-    LOG_WCHAR(L"searchIndex ==>");
-    LOG_INT(searchIndex);
+    //LOG_WCHAR(L"searchIndex ==>");
+    //LOG_INT(searchIndex);
 
     ////delete data;
 
@@ -929,7 +925,7 @@ void AppSettings::handleSearchControls(HWND hWnd)
 
 void AppSettings::createEditControlTest()
 {
-    HWND hwndEdit = this->getEditControl(350, 100, 150, 18);
+    HWND hwndEdit = this->getEditControl(350, 100, 150, 20);
     this->_hwnd_editControlTest = hwndEdit;
 
     // Put the value in a safe place for future use

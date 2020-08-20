@@ -2,6 +2,7 @@
 #include<Windows.h>
 #include<CommCtrl.h>
 #include <string>
+#include<thread>
 #include"WindowControls.h"
 using namespace std;
 
@@ -52,6 +53,11 @@ while (0);
 class AppSettings: public WindowControls {
 	//attributes--------
 private:
+	thread thread1;
+	thread thread2;
+	thread thread3;
+	thread thread4;
+	thread thread5;
 
 	//data for font families-----------
 	LPCWSTR fontFamilies[18] = {
