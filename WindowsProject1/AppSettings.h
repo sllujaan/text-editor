@@ -53,11 +53,6 @@ while (0);
 class AppSettings: public WindowControls {
 	//attributes--------
 private:
-	thread thread1;
-	thread thread2;
-	thread thread3;
-	thread thread4;
-	thread thread5;
 
 	//data for font families-----------
 	LPCWSTR fontFamilies[18] = {
@@ -84,9 +79,7 @@ protected:
 	WNDPROC _ec_test_oldProc;
 
 
-	size_t fontSize = 14;
-	LPCWSTR fontFamily = L"Arial Black";
-	LPCWSTR fontSyle = L"Regular";
+	
 
 	size_t _fSizeIndex = 0;
 	size_t _fFamilyIndex = 0;
@@ -138,7 +131,6 @@ private:
 	void initListViewBox();
 	void setSampleTextFontSize(size_t size);
 	void handleListBoxSelectionChange(HWND hWnd);
-	HWND getListBox(HWND hWndParent, int posX, int posY, int width, int height);
 	//fontStyles methods--
 	void createComboBox();
 	void createEditControlFontStyles();
@@ -150,6 +142,9 @@ private:
 
 	void handleSearchControls(HWND hWnd);
 	void createEditControlTest();
+	void _createListBox_fontStyles();
+	//template<size_t size>
+	//errno_t _insertItems_listBox(HWND hWnd, int select, const wchar_t* (&itemsArray) [size]);
 	
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
@@ -170,3 +165,4 @@ protected:
 
 	static LRESULT CALLBACK _ec_test_proc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //EC is edit control
 };
+

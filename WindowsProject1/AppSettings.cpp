@@ -31,6 +31,8 @@ void AppSettings::initWindow()
 
     this->createEditControlTest();
 
+    this->_createListBox_fontStyles();
+
 
     //when every thing is ready start window
     ShowWindow(this->hWndSettings, this->nCmdShowGlobal);
@@ -727,18 +729,6 @@ void AppSettings::handleListBoxSelectionChange(HWND hWnd)
     
 }
 
-HWND AppSettings::getListBox(HWND hWndParent, int posX, int posY, int width, int height)
-{
-    // Adding a ListBox.
-    HWND hListBox = CreateWindowEx(WS_EX_CLIENTEDGE
-        , L"LISTBOX", NULL
-        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL | LBS_NOTIFY,
-        posX, posY, width, height,
-        hWndParent, NULL, this->hInst, NULL);
-    
-    return hListBox;
-}
-
 HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int height)
 {
     HWND hwndGroupBox = CreateWindowEx(
@@ -935,6 +925,23 @@ void AppSettings::createEditControlTest()
 
 }
 
+void AppSettings::_createListBox_fontStyles()
+{
+    int posX = 400;
+    int posY = 150;
+    int width = 100;
+    int height = 200;
+
+    // Adding a ListBox.
+    HWND hListBox = this->getListBox(this->hWndSettings, posX, posY, width, height);
+
+    //const char* arr[] = { "abc", "def" };
+
+    //this->_insertItems_listBox(hListBox, 0, this->fontFamilies);
+
+
+}
+
 size_t AppSettings::getFontSize()
 {
     return this->fontSize;
@@ -991,3 +998,27 @@ void AppSettings::createWindow()
 
 }
 
+//template<size_t size>
+//inline errno_t AppSettings::_insertItems_listBox(HWND hwnd, int select, const wchar_t* (&itemsArray)[size])
+//{
+//
+//    int pos = 0;
+//    
+//    for (int i = 0; i < ARRAYSIZE(itemsArray); i++) {
+//    
+//        pos = (int)SendMessage(hwnd, LB_ADDSTRING, 0,
+//            (LPARAM)itemsArray[i]);
+//    
+//        //set font for indidual item----
+//    
+//    }
+//    
+//    //find string from list box--
+//    LRESULT searchIndex = SendMessage(hwnd, LB_FINDSTRING, -1, (LPARAM)this->fontFamily);
+//    if (searchIndex == LB_ERR) searchIndex = 0;
+//    
+//    SendMessage(hwnd, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+//    SendMessage(hwnd, LB_SETCURSEL, select, 0);
+//    
+//    return 0;
+//}

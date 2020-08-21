@@ -41,6 +41,42 @@ HFONT WindowControls::getFont(size_t size, LPCWSTR fontFamily)
     return hFont;
 }
 
+HWND WindowControls::getListBox(HWND hWndParent, int posX, int posY, int width, int height)
+{
+    // Adding a ListBox.
+    HWND hListBox = CreateWindowEx(WS_EX_CLIENTEDGE
+        , L"LISTBOX", NULL
+        , WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOVSCROLL | LBS_DISABLENOSCROLL | LBS_NOTIFY,
+        posX, posY, width, height,
+        hWndParent, NULL, this->_hInst, NULL);
+
+    return hListBox;
+}
+//
+//template<size_t size>
+//inline errno_t WindowControls::_insertItems_listBox(HWND hwnd, int select, const wchar_t* (&itemsArray)[size])
+//{
+//    int pos = 0;
+//
+//    for (int i = 0; i < ARRAYSIZE(itemsArray); i++) {
+//
+//        pos = (int)SendMessage(hwnd, LB_ADDSTRING, 0,
+//            (LPARAM)itemsArray[i]);
+//
+//        //set font for indidual item----
+//
+//    }
+//
+//    //find string from list box--
+//    LRESULT searchIndex = SendMessage(hwnd, LB_FINDSTRING, -1, (LPARAM)this->fontFamily);
+//    if (searchIndex == LB_ERR) searchIndex = 0;
+//
+//    SendMessage(hwnd, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+//    SendMessage(hwnd, LB_SETCURSEL, select, 0);
+//
+//    return 0;
+//}
+
 WindowControls::WindowControls(HWND hwndSelf, HINSTANCE hInst)
 {
     this->_hwndSelf = hwndSelf;
