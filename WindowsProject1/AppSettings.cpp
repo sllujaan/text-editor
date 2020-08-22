@@ -80,7 +80,7 @@ void AppSettings::registerWindow()
     //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
@@ -532,7 +532,7 @@ void AppSettings::createGroupBox()
 
 void AppSettings::createGroupBoxSample()
 {
-    HWND hwndGroupBox = this->getGroupBox(L"Sample", 10, 320, 300, 100);
+    HWND hwndGroupBox = this->getGroupBox(L"Sample", 15, 260, 330, 100);
 
     this->hWndGroupBoxSample = hwndGroupBox;
 }
@@ -758,20 +758,20 @@ HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int h
 
 void AppSettings::createOKButton()
 {
-    HWND hwndButton = this->getButton(this->hWndSettings, L"OK", UID_BUTTON_OK, 400, 350);
+    HWND hwndButton = this->getButton(this->hWndSettings, L"OK", UID_BUTTON_OK, 175, 370);
 
 }
 
 void AppSettings::createCancelButton()
 {
-    HWND hwndButton = this->getButton(this->hWndSettings, L"Cancel", UID_BUTTON_OK, 490, 350);
+    HWND hwndButton = this->getButton(this->hWndSettings, L"Cancel", UID_BUTTON_CANCEL, 265, 370);
 }
 
 void AppSettings::createStaticsControls()
 {
-    HWND hwndFontSize = this->getStatic(this->hWndSettings, L"Font Size", 15, 20);
-    HWND hwndFontStyle = this->getStatic(this->hWndSettings, L"Font Style", 130, 20);
-    HWND hwndFontFamily = this->getStatic(this->hWndSettings, L"Font Family", 245, 20);
+    HWND hwndFontSize = this->getStatic(this->hWndSettings, L"Font Size:", 15, 20);
+    HWND hwndFontStyle = this->getStatic(this->hWndSettings, L"Font Style:", 130, 20);
+    HWND hwndFontFamily = this->getStatic(this->hWndSettings, L"Font Family:", 245, 20);
 }
 
 void AppSettings::createEditControlFontSize()
@@ -1002,7 +1002,7 @@ void AppSettings::createWindow()
         WS_SYSMENU,            // Window style
 
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 650, 500,
+        CW_USEDEFAULT, CW_USEDEFAULT, 377, 442,
 
         this->hWndParent,       // Parent window    
         NULL,       // Menu
