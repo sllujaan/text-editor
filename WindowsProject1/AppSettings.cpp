@@ -123,6 +123,9 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         //disable parent window
         EnableWindow(this->hWndParent, FALSE);
         
+        //removing icon.
+        ::SendMessage(hwnd, WM_SETICON, 0, NULL);
+        ::SendMessage(hwnd, WM_SETICON, 1, NULL);
         break;
 
     case WM_COMMAND:
@@ -131,6 +134,9 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         {
         case IDM_CODE_SAMPLES:
             OutputDebugStringW((LPCWSTR)L"IDM_CODE_SAMPLES called____++++__\r\n");
+            break;
+        case UID_BUTTON_CANCEL:
+            SendMessage(hwnd, WM_CLOSE, 0, 0);
             break;
         default:
             break;
