@@ -937,7 +937,7 @@ void AppSettings::_createListBox_fontStyles()
 
     //const char* arr[] = { "abc", "def" };
 
-    //this->_insertItems_listBox(hListBox, 0, this->fontFamilies);
+    this->_insertItems_listBox(hListBox, 0, this->fontStyles);
 
 
 }
@@ -998,27 +998,27 @@ void AppSettings::createWindow()
 
 }
 
-//template<size_t size>
-//inline errno_t AppSettings::_insertItems_listBox(HWND hwnd, int select, const wchar_t* (&itemsArray)[size])
-//{
-//
-//    int pos = 0;
-//    
-//    for (int i = 0; i < ARRAYSIZE(itemsArray); i++) {
-//    
-//        pos = (int)SendMessage(hwnd, LB_ADDSTRING, 0,
-//            (LPARAM)itemsArray[i]);
-//    
-//        //set font for indidual item----
-//    
-//    }
-//    
-//    //find string from list box--
-//    LRESULT searchIndex = SendMessage(hwnd, LB_FINDSTRING, -1, (LPARAM)this->fontFamily);
-//    if (searchIndex == LB_ERR) searchIndex = 0;
-//    
-//    SendMessage(hwnd, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-//    SendMessage(hwnd, LB_SETCURSEL, select, 0);
-//    
-//    return 0;
-//}
+template<size_t size>
+inline errno_t AppSettings::_insertItems_listBox(HWND hwnd, int select, const wchar_t* (&itemsArray)[size])
+{
+
+    int pos = 0;
+    
+    for (int i = 0; i < ARRAYSIZE(itemsArray); i++) {
+    
+        pos = (int)SendMessage(hwnd, LB_ADDSTRING, 0,
+            (LPARAM)itemsArray[i]);
+    
+        //set font for indidual item----
+    
+    }
+    
+    //find string from list box--
+    LRESULT searchIndex = SendMessage(hwnd, LB_FINDSTRING, -1, (LPARAM)this->fontFamily);
+    if (searchIndex == LB_ERR) searchIndex = 0;
+    
+    SendMessage(hwnd, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+    SendMessage(hwnd, LB_SETCURSEL, select, 0);
+    
+    return 0;
+}

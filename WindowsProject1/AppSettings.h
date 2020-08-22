@@ -61,6 +61,11 @@ private:
 		L"Simplified Arabic", L"Sakkal Majalla", L"Andalus", L"Yu Gothic", L"Tahoma", L"SimSun"
 	};
 
+	//data for font Styles-----------
+	LPCWSTR fontStyles[4] = {
+		L"Regular", L"Bold", L"Italic", L"bold Italic",
+	};
+
 protected:
 	//private stuff
 	HWND hWndSettings;
@@ -143,8 +148,8 @@ private:
 	void handleSearchControls(HWND hWnd);
 	void createEditControlTest();
 	void _createListBox_fontStyles();
-	//template<size_t size>
-	//errno_t _insertItems_listBox(HWND hWnd, int select, const wchar_t* (&itemsArray) [size]);
+	template<size_t size>
+	errno_t _insertItems_listBox(HWND hWnd, int select, const wchar_t* (&itemsArray) [size]);
 	
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
