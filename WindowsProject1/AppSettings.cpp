@@ -13,13 +13,13 @@ void AppSettings::initWindow()
 {
     this->createWindow();
 
-    this->createGroupBox();
+    //this->createGroupBox();
     //this->createListView();
 
     this->createGroupBoxSample();
     this->initSampleText();
     //this->insertListViewItems(5);
-    this->createTooltilp();
+    //this->createTooltilp();
 
     this->handleFocuses();
     
@@ -32,6 +32,12 @@ void AppSettings::initWindow()
     this->createEditControlTest();
 
     this->_createListBox_fontStyles();
+
+    this->createOKButton();
+    this->createCancelButton();
+
+    this->createStaticsControls();
+    this->createEditControlFontSize();
 
 
     //when every thing is ready start window
@@ -74,7 +80,7 @@ void AppSettings::registerWindow()
     //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
@@ -518,9 +524,9 @@ void AppSettings::createGroupBox()
         10, 10, 200, 200, this->hWndSettings, (HMENU)-1, this->hInst, NULL);*/
 
         // Put the value in a safe place for future use
-        SetWindowLongPtr(this->hWndGroupBox, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+        //SetWindowLongPtr(this->hWndGroupBox, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-        this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndGroupBox, GWLP_WNDPROC, (LONG_PTR)this->LB_FontSize_WndProc);
+        //this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndGroupBox, GWLP_WNDPROC, (LONG_PTR)this->LB_FontSize_WndProc);
 
 }
 
@@ -645,16 +651,16 @@ void AppSettings::handleFocuses()
 
 void AppSettings::createListBox()
 {
-    RECT rcClient;     // The parent window's client area.
-    GetClientRect(this->hWndGroupBox, &rcClient);
+    //RECT rcClient;     // The parent window's client area.
+    //GetClientRect(this->hWndGroupBox, &rcClient);
 
-    size_t posX = 20;
-    size_t posY = 30;
-    size_t width = (rcClient.right - rcClient.left) - 20;
-    size_t height = (rcClient.bottom - rcClient.top) - 30;
+    size_t posX = 15;
+    size_t posY = 60;
+    size_t width = 100;//(rcClient.right - rcClient.left) - 20;
+    size_t height = 200;//(rcClient.bottom - rcClient.top) - 30;
 
     // Adding a ListBox.
-    HWND hListBox = this->getListBox(this->hWndGroupBox, (int)posX, (int)posY, (int)width, (int)height);
+    HWND hListBox = this->getListBox(this->hWndSettings, (int)posX, (int)posY, (int)width, (int)height);
 
     this->hWndListBox_FontSize = hListBox;
 
@@ -745,9 +751,38 @@ HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int h
         (HINSTANCE)GetWindowLongPtr(this->hWndSettings, GWLP_HINSTANCE),
         NULL);      // Pointer not needed.
 
-    SendMessage(hwndGroupBox, WM_SETFONT, (WPARAM)this->getFont(14), TRUE);
+    SendMessage(hwndGroupBox, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
 
     return hwndGroupBox;
+}
+
+void AppSettings::createOKButton()
+{
+    HWND hwndButton = this->getButton(this->hWndSettings, L"OK", UID_BUTTON_OK, 400, 350);
+
+}
+
+void AppSettings::createCancelButton()
+{
+    HWND hwndButton = this->getButton(this->hWndSettings, L"Cancel", UID_BUTTON_OK, 490, 350);
+}
+
+void AppSettings::createStaticsControls()
+{
+    HWND hwndFontSize = this->getStatic(this->hWndSettings, L"Font Size", 15, 20);
+    HWND hwndFontStyle = this->getStatic(this->hWndSettings, L"Font Style", 130, 20);
+    HWND hwndFontFamily = this->getStatic(this->hWndSettings, L"Font Family", 245, 20);
+}
+
+void AppSettings::createEditControlFontSize()
+{
+    HWND hwndEdit = this->getEditControl(15, 40, 100, 20);
+
+    // Put the value in a safe place for future use
+    //SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+
+    //this->_ec_test_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_WNDPROC, (LONG_PTR)this->_ec_test_proc);
+
 }
 
 void AppSettings::createComboBox()
@@ -787,7 +822,7 @@ void AppSettings::createComboBox()
 
 void AppSettings::createEditControlFontStyles()
 {
-    HWND hwndEdit = this->getEditControl(200, 10, 100, 20);
+    HWND hwndEdit = this->getEditControl(130, 40, 100, 20);
     this->hWndEditControlFontStyles = hwndEdit;
     
     // Put the value in a safe place for future use
@@ -799,8 +834,8 @@ void AppSettings::createEditControlFontStyles()
 
 void AppSettings::createListBox_FontStyles()
 {
-    int posX = 200;
-    int posY = 50;
+    int posX = 130;
+    int posY = 60;
     int width = 100;
     int height = 200;
 
@@ -915,7 +950,7 @@ void AppSettings::handleSearchControls(HWND hWnd)
 
 void AppSettings::createEditControlTest()
 {
-    HWND hwndEdit = this->getEditControl(350, 100, 150, 20);
+    HWND hwndEdit = this->getEditControl(245, 40, 100, 20);
     this->_hwnd_editControlTest = hwndEdit;
 
     // Put the value in a safe place for future use
@@ -927,8 +962,8 @@ void AppSettings::createEditControlTest()
 
 void AppSettings::_createListBox_fontStyles()
 {
-    int posX = 400;
-    int posY = 150;
+    int posX = 245;
+    int posY = 60;
     int width = 100;
     int height = 200;
 

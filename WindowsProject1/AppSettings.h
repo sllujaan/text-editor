@@ -8,9 +8,16 @@ using namespace std;
 
 #define IDM_CODE_SAMPLES 0x3e0f
 
+//hexadecimals
+//22eb
+//193d
+//c7f2
 
-#define ERROR_CONFIG 1
-#define SUCCESS_CONFIG 0
+#define ERROR_CONFIG		1
+#define SUCCESS_CONFIG		0
+#define UID_BUTTON_OK		0x7a6b
+#define UID_BUTTON_CANCEL	0x37b0
+
 
 
 
@@ -153,6 +160,10 @@ private:
 	
 
 	HWND getGroupBox(LPCWSTR name, int posX, int posY, int width, int height);
+	void createOKButton();
+	void createCancelButton();
+	void createStaticsControls();
+	void createEditControlFontSize();
 
 
 

@@ -52,6 +52,48 @@ HWND WindowControls::getListBox(HWND hWndParent, int posX, int posY, int width, 
 
     return hListBox;
 }
+HWND WindowControls::getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY)
+{
+    HWND hwndButton = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        buttonText,      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        (int)posX,         // x position 
+        (int)posY,         // y position 
+        80,        // Button width
+        24,        // Button height
+        hWndParent,     // Parent window
+        (HMENU)UID_BUTTON,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWndParent, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    this->applyConsistentStyle(hwndButton);
+    
+    return hwndButton;
+}
+void WindowControls::applyConsistentStyle(HWND hwnd)
+{
+    SendMessage(hwnd, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+}
+HWND WindowControls::getStatic(HWND hWndParent, LPCWSTR buttonText, size_t posX, size_t posY)
+{
+    HWND hwndStatic = CreateWindow(
+        L"STATIC",  // Predefined class; Unicode assumed 
+        buttonText,      // Button text 
+        WS_VISIBLE | WS_CHILD | SS_CENTERIMAGE,  // Styles 
+        (int)posX,         // x position 
+        (int)posY,         // y position 
+        80,        // Button width
+        18,        // Button height
+        hWndParent,     // Parent window
+        NULL,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWndParent, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    this->applyConsistentStyle(hwndStatic);
+
+    return hwndStatic;
+}
 //
 //template<size_t size>
 //inline errno_t WindowControls::_insertItems_listBox(HWND hwnd, int select, const wchar_t* (&itemsArray)[size])
