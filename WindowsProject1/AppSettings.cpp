@@ -11,8 +11,8 @@ AppSettings::AppSettings(HWND hWnd, HINSTANCE hInstance, int nCmdShow) : WindowC
 
 void AppSettings::initWindow()
 {
+    //creating settings Window.
     this->createWindow();
-
 
     //fontsize--fontFamily--fontStyles Static Controls.
     this->createStaticsControls();
@@ -39,22 +39,6 @@ void AppSettings::initWindow()
     this->handleFocuses();                  //handling Focuses.
     ShowWindow(this->hWndSettings, this->nCmdShowGlobal);  //now every thing is ready show the window.
 
-
-    //this->createGroupBox();
-    //this->createListView();
-
-    
-    //this->insertListViewItems(5);
-    //this->createTooltilp();
-
-    //this->handleFocuses();
-    
-    
-    //this->initListViewBox();
-
-    
-
-    
 }
 
 void AppSettings::setSettings(size_t fonstSizeIndex, size_t fontFamilyIndex, size_t fontSyleIndex)
@@ -90,7 +74,8 @@ void AppSettings::registerWindow()
     wcex.cbWndExtra = 0;
     wcex.hInstance = this->hInst;
     wcex.lpszClassName = this->CLASS_NAME;
-    //wcex.hIcon = LoadIcon(this->hInst, IDI_SHIELD);
+    wcex.hIcon = 0;
+    wcex.hIconSm = 0;
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
@@ -138,7 +123,7 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         
         //removing icon.
         ::SendMessage(hwnd, WM_SETICON, 0, NULL);
-        ::SendMessage(hwnd, WM_SETICON, 1, NULL);
+        //::SendMessage(hwnd, WM_SETICON, 1, NULL);
         break;
 
     case WM_COMMAND:
@@ -350,7 +335,7 @@ LRESULT AppSettings::EC_fontFamily_WndProc(HWND hwnd, UINT message, WPARAM wPara
         case VK_RETURN:
             //Do your stuff
             OutputDebugStringW((LPCWSTR)L"Enter////\r\n");
-            pThis->handleSearchControls((HWND)lParam);
+            //pThis->handleSearchControls((HWND)lParam);
             break;  //or return 0; if you don't want to pass it further to def proc
             //If not your key, skip to default:
         }
@@ -397,7 +382,7 @@ LRESULT AppSettings::_ec_test_proc(HWND hwnd, UINT message, WPARAM wParam, LPARA
             break;  //or return 0; if you don't want to pass it further to def proc
             //If not your key, skip to default:
         }
-        pThis->handleSearchControls(hwnd);
+        pThis->handleSearchControls(pThis->hWndEditControlFontStyles, pThis->_hwnd_listBox_fontFamily);
         break;
 
     default:
@@ -441,7 +426,7 @@ LRESULT AppSettings::_ec_FontSize_proc(HWND hwnd, UINT message, WPARAM wParam, L
             break;  //or return 0; if you don't want to pass it further to def proc
             //If not your key, skip to default:
         }
-        //pThis->handleSearchControls(hwnd);
+        pThis->handleSearchControls(pThis->_hwnd_editControl_FontSize, pThis->_hwnd_listBox_fontSize);
         break;
 
     default:
@@ -724,6 +709,7 @@ void AppSettings::createListBox()
 
     // Adding a ListBox.
     HWND hListBox = this->getListBox(this->hWndSettings, (int)posX, (int)posY, (int)width, (int)height);
+    this->_hwnd_listBox_fontSize = hListBox;
 
     //this->hWndListBox_FontSize = hListBox;
 
@@ -912,7 +898,7 @@ void AppSettings::createListBox_FontStyles()
     // Adding a ListBox.
     HWND hListBox = this->getListBox(this->hWndSettings, posX, posY, width, height);
 
-    this->hWndEditControlFontStyles = hListBox;
+    this->_hwnd_listBox_fontFamily = hListBox;
 
 
     //data for font families-----------
@@ -927,7 +913,7 @@ void AppSettings::createListBox_FontStyles()
 
     for (int i = 0; i < ARRAYSIZE(this->fontFamilies) ; i++) {
 
-        pos = (int)SendMessage(this->hWndEditControlFontStyles, LB_ADDSTRING, 0,
+        pos = (int)SendMessage(this->_hwnd_listBox_fontFamily, LB_ADDSTRING, 0,
             (LPARAM)fontFamilies[i]);
         
         //set font for indidual item----
@@ -935,11 +921,11 @@ void AppSettings::createListBox_FontStyles()
     }
 
     //find string from list box--
-    LRESULT searchIndex = SendMessage(this->hWndEditControlFontStyles, LB_FINDSTRING, -1, (LPARAM)this->fontFamily);
+    LRESULT searchIndex = SendMessage(this->_hwnd_listBox_fontFamily, LB_FINDSTRING, -1, (LPARAM)this->fontFamily);
     if(searchIndex == LB_ERR) searchIndex = 0;
 
-    SendMessage(this->hWndEditControlFontStyles, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-    SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, this->_fFamilyIndex, 0);
+    SendMessage(this->_hwnd_listBox_fontFamily, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+    SendMessage(this->_hwnd_listBox_fontFamily, LB_SETCURSEL, this->_fFamilyIndex, 0);
     //SetFocus(this->hWndEditControlFontStyles);
 }
 
@@ -976,7 +962,7 @@ void AppSettings::showConfigKeysCorrupted()
         MB_ICONEXCLAMATION);
 }
 
-void AppSettings::handleSearchControls(HWND hWnd)
+void AppSettings::handleSearchControls(HWND hwndEdit, HWND hwndListBox)
 {
     ////if (hWnd == this->hWndEditControlFontStyles) {
     //    //get main window text lenght--
@@ -994,22 +980,36 @@ void AppSettings::handleSearchControls(HWND hWnd)
     //    );
     ////}
 
-    int len = GetWindowTextLength(hWnd); //this->_hwnd_editControlTest
+    int len = GetWindowTextLength(hwndEdit); //this->_hwnd_editControlTest
     //LOG_INT(len);
 
     LPWSTR text[50];
 
-    GetWindowText(hWnd, (LPWSTR)text, 50);
+    GetWindowText(hwndEdit, (LPWSTR)text, 50);
 
-    LRESULT searchIndex = SendMessage(this->hWndEditControlFontStyles, LB_FINDSTRING, 0,  (LPARAM)text);
-
+    LRESULT searchIndex = searchIndex = SendMessage(hwndListBox, LB_FINDSTRING, 0, (LPARAM)text);
+    
     if (searchIndex != LB_ERR) {
-        SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, searchIndex, 0);
-        SendMessage(this->hWndEditControlFontStyles, LB_SETTOPINDEX, searchIndex, 0);
+        SendMessage(hwndListBox, LB_SETCURSEL, searchIndex, 0);
+        SendMessage(hwndListBox, LB_SETTOPINDEX, searchIndex, 0);
     }
     else {
-        SendMessage(this->hWndEditControlFontStyles, LB_SETCURSEL, -1, 0);
+        SendMessage(hwndListBox, LB_SETCURSEL, -1, 0);
     }
+
+    //if (hwndEdit == this->_hwnd_editControl_FontSize) {
+    //    searchIndex = SendMessage(this->_hwnd_editControl_FontSize, LB_FINDSTRING, 0, (LPARAM)text);
+    //}
+    //else if (hwndEdit == this->hWndEditControlFontStyles) {
+    //    LOG_WCHAR(L"font Family");
+    //    
+    //    LOG_INT(searchIndex);
+    //    //if(searchIndex != LB_ERR) LOG_WCHAR(L"result found.");
+    //}
+
+    
+
+    
 
     //LOG_WCHAR(L"searchIndex ==>");
     //LOG_INT(searchIndex);
@@ -1066,8 +1066,8 @@ LPCWSTR AppSettings::getFontStyle()
 void AppSettings::createWindow()
 {
     HWND hwnd = CreateWindowEx(
-        0,                              // Optional window styles.
-        this->CLASS_NAME,                     // Window class
+        0,          // Optional window styles. Called Exended Window Styles.
+        this->CLASS_NAME,                       // Window class
         L"Settings",    // Window text
         WS_SYSMENU,            // Window style
 

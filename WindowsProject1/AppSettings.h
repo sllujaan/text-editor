@@ -86,8 +86,12 @@ protected:
 	int nCmdShowGlobal;
 	HWND hWndListBox_FontSize;
 
-	//handle to fontSize edit Control.
+	//handle to fontFamily
+	HWND _hwnd_listBox_fontFamily;
+
+	//handles to fontSize.
 	HWND _hwnd_editControl_FontSize;
+	HWND _hwnd_listBox_fontSize;
 	WNDPROC _ec_FontSize_oldProc;
 
 	//test edit control
@@ -156,7 +160,7 @@ private:
 	BOOL isValidIndex(size_t totalItems, size_t index);
 	void showConfigKeysCorrupted();
 
-	void handleSearchControls(HWND hWnd);
+	void handleSearchControls(HWND hwndEdit, HWND hwndListBox);
 	void createEditControlTest();
 	void _createListBox_fontStyles();
 	template<size_t size>
