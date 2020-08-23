@@ -140,7 +140,7 @@ private:
 	int getFontSizeFromIndex(int index);
 	void handleFocuses();
 	void createListBox();
-	void initListViewBox();
+	void initListViewBox(HWND hListBox);
 	void setSampleTextFontSize(size_t size);
 	void handleListBoxSelectionChange(HWND hWnd);
 	//fontStyles methods--

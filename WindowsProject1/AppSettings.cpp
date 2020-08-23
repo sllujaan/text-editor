@@ -13,35 +13,48 @@ void AppSettings::initWindow()
 {
     this->createWindow();
 
+
+    //fontsize--fontFamily--fontStyles Static Controls.
+    this->createStaticsControls();
+    
+    //fontsize--fontFamily--fontStyles Static Controls.
+    this->createEditControlFontSize();      //fontSize editControl.
+    this->createEditControlFontStyles();    //fontFamily editControl.
+    this->createEditControlTest();          //fontStyles editControl.
+
+    //fontsize--fontFamily--fontStyles Static Controls.
+    this->createListBox();                  //fontSize listBox.
+    this->createListBox_FontStyles();       //fontFamily listBox.
+    this->_createListBox_fontStyles();      //fontStyles listBox.
+
+    //Sample groupBox and StaticControl.
+    this->createGroupBoxSample();           //sample GroupBox.
+    this->initSampleText();                 //sample StaticControl.
+
+    //OK and Cancel Buttons.
+    this->createOKButton();                 //Button OK
+    this->createCancelButton();             //Button Cancel
+
+    //Now set Focuses and show window beacuse every thing is ready.
+    this->handleFocuses();                  //handling Focuses.
+    ShowWindow(this->hWndSettings, this->nCmdShowGlobal);  //now every thing is ready show the window.
+
+
     //this->createGroupBox();
     //this->createListView();
 
-    this->createGroupBoxSample();
-    this->initSampleText();
+    
     //this->insertListViewItems(5);
     //this->createTooltilp();
 
-    this->handleFocuses();
+    //this->handleFocuses();
     
-    this->createListBox();
-    this->initListViewBox();
+    
+    //this->initListViewBox();
 
-    this->createEditControlFontStyles();
-    this->createListBox_FontStyles();
+    
 
-    this->createEditControlTest();
-
-    this->_createListBox_fontStyles();
-
-    this->createOKButton();
-    this->createCancelButton();
-
-    this->createStaticsControls();
-    this->createEditControlFontSize();
-
-
-    //when every thing is ready start window
-    ShowWindow(this->hWndSettings, this->nCmdShowGlobal);
+    
 }
 
 void AppSettings::setSettings(size_t fonstSizeIndex, size_t fontFamilyIndex, size_t fontSyleIndex)
@@ -668,29 +681,30 @@ void AppSettings::createListBox()
     // Adding a ListBox.
     HWND hListBox = this->getListBox(this->hWndSettings, (int)posX, (int)posY, (int)width, (int)height);
 
-    this->hWndListBox_FontSize = hListBox;
+    //this->hWndListBox_FontSize = hListBox;
 
     // Put the value in a safe place for future use
     //SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
     //this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_WNDPROC, (LONG_PTR)this->LB_FontSize_WndProc);
-
+    this->initListViewBox(hListBox);
+    //this->_insertItems_listBox(hListBox, 0, this->fontStyles);
 }
 
-void AppSettings::initListViewBox()
+void AppSettings::initListViewBox(HWND hListBox)
 {
     int pos = 0;
 
     for (int i = 8; i <= 72; i++) {
         //converting int to wstring.
         std::wstring str = std::to_wstring(i);
-        pos = (int)SendMessage(this->hWndListBox_FontSize, LB_ADDSTRING, 0,
+        pos = (int)SendMessage(hListBox, LB_ADDSTRING, 0,
             (LPARAM)(wchar_t*)str.c_str());
     }
 
-    SendMessage(this->hWndListBox_FontSize, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-    SendMessage(this->hWndListBox_FontSize, LB_SETCURSEL, this->_fSizeIndex, 0);
-    SetFocus(this->hWndListBox_FontSize);
+    SendMessage(hListBox, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+    SendMessage(hListBox, LB_SETCURSEL, this->_fSizeIndex, 0);
+    //SetFocus(this->hWndListBox_FontSize);
 }
 
 void AppSettings::setSampleTextFontSize(size_t size)
