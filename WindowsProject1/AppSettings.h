@@ -86,6 +86,10 @@ protected:
 	int nCmdShowGlobal;
 	HWND hWndListBox_FontSize;
 
+	//handle to fontSize edit Control.
+	HWND _hwnd_editControl_FontSize;
+	WNDPROC _ec_FontSize_oldProc;
+
 	//test edit control
 	HWND _hwnd_editControlTest;
 	WNDPROC _ec_test_oldProc;
@@ -180,5 +184,9 @@ protected:
 	static LRESULT CALLBACK EC_fontFamily_WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //EC is edit control
 
 	static LRESULT CALLBACK _ec_test_proc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //EC is edit control
+
+	static LRESULT CALLBACK _ec_FontSize_proc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //EC is edit control
+
+
 };
 

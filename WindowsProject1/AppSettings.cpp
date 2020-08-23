@@ -409,6 +409,50 @@ LRESULT AppSettings::_ec_test_proc(HWND hwnd, UINT message, WPARAM wParam, LPARA
     return 0;
 }
 
+LRESULT AppSettings::_ec_FontSize_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+
+    AppSettings* pThis;
+
+    // Recover the "this" pointer from where our WM_NCCREATE handler
+        // stashed it.
+    pThis = reinterpret_cast<AppSettings*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+    switch (message)
+    {
+        //case WM_KEYDOWN:
+        //    switch (wParam)
+        //    {
+        //    case VK_RETURN:
+        //        //Do your stuff
+        //        OutputDebugStringW((LPCWSTR)L"Enter////\r\n");
+        //        break;  //or return 0; if you don't want to pass it further to def proc
+        //        //If not your key, skip to default:
+        //    }
+        //    break;
+    case WM_KEYUP:
+
+        switch (wParam)
+        {
+        case VK_RETURN:
+            //Do your stuff
+            OutputDebugStringW((LPCWSTR)L"Enter fontSize\r\n");
+            //pThis->handleSearchControls(hwnd);
+
+            break;  //or return 0; if you don't want to pass it further to def proc
+            //If not your key, skip to default:
+        }
+        //pThis->handleSearchControls(hwnd);
+        break;
+
+    default:
+        OutputDebugStringW((LPCWSTR)L"default fontSize\r\n");
+        return CallWindowProc(pThis->_ec_FontSize_oldProc, hwnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
+}
+
 void AppSettings::centerWindow(HWND hwnd)
 {
     RECT rectWindow;
@@ -797,11 +841,12 @@ void AppSettings::createStaticsControls()
 void AppSettings::createEditControlFontSize()
 {
     HWND hwndEdit = this->getEditControl(15, 40, 100, 20);
+    this->_hwnd_editControl_FontSize = hwndEdit;
 
     // Put the value in a safe place for future use
-    //SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+    SetWindowLongPtr(this->_hwnd_editControl_FontSize, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-    //this->_ec_test_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_WNDPROC, (LONG_PTR)this->_ec_test_proc);
+    this->_ec_FontSize_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControl_FontSize, GWLP_WNDPROC, (LONG_PTR)this->_ec_FontSize_proc);
 
 }
 
@@ -846,9 +891,14 @@ void AppSettings::createEditControlFontStyles()
     this->hWndEditControlFontStyles = hwndEdit;
     
     // Put the value in a safe place for future use
+    //SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+
+    //this->oldProc_EC_fontFamily = (WNDPROC)SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_WNDPROC, (LONG_PTR)this->EC_fontFamily_WndProc);
+
+    // Put the value in a safe place for future use
     SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-    this->oldProc_EC_fontFamily = (WNDPROC)SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_WNDPROC, (LONG_PTR)this->EC_fontFamily_WndProc);
+    this->_ec_test_oldProc = (WNDPROC)SetWindowLongPtr(this->hWndEditControlFontStyles, GWLP_WNDPROC, (LONG_PTR)this->_ec_test_proc);
     
 }
 
@@ -974,9 +1024,9 @@ void AppSettings::createEditControlTest()
     this->_hwnd_editControlTest = hwndEdit;
 
     // Put the value in a safe place for future use
-    SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+    //SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-    this->_ec_test_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_WNDPROC, (LONG_PTR)this->_ec_test_proc);
+    //this->_ec_test_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_WNDPROC, (LONG_PTR)this->_ec_test_proc);
 
 }
 
