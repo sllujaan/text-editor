@@ -696,7 +696,7 @@ void AppSettings::HandleWM_NOTIFY(LPARAM lParam)
 
     fontSize = index + 8;
 
-    SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(fontSize), TRUE);
+    //SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(fontSize), TRUE);
 
     return;
     //below code is just for reference pupose
@@ -1050,7 +1050,7 @@ void AppSettings::updateSampleText()
     }
 
     size_t fontSize = indexFontSize + 8;
-    LPCWSTR fontFamily = (LPCWSTR)this->fontStyles[indexFontStyles];
+    LPCWSTR fontFamily = (LPCWSTR)this->fontFamilies[indexFontFamily];
     LPCWSTR fontStyle = (LPCWSTR)this->fontStyles[indexFontStyles];
 
 
