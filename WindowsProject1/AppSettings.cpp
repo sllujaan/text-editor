@@ -276,7 +276,7 @@ LRESULT AppSettings::LB_FontSize_WndProc(HWND hwnd, UINT message, WPARAM wParam,
             OutputDebugStringW((LPCWSTR)L"_))))))))))))))))))LBN_SETFOCUS_\r\n");
             break;
         case LBN_SELCHANGE:
-            pThis->handleListBoxSelectionChange((HWND)lParam);
+            //pThis->handleListBoxSelectionChange((HWND)lParam);
             OutputDebugStringW((LPCWSTR)L"LBN_SELCHANGE\r\n");
 
             break;
@@ -437,6 +437,7 @@ LRESULT AppSettings::_ec_FontSize_proc(HWND hwnd, UINT message, WPARAM wParam, L
 
     return 0;
 }
+
 
 void AppSettings::centerWindow(HWND hwnd)
 {
@@ -711,14 +712,15 @@ void AppSettings::createListBox()
     HWND hListBox = this->getListBox(this->hWndSettings, (int)posX, (int)posY, (int)width, (int)height);
     this->_hwnd_listBox_fontSize = hListBox;
 
-    //this->hWndListBox_FontSize = hListBox;
+    //inserting items to listBox.
+    this->initListViewBox(hListBox);
+
 
     // Put the value in a safe place for future use
-    //SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+    //SetWindowLongPtr(this->_hwnd_listBox_fontSize, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-    //this->oldProc = (WNDPROC)SetWindowLongPtr(this->hWndListBox_FontSize, GWLP_WNDPROC, (LONG_PTR)this->LB_FontSize_WndProc);
-    this->initListViewBox(hListBox);
-    //this->_insertItems_listBox(hListBox, 0, this->fontStyles);
+    //this->_LB_FontSize_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_listBox_fontSize, GWLP_WNDPROC, (LONG_PTR)this->_LB_FontSize_proc);
+    
 }
 
 void AppSettings::initListViewBox(HWND hListBox)
@@ -744,43 +746,56 @@ void AppSettings::setSampleTextFontSize(size_t size)
 
 void AppSettings::handleListBoxSelectionChange(HWND hWnd)
 {
-    if (hWnd == this->hWndListBox_FontSize) {
-        LRESULT index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
-        LPCWSTR itemText = this->getSelectedFontFamily();
-        //this->setSampleTextFontSize(index + 8);
-        SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(index + 8, itemText), TRUE);
 
-        //free up memory
-        delete itemText;
+    if (hWnd == this->_hwnd_listBox_fontSize) {
+        this->handleCopyTextToEditControl(hWnd, this->_hwnd_editControl_FontSize);
     }
-    else if (hWnd == this->hWndEditControlFontStyles){
-        /*LRESULT index = SendMessage(this->hWndEditControlFontStyles, LB_GETCURSEL, 0, 0);
-        if (index < 0) return;*/
-        
-        //get text lenght
-        /*LRESULT length = SendMessage(this->hWndEditControlFontStyles, LB_GETTEXTLEN, index, 0);
-
-        LPCWSTR itemText = new WCHAR[(int)length + 1];
-
-        SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
-        */
-        //OutputDebugStringW((LPCWSTR)itemText);
-
-        LPCWSTR itemText = this->getSelectedFontFamily();
-
-        if (!itemText) return;
-
-        
-        LRESULT indexFontSize = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
-        SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(indexFontSize+8, itemText), TRUE);
-        
-
-        delete itemText;
-
+    else if (hWnd == this->_hwnd_listBox_fontFamily) {
+        this->handleCopyTextToEditControl(hWnd, this->hWndEditControlFontStyles);
+    }
+    else if (hWnd == this->_hwnd_listBox_fontStyes) {
+        this->handleCopyTextToEditControl(hWnd, this->_hwnd_editControlTest);
     }
 
-    
-    
+
+
+    //if (hWnd == this->hWndListBox_FontSize) {
+    //    LRESULT index = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
+    //    LPCWSTR itemText = this->getSelectedFontFamily();
+    //    //this->setSampleTextFontSize(index + 8);
+    //    SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(index + 8, itemText), TRUE);
+
+    //    //free up memory
+    //    delete itemText;
+    //}
+    //else if (hWnd == this->hWndEditControlFontStyles){
+    //    /*LRESULT index = SendMessage(this->hWndEditControlFontStyles, LB_GETCURSEL, 0, 0);
+    //    if (index < 0) return;*/
+    //    
+    //    //get text lenght
+    //    /*LRESULT length = SendMessage(this->hWndEditControlFontStyles, LB_GETTEXTLEN, index, 0);
+
+    //    LPCWSTR itemText = new WCHAR[(int)length + 1];
+
+    //    SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
+    //    */
+    //    //OutputDebugStringW((LPCWSTR)itemText);
+
+    //    LPCWSTR itemText = this->getSelectedFontFamily();
+
+    //    if (!itemText) return;
+
+    //    
+    //    LRESULT indexFontSize = SendMessage(this->hWndListBox_FontSize, LB_GETCURSEL, 0, 0);
+    //    SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)this->getFont(indexFontSize+8, itemText), TRUE);
+    //    
+
+    //    delete itemText;
+
+    //}
+
+    //
+    //
     
     
 }
@@ -934,18 +949,21 @@ size_t AppSettings::getFontSizeSampleText()
     return size_t();
 }
 
-LPCWSTR AppSettings::getSelectedFontFamily()
+void AppSettings::handleCopyTextToEditControl(HWND hwndListBox, HWND hwndEdit)
 {
-    LRESULT index = SendMessage(this->hWndEditControlFontStyles, LB_GETCURSEL, 0, 0);
+    LRESULT index = SendMessage(hwndListBox, LB_GETCURSEL, 0, 0);
 
     //get text lenght
-    LRESULT length = SendMessage(this->hWndEditControlFontStyles, LB_GETTEXTLEN, (int)index, 0);
+    LRESULT length = SendMessage(hwndListBox, LB_GETTEXTLEN, (int)index, 0);
 
     LPCWSTR itemText = new WCHAR[(int)length + 1];
 
-    SendMessage(this->hWndEditControlFontStyles, LB_GETTEXT, index, (LPARAM)itemText);
+    SendMessage(hwndListBox, LB_GETTEXT, index, (LPARAM)itemText);
+    SetWindowText(hwndEdit, itemText);
+    //make the selection working if edit control doesn't have focus.
+    //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
 
-    return itemText;
+    LOG_WCHAR(itemText);
 }
 
 BOOL AppSettings::isValidIndex(size_t totalItems, size_t index)
@@ -1039,8 +1057,7 @@ void AppSettings::_createListBox_fontStyles()
 
     // Adding a ListBox.
     HWND hListBox = this->getListBox(this->hWndSettings, posX, posY, width, height);
-
-    //const char* arr[] = { "abc", "def" };
+    this->_hwnd_listBox_fontStyes = hListBox;
 
     this->_insertItems_listBox(hListBox, 0, this->fontStyles);
 
