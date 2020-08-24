@@ -32,7 +32,7 @@ void WindowControls::setWindowControlsHandle(HWND hwndSelf)
     this->_hwndSelf = hwndSelf;
 }
 
-HFONT WindowControls::getFont(size_t size, LPCWSTR fontFamily)
+HFONT WindowControls::getFont(size_t size, LPCWSTR fontFamily, LPCWSTR fontStyle)
 {
     HFONT hFont = CreateFont(int(size), 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
         OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,

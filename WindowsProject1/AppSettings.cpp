@@ -1014,6 +1014,8 @@ void AppSettings::handleCopyTextToEditControl(HWND hwndListBox, HWND hwndEdit)
     //SendMessage(hwndEdit, EM_SETSEL, 0, -1);
 
     LOG_WCHAR(itemText);
+
+    delete itemText;
 }
 
 void AppSettings::configureEditCtrlsText()
@@ -1025,6 +1027,37 @@ void AppSettings::configureEditCtrlsText()
 
 void AppSettings::updateSampleText()
 {
+    LRESULT indexFontSize = SendMessage(this->_hwnd_listBox_fontSize, LB_GETCURSEL, 0, 0);
+    LRESULT indexFontFamily = SendMessage(this->_hwnd_listBox_fontFamily, LB_GETCURSEL, 0, 0);
+    LRESULT indexFontStyles = SendMessage(this->_hwnd_listBox_fontStyes, LB_GETCURSEL, 0, 0);
+    /*if (indexFontSize != LB_ERR) {
+        LOG_INT(indexFontSize + 8);
+    }*/
+
+    /*if (indexFontFamily != LB_ERR) {
+        LOG_INT(indexFontFamily);
+        LOG_WCHAR((LPCWSTR)this->fontFamilies[indexFontFamily]);
+    }*/
+
+    /*if (indexFontStyles != LB_ERR) {
+        LOG_INT(indexFontStyles);
+        LOG_WCHAR((LPCWSTR)this->fontStyles[indexFontStyles]);
+    }*/
+
+    if ((indexFontSize == LB_ERR) || (indexFontFamily == LB_ERR) || (indexFontStyles == LB_ERR)) {
+        SetWindowText(this->hWndGroupBoxSampleText, L"");
+        return;
+    }
+
+    size_t fontSize = indexFontSize + 8;
+    LPCWSTR fontFamily = (LPCWSTR)this->fontStyles[indexFontStyles];
+    LPCWSTR fontStyle = (LPCWSTR)this->fontStyles[indexFontStyles];
+
+
+    HFONT font = this->getFont(fontSize, fontFamily, fontStyle);
+    SendMessage(this->hWndGroupBoxSampleText, WM_SETFONT, (WPARAM)font, TRUE);
+    
+
 
 }
 
