@@ -35,6 +35,9 @@ void AppSettings::initWindow()
     this->createOKButton();                 //Button OK
     this->createCancelButton();             //Button Cancel
 
+    //configure all edit controls texts.
+    this->configureEditCtrlsText();
+
     //Now set Focuses and show window beacuse every thing is ready.
     this->handleFocuses();                  //handling Focuses.
     ShowWindow(this->hWndSettings, this->nCmdShowGlobal);  //now every thing is ready show the window.
@@ -438,6 +441,49 @@ LRESULT AppSettings::_ec_FontSize_proc(HWND hwnd, UINT message, WPARAM wParam, L
     return 0;
 }
 
+LRESULT AppSettings::_ec_FontStyle_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    AppSettings* pThis;
+
+    // Recover the "this" pointer from where our WM_NCCREATE handler
+        // stashed it.
+    pThis = reinterpret_cast<AppSettings*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+    switch (message)
+    {
+        //case WM_KEYDOWN:
+        //    switch (wParam)
+        //    {
+        //    case VK_RETURN:
+        //        //Do your stuff
+        //        OutputDebugStringW((LPCWSTR)L"Enter////\r\n");
+        //        break;  //or return 0; if you don't want to pass it further to def proc
+        //        //If not your key, skip to default:
+        //    }
+        //    break;
+    case WM_KEYUP:
+
+        switch (wParam)
+        {
+        case VK_RETURN:
+            //Do your stuff
+            OutputDebugStringW((LPCWSTR)L"Enter fontSize\r\n");
+            //pThis->handleSearchControls(hwnd);
+
+            break;  //or return 0; if you don't want to pass it further to def proc
+            //If not your key, skip to default:
+        }
+        pThis->handleSearchControls(pThis->_hwnd_editControlTest, pThis->_hwnd_listBox_fontStyes);
+        break;
+
+    default:
+        OutputDebugStringW((LPCWSTR)L"default fontSize\r\n");
+        return CallWindowProc(pThis->_ec_FontStyle_oldProc, hwnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
+}
+
 
 void AppSettings::centerWindow(HWND hwnd)
 {
@@ -757,6 +803,8 @@ void AppSettings::handleListBoxSelectionChange(HWND hWnd)
         this->handleCopyTextToEditControl(hWnd, this->_hwnd_editControlTest);
     }
 
+    this->updateSampleText();
+
 
 
     //if (hWnd == this->hWndListBox_FontSize) {
@@ -835,14 +883,16 @@ void AppSettings::createCancelButton()
 void AppSettings::createStaticsControls()
 {
     HWND hwndFontSize = this->getStatic(this->hWndSettings, L"Font Size:", 15, 20);
-    HWND hwndFontStyle = this->getStatic(this->hWndSettings, L"Font Style:", 130, 20);
-    HWND hwndFontFamily = this->getStatic(this->hWndSettings, L"Font Family:", 245, 20);
+    HWND hwndFontStyle = this->getStatic(this->hWndSettings, L"Font Family:", 130, 20);
+    HWND hwndFontFamily = this->getStatic(this->hWndSettings, L"Font Style:", 245, 20);
 }
 
 void AppSettings::createEditControlFontSize()
 {
     HWND hwndEdit = this->getEditControl(15, 40, 100, 20);
     this->_hwnd_editControl_FontSize = hwndEdit;
+
+
 
     // Put the value in a safe place for future use
     SetWindowLongPtr(this->_hwnd_editControl_FontSize, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
@@ -966,6 +1016,18 @@ void AppSettings::handleCopyTextToEditControl(HWND hwndListBox, HWND hwndEdit)
     LOG_WCHAR(itemText);
 }
 
+void AppSettings::configureEditCtrlsText()
+{
+    this->handleCopyTextToEditControl(this->_hwnd_listBox_fontSize, this->_hwnd_editControl_FontSize);
+    this->handleCopyTextToEditControl(this->_hwnd_listBox_fontFamily, this->hWndEditControlFontStyles);
+    this->handleCopyTextToEditControl(this->_hwnd_listBox_fontStyes, this->_hwnd_editControlTest);
+}
+
+void AppSettings::updateSampleText()
+{
+
+}
+
 BOOL AppSettings::isValidIndex(size_t totalItems, size_t index)
 {
     if (index < totalItems) return TRUE;
@@ -982,24 +1044,7 @@ void AppSettings::showConfigKeysCorrupted()
 
 void AppSettings::handleSearchControls(HWND hwndEdit, HWND hwndListBox)
 {
-    ////if (hWnd == this->hWndEditControlFontStyles) {
-    //    //get main window text lenght--
-    //    const int size = GetWindowTextLength(this->hWndEditControlFontStyles);
-    //    //wchar_t* data = new wchar_t[size + 1];
-    //    LPCWSTR data = new WCHAR[size + 1];
-
-    //    GetWindowText(this->hWndEditControlFontStyles, (LPWSTR)data, size + 1);
-
-    //    MessageBox(
-    //        this->hWndSettings,
-    //        (LPCWSTR)data,
-    //        (LPCWSTR)L"search",
-    //        MB_OK
-    //    );
-    ////}
-
-    int len = GetWindowTextLength(hwndEdit); //this->_hwnd_editControlTest
-    //LOG_INT(len);
+    int len = GetWindowTextLength(hwndEdit);
 
     LPWSTR text[50];
 
@@ -1015,25 +1060,6 @@ void AppSettings::handleSearchControls(HWND hwndEdit, HWND hwndListBox)
         SendMessage(hwndListBox, LB_SETCURSEL, -1, 0);
     }
 
-    //if (hwndEdit == this->_hwnd_editControl_FontSize) {
-    //    searchIndex = SendMessage(this->_hwnd_editControl_FontSize, LB_FINDSTRING, 0, (LPARAM)text);
-    //}
-    //else if (hwndEdit == this->hWndEditControlFontStyles) {
-    //    LOG_WCHAR(L"font Family");
-    //    
-    //    LOG_INT(searchIndex);
-    //    //if(searchIndex != LB_ERR) LOG_WCHAR(L"result found.");
-    //}
-
-    
-
-    
-
-    //LOG_WCHAR(L"searchIndex ==>");
-    //LOG_INT(searchIndex);
-
-    ////delete data;
-
 }
 
 void AppSettings::createEditControlTest()
@@ -1042,9 +1068,9 @@ void AppSettings::createEditControlTest()
     this->_hwnd_editControlTest = hwndEdit;
 
     // Put the value in a safe place for future use
-    //SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+    SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-    //this->_ec_test_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_WNDPROC, (LONG_PTR)this->_ec_test_proc);
+    this->_ec_FontStyle_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControlTest, GWLP_WNDPROC, (LONG_PTR)this->_ec_FontStyle_proc);
 
 }
 

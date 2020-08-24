@@ -97,6 +97,7 @@ protected:
 
 	//handles to fontStyles-
 	HWND _hwnd_listBox_fontStyes;
+	WNDPROC _ec_FontStyle_oldProc;
 
 	//test edit control
 	HWND _hwnd_editControlTest;
@@ -161,6 +162,8 @@ private:
 	void createListBox_FontStyles();
 	size_t getFontSizeSampleText();
 	void handleCopyTextToEditControl(HWND hwndListBox, HWND hwndEdit);
+	void configureEditCtrlsText();
+	void updateSampleText();
 	BOOL isValidIndex(size_t totalItems, size_t index);
 	void showConfigKeysCorrupted();
 
@@ -195,7 +198,7 @@ protected:
 
 	static LRESULT CALLBACK _ec_FontSize_proc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //EC is edit control
 
-	//static LRESULT CALLBACK _LB_FontSize_proc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //LB is listBox
+	static LRESULT CALLBACK _ec_FontStyle_proc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam); //LB is listBox
 
 
 };
