@@ -3,13 +3,15 @@
 #include<CommCtrl.h>
 #include <string>
 #include<thread>
+
+#include"AppLog.h"
 #include"WindowControls.h"
 using namespace std;
 
 #define IDM_CODE_SAMPLES 0x3e0f
+#define WM_APPLY_CONFIGURATION 0x22eb
 
 //hexadecimals
-//22eb
 //193d
 //c7f2
 
@@ -22,44 +24,10 @@ using namespace std;
 
 
 
-#ifndef LOG_WCHAR 
-#define LOG_WCHAR(x) OutputDebugStringW((LPCWSTR)x); \
-			OutputDebugStringW((LPCWSTR)L"\r\n") //for new line
-#endif // !LOG(x)
-
-#ifndef LOG_INT 
-#define LOG_INT(x) \
-do { \
-	wstring ws = to_wstring(x); \
-	OutputDebugStringW((LPCWSTR)ws.c_str()); \
-	OutputDebugStringW((LPCWSTR)L"\r\n"); /*for new line*/ \
-} \
-while (0);
-#endif // !LOG_INT 
-
-#ifndef LOG_STR
-#define LOG_STR(x) \
-do { \
-	wstring ws = wstring(x.begin(), x.end()); \
-	OutputDebugStringW((LPCWSTR)ws.c_str()); \
-	OutputDebugStringW((LPCWSTR)L"\r\n"); /*for new line*/ \
-} \
-while (0);
-#endif // !LOG_STR
-
-
-
-
-
-
-
-
-
-
 
 class AppSettings: public WindowControls {
 	//attributes--------
-private:
+public:
 
 	//data for font families-----------
 	LPCWSTR fontFamilies[18] = {
@@ -205,3 +173,9 @@ protected:
 
 };
 
+struct _configVars : AppSettings
+{
+	int fontSizeIndex;
+	int fontSizeFamilyIndex;
+	int fontSizeStyleIndex;
+};

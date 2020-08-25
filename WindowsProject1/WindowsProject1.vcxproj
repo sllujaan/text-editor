@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AppConfigure.h" />
+    <ClInclude Include="AppLog.h" />
     <ClInclude Include="AppSettings.h" />
     <ClInclude Include="AppSettingsProc.h" />
     <ClInclude Include="debug.h" />

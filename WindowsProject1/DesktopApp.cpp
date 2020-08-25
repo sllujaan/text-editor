@@ -9,6 +9,8 @@
 #include<Richedit.h>
 #include<TextServ.h>
 #include<shellapi.h>
+
+#include"AppLog.h"
 #include"AppConfigure.h"
 #include"search.h"
 #include"AppSettings.h"
@@ -28,11 +30,11 @@ config::FILE _config_file;
 void handleAppConfiguration();
 
 
-#ifndef LOG 
-#define LOG(x) OutputDebugStringW((LPCWSTR)x) \
-			;OutputDebugStringW((LPCWSTR)L"\r\n") //for new line
-#endif // !LOG(x)
-
+//#ifndef LOG 
+//#define LOG(x) OutputDebugStringW((LPCWSTR)x) \
+//			;OutputDebugStringW((LPCWSTR)L"\r\n") //for new line
+//#endif // !LOG(x)
+//
 
 
 #define MAINWIN_WIDTH 500
@@ -219,6 +221,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //int msgboxID_CLOSE = 0;
     ENDROPFILES* penDropFiles;
 
+    _configVars* vars;
+
     switch (message)
     {
 
@@ -283,7 +287,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
     case WM_CREATE:
-        LOG(L"window created......");
+        LOG_WCHAR(L"window created......");
         handleCenterWindow(hWnd);
         //handleButton(hWnd);
         //handleNewWidow(hWnd);
@@ -291,6 +295,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         handleMainMenu(hWnd, hMenuMain);
         //handleEdit(hWnd, lParam);
         handleRichEditControl(hWnd);
+        break;
+
+    case WM_APPLY_CONFIGURATION:
+        //HFONT font = (HFONT)wParam;
+        vars = (_configVars*)lParam;
+        LOG_INT(vars->fontSizeIndex);
+        LOG_WCHAR(vars->fontFamilies[vars->fontSizeFamilyIndex]);
+
+        SendMessage(hwndEdit, WM_SETFONT, wParam, TRUE);
+        LOG_WCHAR(L"=>APPLY CONFIGURATION CALLED<=");
         break;
 
     case WM_COMMAND:

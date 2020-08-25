@@ -22,6 +22,9 @@
     <Filter Include="AppSettings">
       <UniqueIdentifier>{1af52bc4-35d4-4d17-9f76-b359e9caf912}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AppLog">
+      <UniqueIdentifier>{8cd1e42f-dd7e-487c-af37-0eb40223c8cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -71,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="AppSettingsProc.h">
       <Filter>AppSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="AppLog.h">
+      <Filter>AppLog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

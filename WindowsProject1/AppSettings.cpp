@@ -1081,6 +1081,15 @@ void AppSettings::handleSaveConfigs()
         return;
     }
 
+    _configVars* vars = new _configVars();
+    vars->fontSizeIndex = (int)indexFontSize;
+    vars->fontSizeFamilyIndex = (int)indexFontFamily;
+    vars->fontSizeStyleIndex = (int)indexFontStyles;
+
+    HFONT _font_sampleText =  (HFONT)SendMessage(this->hWndGroupBoxSampleText, WM_GETFONT, 0, 0);
+
+
+    SendMessage(this->hWndParent , WM_APPLY_CONFIGURATION, (WPARAM)_font_sampleText, (LPARAM)vars);
     SendMessage(this->hWndSettings, WM_CLOSE, 0, 0);
 
 }
