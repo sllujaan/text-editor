@@ -1259,6 +1259,9 @@ void handleAppConfiguration()
     }
 
     config::FILE file(path);
+    //int value;
+    //file.getKeyValue("fontFamilyIndex", &value);
+
     //free up memory
     free(path);
 

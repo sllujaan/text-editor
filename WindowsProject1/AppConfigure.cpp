@@ -62,21 +62,15 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 	}
 
 
-	//read key value.
-	//f.getKeyValue();
 
-	//f.getText();
-	//int value;
-	/*errno_t err_val = f.getKeyValueTemp("fontSizeIndex", &value);
-	if (!err_val) {
-		LOG_WCHAR(L"key value found =>>");
-		LOG_INT(value);
-	}*/
-
-	errno_t err_config = f.initReadConfigKeys();
+	/*errno_t err_config = f.initReadConfigKeys();
 	if (!err_config) {
 		LOG_WCHAR(L"config success =>>");
-	}
+	}*/
+
+	int value;
+	f.getKeyValue("fontFamilyIndex", value);
+
 
 
 	return 0;
@@ -109,7 +103,7 @@ BOOL config::FILE::isFile()
 	return TRUE;
 }
 
-errno_t config::FILE::getKeyValue(string key, int* value)//wchar_t** destination, const wchar_t* key
+errno_t config::FILE::getKeyValue(string key, int& value)//wchar_t** destination, const wchar_t* key
 {
 
 	if (!this->isFile()) return 1;
@@ -128,29 +122,43 @@ errno_t config::FILE::getKeyValue(string key, int* value)//wchar_t** destination
 	
 
 	//check if valid kay pair values--
-	string str_reg_valid = ".*("+ key +"=\\d{1,2};).*";
+	string str_reg_valid = ".*(;*"+key+"=\\d{1,2};).*";
 	LOG_STR(str_reg_valid);
 	regex reg_valid(str_reg_valid, regex_constants::icase);
-	regex reg_digits("[a-zA-Z=]+|;");
 	
 	if (regex_match(text, reg_valid)) {
 		LOG_WCHAR(L"valid expression");
-		
-		//take the valid expression from text
-		
 
-		string digits = regex_replace(text, reg_digits, "");
-		//LOG_STR(digits);
-		
-		INT num = stoi(digits);
+		size_t foundIndex = text.find(key+"=");
+		if (foundIndex != string::npos) {
+			//if(foundIndex+key.size()+1)
 
-		//return number as parameter value
-		*value = num;
-		return 0;
-		/*LOG_INT(num);
 
-		LOG_STR(text);*/
+		}
+
 	}
+
+
+
+	//regex reg_digits("[a-zA-Z=]+|;");
+	//if (regex_match(text, reg_valid)) {
+	//	LOG_WCHAR(L"valid expression");
+	//	
+	//	//take the valid expression from text
+	//	
+
+	//	string digits = regex_replace(text, reg_digits, "");
+	//	//LOG_STR(digits);
+	//	
+	//	INT num = stoi(digits);
+
+	//	//return number as parameter value
+	//	*value = num;
+	//	return 0;
+	//	/*LOG_INT(num);
+
+	//	LOG_STR(text);*/
+	//}
 
 	
 
