@@ -130,8 +130,40 @@ errno_t config::FILE::getKeyValue(string key, int& value)//wchar_t** destination
 		LOG_WCHAR(L"valid expression");
 
 		size_t foundIndex = text.find(key+"=");
+		LOG_INT(foundIndex);
+		LOG_INT(key.size());
 		if (foundIndex != string::npos) {
 			//if(foundIndex+key.size()+1)
+			size_t _digit_index_start = foundIndex + key.size() + 1;
+			size_t _digit_index_close = text.find(';', _digit_index_start);
+			string _digitStr = string(text.begin() + _digit_index_start, text.begin() + _digit_index_close);
+			LOG_STR(_digitStr);
+			//LOG_INT(_digit_index_start);
+			//LOG_CHAR(text[_digit_index_start]);
+			
+			//LOG_INT(_digit_index_close);
+			//LOG_INT(text[_digit_index_start]);
+
+
+			//find end of variables i.e. find semicololn ";"
+			/*size_t _digit_index_close = text.find(';', _digit_index_start);
+
+			if (_digit_index_close != string::npos) {
+				string _digitStr = text.substr(_digit_index_start, _digit_index_close);
+				LOG_STR(_digitStr);
+			}*/
+
+			//string digitSubStr = text.substr(digitIndex, )
+
+			/*if (isdigit(text[digitIndex]) != 0 && text[digitIndex + 1] == ';') {
+				LOG_INT((int) (text[digitIndex] - '0') );
+			}
+			else if (isdigit(digitIndex+1) != 0 && text[digitIndex + 2] == ';') {
+
+			}
+			else {
+				LOG_WCHAR(L"Invalid variable find next..");
+			}*/
 
 
 		}

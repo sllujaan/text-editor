@@ -25,3 +25,11 @@ do { \
 while (0);
 #endif // !LOG_STR
 
+#ifndef LOG_CHAR
+#define LOG_CHAR(x) \
+do { \
+	string s(1, x);\
+	LOG_STR(s);\
+} \
+while (0);
+#endif // !LOG_CHAR
