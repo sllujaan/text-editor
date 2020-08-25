@@ -34,7 +34,27 @@ void WindowControls::setWindowControlsHandle(HWND hwndSelf)
 
 HFONT WindowControls::getFont(size_t size, LPCWSTR fontFamily, LPCWSTR fontStyle)
 {
-    HFONT hFont = CreateFont(int(size), 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
+    
+    int fontWeigh = FW_NORMAL;
+    BOOL italic = FALSE;
+
+    if (fontStyle == L"Bold") {
+        fontWeigh = FW_BOLD;
+    }
+    else if (fontStyle == L"Italic") {
+        italic = TRUE;
+    }
+    else if (fontStyle == L"Bold Italic") {
+        fontWeigh = FW_BOLD;
+        italic = TRUE;
+    }
+    else if (fontStyle == L"Light") {
+        fontWeigh = FW_LIGHT;
+    }
+
+
+
+    HFONT hFont = CreateFont(int(size), 0, 0, 0, fontWeigh, italic, FALSE, FALSE, ANSI_CHARSET,
         OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
         DEFAULT_PITCH | FF_DONTCARE, fontFamily);
 
@@ -57,7 +77,7 @@ HWND WindowControls::getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BU
     HWND hwndButton = CreateWindow(
         L"BUTTON",  // Predefined class; Unicode assumed 
         buttonText,      // Button text 
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD,  // Styles 
         (int)posX,         // x position 
         (int)posY,         // y position 
         80,        // Button width

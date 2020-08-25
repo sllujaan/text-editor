@@ -136,6 +136,9 @@ LRESULT AppSettings::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
         case IDM_CODE_SAMPLES:
             OutputDebugStringW((LPCWSTR)L"IDM_CODE_SAMPLES called____++++__\r\n");
             break;
+        case UID_BUTTON_OK:
+            this->handleSaveConfigs();
+            break;
         case UID_BUTTON_CANCEL:
             SendMessage(hwnd, WM_CLOSE, 0, 0);
             break;
@@ -1061,6 +1064,27 @@ void AppSettings::updateSampleText()
 
 }
 
+void AppSettings::handleSaveConfigs()
+{
+    LRESULT indexFontSize = SendMessage(this->_hwnd_listBox_fontSize, LB_GETCURSEL, 0, 0);
+    LRESULT indexFontFamily = SendMessage(this->_hwnd_listBox_fontFamily, LB_GETCURSEL, 0, 0);
+    LRESULT indexFontStyles = SendMessage(this->_hwnd_listBox_fontStyes, LB_GETCURSEL, 0, 0);
+
+
+    if ((indexFontSize == LB_ERR) || (indexFontFamily == LB_ERR) || (indexFontStyles == LB_ERR)) {
+        MessageBox(
+            this->hWndSettings,
+            (LPCWSTR)L"Some of the Fonts are missing! Please select all the fonts and then try to save.",
+            (LPCWSTR)L"Configuration!",
+            MB_ICONWARNING
+        );
+        return;
+    }
+
+    SendMessage(this->hWndSettings, WM_CLOSE, 0, 0);
+
+}
+
 BOOL AppSettings::isValidIndex(size_t totalItems, size_t index)
 {
     if (index < totalItems) return TRUE;
@@ -1119,7 +1143,6 @@ void AppSettings::_createListBox_fontStyles()
     this->_hwnd_listBox_fontStyes = hListBox;
 
     this->_insertItems_listBox(hListBox, 0, this->fontStyles);
-
 
 }
 

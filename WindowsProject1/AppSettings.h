@@ -69,8 +69,8 @@ private:
 	};
 
 	//data for font Styles-----------
-	LPCWSTR fontStyles[4] = {
-		L"Regular", L"Bold", L"Italic", L"bold Italic",
+	LPCWSTR fontStyles[5] = {
+		L"Light", L"Regular", L"Bold", L"Italic", L"Bold Italic",
 	};
 
 protected:
@@ -164,6 +164,8 @@ private:
 	void handleCopyTextToEditControl(HWND hwndListBox, HWND hwndEdit);
 	void configureEditCtrlsText();
 	void updateSampleText();
+	void handleSaveConfigs();
+
 	BOOL isValidIndex(size_t totalItems, size_t index);
 	void showConfigKeysCorrupted();
 
