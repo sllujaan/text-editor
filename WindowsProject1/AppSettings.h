@@ -180,6 +180,6 @@ protected:
 struct _configVars : AppSettings
 {
 	int fontSizeIndex;
-	int fontSizeFamilyIndex;
-	int fontSizeStyleIndex;
+	int fontFamilyIndex;
+	int fontStyleIndex;
 };

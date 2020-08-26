@@ -1302,6 +1302,10 @@ void setEditRichFonts()
     LPCWSTR _f_style = settings->fontStyles[fontStyleIndex];
     HFONT font = settings->getFont(fontSizeIndex, _f_family, _f_style);
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)font, TRUE);
+
+    LOG_INT(fontSizeIndex + 8);
+    LOG_WCHAR(_f_family);
+    LOG_WCHAR(_f_style);
 }
 
 /*

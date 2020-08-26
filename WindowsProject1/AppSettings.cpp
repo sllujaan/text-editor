@@ -1124,8 +1124,8 @@ void AppSettings::handleSaveConfigs()
 
     _configVars* vars = new _configVars();
     vars->fontSizeIndex = (int)indexFontSize;
-    vars->fontSizeFamilyIndex = (int)indexFontFamily;
-    vars->fontSizeStyleIndex = (int)indexFontStyles;
+    vars->fontFamilyIndex = (int)indexFontFamily;
+    vars->fontStyleIndex = (int)indexFontStyles;
 
     HFONT _font_sampleText =  (HFONT)SendMessage(this->hWndGroupBoxSampleText, WM_GETFONT, 0, 0);
 

@@ -229,7 +229,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //int msgboxID_CLOSE = 0;
     ENDROPFILES* penDropFiles;
 
+
+
+
     _configVars* vars;
+    /*LPCWSTR _f_family;
+    LPCWSTR _f_style;
+    HFONT _font;*/
+
 
     switch (message)
     {
@@ -308,11 +315,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_APPLY_CONFIGURATION:
         //HFONT font = (HFONT)wParam;
         vars = (_configVars*)lParam;
-        LOG_INT(vars->fontSizeIndex);
-        LOG_WCHAR(vars->fontFamilies[vars->fontSizeFamilyIndex]);
+        LOG_INT(vars->fontSizeIndex + 8);
+        LOG_WCHAR(vars->fontFamilies[vars->fontFamilyIndex]);
+        LOG_WCHAR(vars->fontStyles[vars->fontStyleIndex]);
+
+        
+        /*_f_family = vars->fontFamilies[vars->fontFamilyIndex];
+        _f_style = vars->fontStyles[vars->fontStyleIndex];
+        _font = vars->getFont(vars->fontSizeIndex + 8, _f_family, _f_style);*/
+
+
+        LOG_WCHAR(L"=>APPLY CONFIGURATION CALLED<=");
 
         SendMessage(hwndEdit, WM_SETFONT, wParam, TRUE);
-        LOG_WCHAR(L"=>APPLY CONFIGURATION CALLED<=");
+        
         break;
 
     case WM_COMMAND:
