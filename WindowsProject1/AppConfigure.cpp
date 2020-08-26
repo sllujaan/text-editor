@@ -69,8 +69,11 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 	}*/
 
 	int value;
-	f.getKeyValue("fontFamilyIndex", value);
-
+	errno_t err_key_value = f.getKeyValue("fontFamilyIndex", value);
+	if (!err_key_value) {
+		LOG_WCHAR(L"value =>");
+		LOG_INT(value);
+	}
 
 
 	return 0;
@@ -118,16 +121,15 @@ errno_t config::FILE::getKeyValue(string key, int& value)//wchar_t** destination
 	regex reg_spaces("\\s");
 	text = regex_replace(text, reg_spaces, "");
 	if (text == "") return 1;
-	
 
 	//check if valid kay pair values--
 	string str_reg_valid = ".*(;*"+key+"=\\d{1,2};).*";
 	regex reg_valid(str_reg_valid, regex_constants::icase);
 	
+	
 	if (regex_match(text, reg_valid)) {
 		LOG_WCHAR(L"valid expression");
-		this->findKeyValue(text, key, value);
-		return 0;
+		return this->findKeyValue(text, key, value);
 	}
 
 	return 1;
@@ -177,47 +179,32 @@ errno_t config::FILE::findKeyValue(string text, string key, int& value)
 
 	size_t _key_found_index = 0;
 	//run while loop for maximum 500 times.
-	const size_t LOOP_MAX_COUNT = 10;
+	const size_t LOOP_MAX_COUNT = 100;
 	size_t LOOP_CURRENT_COUNT = 0;
 
 	while (_key_found_index != string::npos) {
 		LOOP_CURRENT_COUNT++;
 
+		//take the key index where the key is found.
 		_key_found_index = text.find(key + "=", _key_found_index);
+		//get the digit indexes starting and closing..
 		size_t _digit_index_start = _key_found_index + key.size() + 1;
 		size_t _digit_index_close = text.find(';', _digit_index_start);
-		LOG_INT(_digit_index_start);
-		LOG_INT(_digit_index_close);
 
 		string _digitStr = string(text.begin() + _digit_index_start, text.begin() + _digit_index_close);
-
 		try {
 			int _val = stoi(_digitStr);
 			value = _val;
-			LOG_INT(value);
+			return 0;
 		}
 		catch (...) {
-			LOG_WCHAR(L"Not found got to next iteration.");
+			//kay value was invalid. Find next.
 			_key_found_index = text.find(key + "=", _digit_index_close + 1);
-			//LOG_INT(_key_found_index);
 		}
 		
+		//stop the loop if it exceeds max counts--
 		if(LOOP_CURRENT_COUNT > LOOP_MAX_COUNT) break;
 	}
-
-	//_key_found_index = text.find(key + "=");
-	////LOG_INT(foundIndex);
-	////sLOG_INT(key.size());
-
-	//if (_key_found_index != string::npos) {
-	//	//if(foundIndex+key.size()+1)
-	//	size_t _digit_index_start = _key_found_index + key.size() + 1;
-	//	size_t _digit_index_close = text.find(';', _digit_index_start);
-	//	string _digitStr = string(text.begin() + _digit_index_start, text.begin() + _digit_index_close);
-	//	LOG_INT(stoi(_digitStr));
-
-	//	return 0;
-	//}
 
 	return 1;
 }
@@ -235,7 +222,8 @@ string config::FILE::readText()
 	string lineText;
 
 	while (getline(this->file, lineText)) {
-		wholeText = lineText + "\n";
+		
+		wholeText += lineText + "\n";
 	}
 
 	this->fileText = wholeText;
