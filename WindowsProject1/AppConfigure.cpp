@@ -229,3 +229,17 @@ string config::FILE::readText()
 	this->fileText = wholeText;
 	return wholeText;
 }
+
+errno_t config::FILE::writeText(string text)
+{
+	if (!this->isFile()) return 1;
+
+	//close the stream if already open
+	this->CLOSE();
+
+	this->file.open(this->filePath, ios::out);
+
+	this->file << text;
+
+	return 0;
+}

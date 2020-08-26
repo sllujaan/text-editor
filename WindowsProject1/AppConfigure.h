@@ -36,6 +36,7 @@ namespace config {
 		wchar_t* filePath;
 		string fileText;
 		string readText();
+		
 
 		//config keys
 		string _key_fSize = "fontSizeIndex";
@@ -61,6 +62,7 @@ namespace config {
 		errno_t initReadConfigKeys();
 		void resetConfigKeys();
 		errno_t findKeyValue(string text, string key, int& value);
+		errno_t writeText(string text);
 
 	};
 };

@@ -6,6 +6,7 @@
 
 #include"AppLog.h"
 #include"WindowControls.h"
+#include"AppConfigure.h"
 using namespace std;
 
 #define IDM_CODE_SAMPLES 0x3e0f
@@ -151,6 +152,7 @@ private:
 	void createCancelButton();
 	void createStaticsControls();
 	void createEditControlFontSize();
+	void handleSaveToConfigFile();
 
 
 

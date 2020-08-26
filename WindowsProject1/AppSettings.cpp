@@ -907,6 +907,40 @@ void AppSettings::createEditControlFontSize()
 
 }
 
+void AppSettings::handleSaveToConfigFile()
+{
+    appConfig ac;
+    wchar_t* path;
+    size_t size;
+
+    errno_t err = ac.getAppConfigPath_secure(&path, &size);
+
+    if (err) {
+        MessageBox(NULL,
+            (LPCWSTR)L"Failed to read environment variable.",
+            (LPCWSTR)("env"),
+            NULL);
+        return;
+    }
+
+    config::FILE file(path);
+
+    string _config_fontSize = "fontSizeIndex=" + to_string(this->_fSizeIndex) + ";\n";
+    string _config_fontFamily = "fontFamilyIndex=" + to_string(this->_fFamilyIndex) + ";\n";
+    string _config_fontStyle = "fontStyleIndex=" + to_string(this->_fStyleIndex) + ";\n";
+    string configText = _config_fontSize + _config_fontFamily + _config_fontStyle;
+
+    errno_t err_write = file.writeText(configText);
+    if (err_write) {
+        MessageBox(this->hWndSettings,
+            (LPCWSTR)L"Failed to write to Configuration File.",
+            (LPCWSTR)("Configuration"),
+            MB_ICONERROR);
+    }
+
+    free(path);
+}
+
 void AppSettings::createComboBox()
 {
 
@@ -1084,6 +1118,10 @@ void AppSettings::handleSaveConfigs()
         return;
     }
 
+    this->_fSizeIndex = indexFontSize;
+    this->_fFamilyIndex = indexFontFamily;
+    this->_fStyleIndex = indexFontStyles;
+
     _configVars* vars = new _configVars();
     vars->fontSizeIndex = (int)indexFontSize;
     vars->fontSizeFamilyIndex = (int)indexFontFamily;
@@ -1093,6 +1131,9 @@ void AppSettings::handleSaveConfigs()
 
 
     SendMessage(this->hWndParent , WM_APPLY_CONFIGURATION, (WPARAM)_font_sampleText, (LPARAM)vars);
+    
+    this->handleSaveToConfigFile();
+    
     SendMessage(this->hWndSettings, WM_CLOSE, 0, 0);
 
 }
