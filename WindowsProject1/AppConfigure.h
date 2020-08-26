@@ -60,6 +60,7 @@ namespace config {
 		errno_t getKeyValueTemp(string key, int* value);
 		errno_t initReadConfigKeys();
 		void resetConfigKeys();
+		errno_t findKeyValue(string text, string key, int& value);
 
 	};
 };

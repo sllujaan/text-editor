@@ -118,90 +118,17 @@ errno_t config::FILE::getKeyValue(string key, int& value)//wchar_t** destination
 	regex reg_spaces("\\s");
 	text = regex_replace(text, reg_spaces, "");
 	if (text == "") return 1;
-	LOG_STR(text);
 	
 
 	//check if valid kay pair values--
 	string str_reg_valid = ".*(;*"+key+"=\\d{1,2};).*";
-	LOG_STR(str_reg_valid);
 	regex reg_valid(str_reg_valid, regex_constants::icase);
 	
 	if (regex_match(text, reg_valid)) {
 		LOG_WCHAR(L"valid expression");
-
-		size_t foundIndex = text.find(key+"=");
-		LOG_INT(foundIndex);
-		LOG_INT(key.size());
-		if (foundIndex != string::npos) {
-			//if(foundIndex+key.size()+1)
-			size_t _digit_index_start = foundIndex + key.size() + 1;
-			size_t _digit_index_close = text.find(';', _digit_index_start);
-			string _digitStr = string(text.begin() + _digit_index_start, text.begin() + _digit_index_close);
-			LOG_STR(_digitStr);
-			//LOG_INT(_digit_index_start);
-			//LOG_CHAR(text[_digit_index_start]);
-			
-			//LOG_INT(_digit_index_close);
-			//LOG_INT(text[_digit_index_start]);
-
-
-			//find end of variables i.e. find semicololn ";"
-			/*size_t _digit_index_close = text.find(';', _digit_index_start);
-
-			if (_digit_index_close != string::npos) {
-				string _digitStr = text.substr(_digit_index_start, _digit_index_close);
-				LOG_STR(_digitStr);
-			}*/
-
-			//string digitSubStr = text.substr(digitIndex, )
-
-			/*if (isdigit(text[digitIndex]) != 0 && text[digitIndex + 1] == ';') {
-				LOG_INT((int) (text[digitIndex] - '0') );
-			}
-			else if (isdigit(digitIndex+1) != 0 && text[digitIndex + 2] == ';') {
-
-			}
-			else {
-				LOG_WCHAR(L"Invalid variable find next..");
-			}*/
-
-
-		}
-
+		this->findKeyValue(text, key, value);
+		return 0;
 	}
-
-
-
-	//regex reg_digits("[a-zA-Z=]+|;");
-	//if (regex_match(text, reg_valid)) {
-	//	LOG_WCHAR(L"valid expression");
-	//	
-	//	//take the valid expression from text
-	//	
-
-	//	string digits = regex_replace(text, reg_digits, "");
-	//	//LOG_STR(digits);
-	//	
-	//	INT num = stoi(digits);
-
-	//	//return number as parameter value
-	//	*value = num;
-	//	return 0;
-	//	/*LOG_INT(num);
-
-	//	LOG_STR(text);*/
-	//}
-
-	
-
-
-	//wstring wstr = wstring(line.begin(), line.end());
-
-	//MessageBox(NULL,
-	//	(LPCWSTR)wstr.c_str(),
-	//	(LPCWSTR)L"env",
-	//	NULL);
-
 
 	return 1;
 }
@@ -243,6 +170,56 @@ void config::FILE::resetConfigKeys()
 	this->_key_fSize = -1;
 	this->_key_fFamily = -1;
 	this->_key_fStyle = -1;
+}
+
+errno_t config::FILE::findKeyValue(string text, string key, int& value)
+{
+
+	size_t _key_found_index = 0;
+	//run while loop for maximum 500 times.
+	const size_t LOOP_MAX_COUNT = 10;
+	size_t LOOP_CURRENT_COUNT = 0;
+
+	while (_key_found_index != string::npos) {
+		LOOP_CURRENT_COUNT++;
+
+		_key_found_index = text.find(key + "=", _key_found_index);
+		size_t _digit_index_start = _key_found_index + key.size() + 1;
+		size_t _digit_index_close = text.find(';', _digit_index_start);
+		LOG_INT(_digit_index_start);
+		LOG_INT(_digit_index_close);
+
+		string _digitStr = string(text.begin() + _digit_index_start, text.begin() + _digit_index_close);
+
+		try {
+			int _val = stoi(_digitStr);
+			value = _val;
+			LOG_INT(value);
+		}
+		catch (...) {
+			LOG_WCHAR(L"Not found got to next iteration.");
+			_key_found_index = text.find(key + "=", _digit_index_close + 1);
+			//LOG_INT(_key_found_index);
+		}
+		
+		if(LOOP_CURRENT_COUNT > LOOP_MAX_COUNT) break;
+	}
+
+	//_key_found_index = text.find(key + "=");
+	////LOG_INT(foundIndex);
+	////sLOG_INT(key.size());
+
+	//if (_key_found_index != string::npos) {
+	//	//if(foundIndex+key.size()+1)
+	//	size_t _digit_index_start = _key_found_index + key.size() + 1;
+	//	size_t _digit_index_close = text.find(';', _digit_index_start);
+	//	string _digitStr = string(text.begin() + _digit_index_start, text.begin() + _digit_index_close);
+	//	LOG_INT(stoi(_digitStr));
+
+	//	return 0;
+	//}
+
+	return 1;
 }
 
 string config::FILE::readText()
