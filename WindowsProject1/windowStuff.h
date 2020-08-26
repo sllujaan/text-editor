@@ -701,7 +701,9 @@ void handleRichEditControl(HWND hWnd) {
     hwndEdit = CreateRichEdit(hWnd, 0, 0, 200, 200, hInst);
 
     //formating editrich control..
-    SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
+
+
+    //SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
 
     //formating using CHARFORMAT structure
     /*CHARFORMATA chf;
@@ -1292,6 +1294,15 @@ void handleAppConfiguration()
 
 }
 
+
+
+void setEditRichFonts()
+{
+    LPCWSTR _f_family = settings->fontFamilies[fontFamilyIndex];
+    LPCWSTR _f_style = settings->fontStyles[fontStyleIndex];
+    HFONT font = settings->getFont(fontSizeIndex, _f_family, _f_style);
+    SendMessage(hwndEdit, WM_SETFONT, (WPARAM)font, TRUE);
+}
 
 /*
 

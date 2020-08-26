@@ -38,6 +38,9 @@ void AppSettings::initWindow()
     //configure all edit controls texts.
     this->configureEditCtrlsText();
 
+    //update sample Text
+    this->updateSampleText();
+
     //Now set Focuses and show window beacuse every thing is ready.
     this->handleFocuses();                  //handling Focuses.
     ShowWindow(this->hWndSettings, this->nCmdShowGlobal);  //now every thing is ready show the window.
@@ -1152,6 +1155,8 @@ void AppSettings::_createListBox_fontStyles()
     this->_hwnd_listBox_fontStyes = hListBox;
 
     this->_insertItems_listBox(hListBox, 0, this->fontStyles);
+
+    SendMessage(this->_hwnd_listBox_fontStyes, LB_SETCURSEL, this->_fStyleIndex, 0);
 
 }
 

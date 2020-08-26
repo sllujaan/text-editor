@@ -29,6 +29,10 @@ class AppSettings: public WindowControls {
 	//attributes--------
 public:
 
+	size_t _fSizeIndex = 0;
+	size_t _fFamilyIndex = 0;
+	size_t _fStyleIndex = 0;
+
 	//data for font families-----------
 	LPCWSTR fontFamilies[18] = {
 		L"Arial", L"Arial Black", L"Calibri", L"Cambria", L"Cambria Math", L"MS New Tai Lue",
@@ -74,13 +78,11 @@ protected:
 
 	
 
-	size_t _fSizeIndex = 0;
-	size_t _fFamilyIndex = 0;
-	size_t _fStyleIndex = 0;
+
 
 	size_t _fSizeTotalItems = 65;
 	size_t _fFamilyTotalItems = ARRAYSIZE(this->fontFamilies);
-	size_t _fStyleTotalItems = 5;
+	size_t _fStyleTotalItems = ARRAYSIZE(this->fontStyles);
 
 	//const wchar_t* arr = L"ab";
 

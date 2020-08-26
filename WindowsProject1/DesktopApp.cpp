@@ -173,7 +173,7 @@ int CALLBACK WinMain(
     //stroring the handle to global variable--
     hwndMain = hWnd;
 
-    
+    LOG_WCHAR(L"__settings object initiated.");
     //registering component windows--
     settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
     settings->registerWindow();
@@ -182,6 +182,8 @@ int CALLBACK WinMain(
     handleAppConfiguration();
     //now applay the variables to settings.
     settings->setSettings(fontSizeIndex, fontFamilyIndex, fontStyleIndex);
+
+    setEditRichFonts();
 
     _search_app = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
     _search_app->registerWindow();
