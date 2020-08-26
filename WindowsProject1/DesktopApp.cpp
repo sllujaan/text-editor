@@ -27,7 +27,11 @@ WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box
 AppSettings* settings;
 Search* _search_app;
 config::FILE _config_file;
-void handleAppConfiguration();
+int fontSizeIndex = 0;
+int fontFamilyIndex = 0;
+int fontStyleIndex = 0;
+
+//void handleAppConfiguration();
 
 
 //#ifndef LOG 
@@ -72,7 +76,6 @@ HMENU hMenuMain;
     HFONT hFont = CreateFont(18, 0, 0, 0, FW_DONTCARE, FALSE, TRUE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
     CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, VARIABLE_PITCH, TEXT("Impact"));
 */
-
 
 
 
@@ -170,13 +173,16 @@ int CALLBACK WinMain(
     //stroring the handle to global variable--
     hwndMain = hWnd;
 
+    
     //registering component windows--
     settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
     settings->registerWindow();
 
+    //first read config variables from config file.
+    handleAppConfiguration();
+    //now applay the variables to settings.
+    settings->setSettings(fontSizeIndex, fontFamilyIndex, fontStyleIndex);
 
-    
-    settings->setSettings(3, 5, 0);
     _search_app = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
     _search_app->registerWindow();
 

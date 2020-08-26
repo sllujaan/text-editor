@@ -1240,9 +1240,17 @@ void onDropFileSingle(HWND hWnd, HDROP hdrop) {
 
 }
 
+void showInvalidConfigVars() {
+    MessageBox(NULL,
+        (LPCWSTR)L"Some of the config variables are missing! The app has adapted default settings.",
+        _T("Configuration!"),
+        MB_ICONEXCLAMATION);
+}
+
 void handleAppConfiguration()
 {
     
+    LOG_WCHAR(L"handleAppConfiguration called...");
 
     appConfig ac;
     wchar_t* path;
@@ -1259,13 +1267,31 @@ void handleAppConfiguration()
     }
 
     config::FILE file(path);
-    //int value;
-    //file.getKeyValue("fontFamilyIndex", &value);
+
+    int _fontSizeIndex;
+    int _fontFamilyIndex;
+    int _fontStyleIndex;
+    
+    errno_t err_f_Size_i =  file.getKeyValue("fontSizeIndex", _fontSizeIndex); //fsi = fontSizeIndex
+    errno_t err_f_family_i = file.getKeyValue("fontFamilyIndex", _fontFamilyIndex); //fsi = fontSizeIndex
+    errno_t err_f_style_i = file.getKeyValue("fontStyleIndex", _fontStyleIndex); //fsi = fontSizeIndex
+
+    if (err_f_Size_i || err_f_family_i || err_f_style_i) {
+        fontSizeIndex = 0;
+        fontFamilyIndex = 0;
+        fontStyleIndex = 0;
+        showInvalidConfigVars();
+        return;
+    }
+    fontSizeIndex = _fontSizeIndex;
+    fontFamilyIndex = _fontFamilyIndex;
+    fontStyleIndex = _fontStyleIndex;
 
     //free up memory
     free(path);
 
 }
+
 
 /*
 

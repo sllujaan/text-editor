@@ -68,12 +68,12 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 		LOG_WCHAR(L"config success =>>");
 	}*/
 
-	int value;
+	/*int value;
 	errno_t err_key_value = f.getKeyValue("fontFamilyIndex", value);
 	if (!err_key_value) {
 		LOG_WCHAR(L"value =>");
 		LOG_INT(value);
-	}
+	}*/
 
 
 	return 0;
