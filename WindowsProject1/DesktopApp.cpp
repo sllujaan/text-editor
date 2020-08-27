@@ -182,6 +182,7 @@ int CALLBACK WinMain(
     handleAppConfiguration();
     //now applay the variables to settings.
     settings->setSettings(fontSizeIndex, fontFamilyIndex, fontStyleIndex);
+    settings->handleSaveToConfigFile();
 
     setEditRichFonts();
 

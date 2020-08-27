@@ -1249,6 +1249,12 @@ void showInvalidConfigVars() {
         MB_ICONEXCLAMATION);
 }
 
+void setFontsToDefault() {
+    fontSizeIndex = (int)settings->_fSizeIndex_default;
+    fontFamilyIndex = (int)settings->_fFamilyIndex_default;
+    fontStyleIndex = (int)settings->_fStyleIndex_default;
+}
+
 void handleAppConfiguration()
 {
     
@@ -1277,6 +1283,7 @@ void handleAppConfiguration()
             (LPCWSTR)L"Configuration file is missing! The App has adapted default settings.",
             (LPCWSTR)L"Configuration.",
             MB_ICONEXCLAMATION);
+        setFontsToDefault();
         return;
     }
 
@@ -1290,9 +1297,7 @@ void handleAppConfiguration()
     errno_t err_f_style_i = file.getKeyValue("fontStyleIndex", _fontStyleIndex); //fsi = fontSizeIndex
 
     if (err_f_Size_i || err_f_family_i || err_f_style_i) {
-        fontSizeIndex = 0;
-        fontFamilyIndex = 0;
-        fontStyleIndex = 0;
+        setFontsToDefault();
         showInvalidConfigVars();
         return;
     }
@@ -1313,11 +1318,12 @@ void setEditRichFonts()
     LPCWSTR _f_style = settings->fontStyles[fontStyleIndex];
     HFONT font = settings->getFont(fontSizeIndex + 8, _f_family, _f_style);
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)font, TRUE);
-
-    LOG_INT(fontSizeIndex + 16);
-    LOG_WCHAR(_f_family);
-    LOG_WCHAR(_f_style);
 }
+
+
+
+
+
 
 /*
 
@@ -1408,10 +1414,12 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         OutputDebugStringW((LPCWSTR)L"--------------WM_COMMAND called\r\n");
         break;
 
-    case WM_KEYDOWN:
+    case WM_SYSKEYDOWN:
+        LOG_WCHAR(L"WM_SYSKEYDOWN");
         break;
 
     case WM_KEYUP:
+        break;
     case WM_CHAR:
         switch (wParam)
         {
@@ -1432,6 +1440,9 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_SYSCHAR:
         OutputDebugStringW((LPCWSTR)L"--------------WM_SYSCHAR called\r\n");
+        if (wParam == 's') {
+            LOG_WCHAR(L"s");
+        }
         break;
         
     }

@@ -34,6 +34,11 @@ public:
 	size_t _fFamilyIndex = 0;
 	size_t _fStyleIndex = 0;
 
+
+	size_t _fSizeIndex_default = 8;
+	size_t _fFamilyIndex_default = 7;
+	size_t _fStyleIndex_default = 1;
+
 	//data for font families-----------
 	LPCWSTR fontFamilies[18] = {
 		L"Arial", L"Arial Black", L"Calibri", L"Cambria", L"Cambria Math", L"MS New Tai Lue",
@@ -106,6 +111,7 @@ public:
 	size_t getFontSize();
 	LPCWSTR getFontFamily();
 	LPCWSTR getFontStyle();
+	void handleSaveToConfigFile();
 
 private:
 	//private stuff
@@ -152,7 +158,7 @@ private:
 	void createCancelButton();
 	void createStaticsControls();
 	void createEditControlFontSize();
-	void handleSaveToConfigFile();
+	
 
 
 
