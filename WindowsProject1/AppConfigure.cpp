@@ -43,37 +43,7 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 	//free up buffer
 	free(*buffer);
 
-
-	//reaclocation of memory for concatenation---------
-	//*buffer = (wchar_t*)realloc(*buffer, totalSize + 1 );
-	//errno_t err_cat = wcscat_s(*buffer, totalSize + 1, this->appDir);
-
 	*buffer = newBuffer;
-
-
-	//check if file exists
-	config::FILE f(*buffer);
-	const BOOL file = f.isFile();
-	if (!file) {
-		MessageBox(NULL,
-			(LPCWSTR)L"file does not exist.",
-			(LPCWSTR)L"env",
-			NULL);
-	}
-
-
-
-	/*errno_t err_config = f.initReadConfigKeys();
-	if (!err_config) {
-		LOG_WCHAR(L"config success =>>");
-	}*/
-
-	/*int value;
-	errno_t err_key_value = f.getKeyValue("fontFamilyIndex", value);
-	if (!err_key_value) {
-		LOG_WCHAR(L"value =>");
-		LOG_INT(value);
-	}*/
 
 
 	return 0;
@@ -85,8 +55,10 @@ config::FILE::FILE(const wchar_t* path)
 	this->filePath = new wchar_t[len + 1];
 	errno_t err = wcscpy_s(this->filePath, len, path);
 
+	LOG_WCHAR(L"reading text...");
 	//read text and store it as attribute variable
 	this->readText();
+	LOG_WCHAR(L"text read successfully.");
 }
 
 BOOL config::FILE::isFile()
@@ -99,10 +71,11 @@ BOOL config::FILE::isFile()
 	//converting wchar_t* to char*
 	_bstr_t b(this->filePath);
 	const char* path = b;
+
 	//now check for file.
 	this->file.open(path, ios::in);
-	this->CLOSE();
-	if (!this->file) return FALSE;
+	LOG_WCHAR(L"file Opened.");
+	if (!this->file) { this->CLOSE(); return FALSE; }
 	return TRUE;
 }
 
@@ -211,10 +184,12 @@ errno_t config::FILE::findKeyValue(string text, string key, int& value)
 
 string config::FILE::readText()
 {
-	if (!this->isFile()) return nullptr;
+	if (!this->isFile()) return "";
 
 	//close the stream if already open
 	this->CLOSE();
+
+	LOG_WCHAR(L"opening file..");
 
 	this->file.open(this->filePath, ios::in);
 
@@ -232,7 +207,7 @@ string config::FILE::readText()
 
 errno_t config::FILE::writeText(string text)
 {
-	if (!this->isFile()) return 1;
+	//if (!this->isFile()) return 1;
 
 	//close the stream if already open
 	this->CLOSE();

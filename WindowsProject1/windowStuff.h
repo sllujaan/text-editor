@@ -1270,6 +1270,17 @@ void handleAppConfiguration()
 
     config::FILE file(path);
 
+    const BOOL isFile = file.isFile();
+
+    if (!isFile) {
+        MessageBox(NULL,
+            (LPCWSTR)L"Configuration file is missing! The App has adapted default settings.",
+            (LPCWSTR)L"Configuration.",
+            MB_ICONEXCLAMATION);
+        return;
+    }
+
+
     int _fontSizeIndex;
     int _fontFamilyIndex;
     int _fontStyleIndex;
@@ -1300,10 +1311,10 @@ void setEditRichFonts()
 {
     LPCWSTR _f_family = settings->fontFamilies[fontFamilyIndex];
     LPCWSTR _f_style = settings->fontStyles[fontStyleIndex];
-    HFONT font = settings->getFont(fontSizeIndex, _f_family, _f_style);
+    HFONT font = settings->getFont(fontSizeIndex + 8, _f_family, _f_style);
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)font, TRUE);
 
-    LOG_INT(fontSizeIndex + 8);
+    LOG_INT(fontSizeIndex + 16);
     LOG_WCHAR(_f_family);
     LOG_WCHAR(_f_style);
 }

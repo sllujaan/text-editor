@@ -934,7 +934,7 @@ void AppSettings::handleSaveToConfigFile()
     if (err_write) {
         MessageBox(this->hWndSettings,
             (LPCWSTR)L"Failed to write to Configuration File.",
-            (LPCWSTR)("Configuration"),
+            (LPCWSTR)(L"Configuration"),
             MB_ICONERROR);
     }
 
