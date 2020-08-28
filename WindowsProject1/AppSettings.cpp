@@ -907,7 +907,7 @@ void AppSettings::createEditControlFontSize()
 
 }
 
-void AppSettings::handleSaveToConfigFile()
+void AppSettings::handleSaveToConfigFile(size_t wndWidth, size_t wndHeight)
 {
     appConfig ac;
     wchar_t* path;
@@ -927,8 +927,11 @@ void AppSettings::handleSaveToConfigFile()
 
     string _config_fontSize = "fontSizeIndex=" + to_string(this->_fSizeIndex) + ";\n";
     string _config_fontFamily = "fontFamilyIndex=" + to_string(this->_fFamilyIndex) + ";\n";
-    string _config_fontStyle = "fontStyleIndex=" + to_string(this->_fStyleIndex) + ";\n";
-    string configText = _config_fontSize + _config_fontFamily + _config_fontStyle;
+    string _config_fontStyle = "fontStyleIndex=" + to_string(this->_fStyleIndex) + ";\n\n";
+    string _config_wndWidth = "wndWidth=" + to_string(wndWidth) + ";\n";
+    string _config_wndHeight = "wndWidth=" + to_string(wndHeight) + ";\n";
+
+    string configText = _config_fontSize + _config_fontFamily + _config_fontStyle + _config_wndWidth + _config_wndHeight;
 
     errno_t err_write = file.writeText(configText);
     if (err_write) {
@@ -1132,7 +1135,7 @@ void AppSettings::handleSaveConfigs()
 
     SendMessage(this->hWndParent , WM_APPLY_CONFIGURATION, (WPARAM)_font_sampleText, (LPARAM)vars);
     
-    this->handleSaveToConfigFile();
+    this->handleSaveToConfigFile(this->getWndWidth(), this->getWndHeight());
     
     SendMessage(this->hWndSettings, WM_CLOSE, 0, 0);
 

@@ -27,7 +27,7 @@ appConfig::appConfig()
 
 appConfig::~appConfig()
 {
-
+	delete this->_file;
 }
 
 LPCWSTR appConfig::getAppConfigPath()
@@ -148,7 +148,7 @@ errno_t config::FILE::getKeyValue(string key, int& value)//wchar_t** destination
 	if (text == "") return 1;
 
 	//check if valid kay pair values--
-	string str_reg_valid = ".*(;*"+key+"=\\d{1,2};).*";
+	string str_reg_valid = ".*(;*"+key+"=\\d{1,10};).*";
 	regex reg_valid(str_reg_valid, regex_constants::icase);
 	
 	

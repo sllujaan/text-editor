@@ -182,7 +182,7 @@ int CALLBACK WinMain(
     handleAppConfiguration();
     //now applay the variables to settings.
     settings->setSettings(fontSizeIndex, fontFamilyIndex, fontStyleIndex);
-    settings->handleSaveToConfigFile();
+    settings->handleSaveToConfigFile((int)_appConfig.getWndWidth(), (int)_appConfig.getWndHeight());
 
     setEditRichFonts();
 

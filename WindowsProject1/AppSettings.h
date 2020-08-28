@@ -26,7 +26,7 @@ using namespace std;
 
 
 
-class AppSettings: public WindowControls {
+class AppSettings: public WindowControls, public appConfig {
 	//attributes--------
 public:
 
@@ -111,7 +111,7 @@ public:
 	size_t getFontSize();
 	LPCWSTR getFontFamily();
 	LPCWSTR getFontStyle();
-	void handleSaveToConfigFile();
+	void handleSaveToConfigFile(size_t wndWidth, size_t wndHeight);
 
 private:
 	//private stuff
