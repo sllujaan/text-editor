@@ -23,7 +23,7 @@ HWND    hwndMain;
 WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box
 
 //global sub windows instances---
-
+appConfig _appConfig;
 AppSettings* settings;
 Search* _search_app;
 config::FILE _config_file;
@@ -153,7 +153,7 @@ int CALLBACK WinMain(
         szTitle,
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        MAINWIN_WIDTH, MAINWIN_HEIGHT,
+        (int)_appConfig.getWndWidth(), (int)_appConfig.getWndHeight(),
         NULL,
         hMenuMain,
         hInstance,
@@ -232,7 +232,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 
-
+    appConfig ac;
     _configVars* vars;
     /*LPCWSTR _f_family;
     LPCWSTR _f_style;
@@ -422,6 +422,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_DIALOG_BOX:
             handleDialolgBox(hWnd);
+            ac.printRect(hWnd);
             break;
             
         default:

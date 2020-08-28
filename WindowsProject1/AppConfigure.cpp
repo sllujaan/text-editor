@@ -1,5 +1,35 @@
 #include "AppConfigure.h"
 
+appConfig::appConfig()
+{
+	wchar_t* path;
+	size_t size;
+
+	errno_t err_env = this->getAppConfigPath_secure(&path, &size);
+
+	if (err_env) return;
+
+	this->_file = new config::FILE(path);
+	
+	if (!this->_file->isFile()) { free(path); return; };
+	
+	int width;
+	int height;
+	errno_t err_width = this->_file->getKeyValue("wndWidth", width);
+	errno_t err_height = this->_file->getKeyValue("wndHeight", height);
+
+	if (err_width || err_height) return;
+
+	this->wndWidth = width;
+	this->wndHeight = height;
+
+}
+
+appConfig::~appConfig()
+{
+
+}
+
 LPCWSTR appConfig::getAppConfigPath()
 {
 	wchar_t* pValue;
@@ -47,6 +77,28 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 
 
 	return 0;
+}
+
+void appConfig::printRect(HWND hwnd)
+{
+	RECT rect;
+	GetWindowRect(hwnd, &rect);
+
+	int nWidth = rect.right - rect.left;
+	int nHeight = rect.bottom - rect.top;
+
+	LOG_INT(nWidth);
+	LOG_INT(nHeight);
+}
+
+size_t appConfig::getWndHeight()
+{
+	return this->wndHeight;
+}
+
+size_t appConfig::getWndWidth()
+{
+	return this->wndWidth;
 }
 
 config::FILE::FILE(const wchar_t* path)
