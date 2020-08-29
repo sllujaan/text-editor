@@ -232,7 +232,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 
-    appConfig ac;
+
     _configVars* vars;
     /*LPCWSTR _f_family;
     LPCWSTR _f_style;
@@ -422,7 +422,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_DIALOG_BOX:
             handleDialolgBox(hWnd);
-            ac.printRect(hWnd);
+            //ac.printRect(hWnd);
             break;
             
         default:
