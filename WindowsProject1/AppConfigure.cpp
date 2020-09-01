@@ -18,6 +18,15 @@ appConfig::appConfig()
 	errno_t err_width = this->_file->getKeyValue("wndWidth", width);
 	errno_t err_height = this->_file->getKeyValue("wndHeight", height);
 
+	if (!err_width)
+	{
+		LOG_INT(width);
+	}
+	if (!err_height)
+	{
+		LOG_INT(height);
+	}
+
 	if (err_width || err_height) return;
 
 	this->wndWidth = width;
@@ -152,6 +161,10 @@ errno_t config::FILE::getKeyValue(string key, int& value)//wchar_t** destination
 	regex reg_valid(str_reg_valid, regex_constants::icase);
 	
 	
+
+	LOG_STR(str_reg_valid);
+	LOG_STR(text);
+	
 	if (regex_match(text, reg_valid)) {
 		LOG_WCHAR(L"valid expression");
 		return this->findKeyValue(text, key, value);
@@ -203,7 +216,7 @@ errno_t config::FILE::findKeyValue(string text, string key, int& value)
 {
 
 	size_t _key_found_index = 0;
-	//run while loop for maximum 500 times.
+	//run while loop for maximum 100 times.
 	const size_t LOOP_MAX_COUNT = 100;
 	size_t LOOP_CURRENT_COUNT = 0;
 
@@ -220,6 +233,7 @@ errno_t config::FILE::findKeyValue(string text, string key, int& value)
 		try {
 			int _val = stoi(_digitStr);
 			value = _val;
+			LOG_WCHAR(L"Value Found.");
 			return 0;
 		}
 		catch (...) {

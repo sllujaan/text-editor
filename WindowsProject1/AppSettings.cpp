@@ -929,7 +929,7 @@ void AppSettings::handleSaveToConfigFile(size_t wndWidth, size_t wndHeight)
     string _config_fontFamily = "fontFamilyIndex=" + to_string(this->_fFamilyIndex) + ";\n";
     string _config_fontStyle = "fontStyleIndex=" + to_string(this->_fStyleIndex) + ";\n\n";
     string _config_wndWidth = "wndWidth=" + to_string(wndWidth) + ";\n";
-    string _config_wndHeight = "wndWidth=" + to_string(wndHeight) + ";\n";
+    string _config_wndHeight = "wndHeight=" + to_string(wndHeight) + ";\n";
 
     string configText = _config_fontSize + _config_fontFamily + _config_fontStyle + _config_wndWidth + _config_wndHeight;
 
@@ -942,6 +942,10 @@ void AppSettings::handleSaveToConfigFile(size_t wndWidth, size_t wndHeight)
     }
 
     free(path);
+
+    //save width height
+    this->wndWidth = wndWidth;
+    this->wndHeight = wndHeight;
 }
 
 void AppSettings::createComboBox()

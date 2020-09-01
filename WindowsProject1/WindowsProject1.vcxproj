@@ -167,7 +167,7 @@
     <ClInclude Include="WindowControls.h" />
     <ClInclude Include="WindowsProject1.h" />
     <ClInclude Include="windowStuff.h" />
-    <ClInclude Include="windwManager.h" />
+    <ClInclude Include="windowManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppConfigure.cpp" />
@@ -177,7 +177,7 @@
     <ClCompile Include="search.cpp" />
     <ClCompile Include="Validator.cpp" />
     <ClCompile Include="WindowControls.cpp" />
-    <ClCompile Include="windwManager.cpp" />
+    <ClCompile Include="windowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WindowsProject1.rc" />

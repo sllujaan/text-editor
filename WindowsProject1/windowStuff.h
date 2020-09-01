@@ -1092,7 +1092,12 @@ void handleButton(HWND hWnd) {
 
 INT onExit(HWND hWnd) {
     int msgboxID_CLOSE = handleOnClose(hWnd);
-    if (msgboxID_CLOSE == 0 || msgboxID_CLOSE == IDNO || msgboxID_CLOSE == IDI_CLOSE_TEXT_SAVED) { DestroyWindow(hWnd); return 1; }
+    if (msgboxID_CLOSE == 0 || msgboxID_CLOSE == IDNO || msgboxID_CLOSE == IDI_CLOSE_TEXT_SAVED)
+    {
+        windowManager wm(hWnd);
+        settings->handleSaveToConfigFile((int)wm.getWndWidth(), (int)wm.getWndHeight());
+        DestroyWindow(hWnd); return 1;
+    }
     else return 0;
 }
 

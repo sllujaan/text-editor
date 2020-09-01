@@ -4,9 +4,12 @@
 
 class windowManager {
 private:
-	
+	HWND _hwnd_self;
+	RECT rectWindow;
 
 public:
 	windowManager(HWND hWnd);
-	void centerWindow();
+	size_t getWndWidth();
+	size_t getWndHeight();
+
 };

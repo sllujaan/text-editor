@@ -63,6 +63,8 @@ class appConfig: config::FILE {
 private:
 	const wchar_t* appDir = L"\\TextEditor.Dev\\config.txt";
 	config::FILE* _file;
+
+public:
 	size_t wndWidth = 500;
 	size_t wndHeight = 400;
 
