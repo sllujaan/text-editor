@@ -2,10 +2,11 @@
 
 #include<Windows.h>
 #include<Richedit.h>
+#include"WindowControls.h"
 
 #define IDI_SEARCH_BUTTON 0xcb11
 
-class Search {
+class Search : public WindowControls {
 private:
 	//private stuff
 	HWND hWndParent;
@@ -23,7 +24,7 @@ private:
 public:
 	//public stuff
 	Search(HWND hWnd, HINSTANCE hInst, int nCmdShowGlobal, HWND richEdit);
-	Search() {}
+	Search() : WindowControls(NULL, NULL) {}
 	~Search();
 	void registerWindow();
 	void initWindow();

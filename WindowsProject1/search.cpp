@@ -1,7 +1,7 @@
 #include "search.h"
 
 
-Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow, HWND richEdit)
+Search::Search(HWND hWnd, HINSTANCE hInstance, int nCmdShow, HWND richEdit) : WindowControls(NULL, hInstance)
 {
     this->hWndParent = hWnd;
     this->hInst = hInstance;
@@ -202,22 +202,24 @@ void Search::centerWindow(HWND hwnd)
 
 void Search::initEditControl()
 {
-    HWND hwndEdit = CreateWindowEx(
-        0, L"EDIT",   // predefined class 
-        NULL,         // no window title 
-        WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL | ES_LEFT,
-        2, 2, 200, 24,   // set size in WM_SIZE message 
-        this->hWndSearch,         // parent window 
-        NULL,   // edit control ID 
-        (HINSTANCE)GetWindowLongPtr(this->hWndParent, GWLP_HINSTANCE),
-        NULL);        // pointer not needed 
+    //HWND hwndEdit = CreateWindowEx(
+    //    0, L"EDIT",   // predefined class 
+    //    NULL,         // no window title 
+    //    WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL | ES_LEFT,
+    //    2, 2, 200, 24,   // set size in WM_SIZE message 
+    //    this->hWndSearch,         // parent window 
+    //    NULL,   // edit control ID 
+    //    (HINSTANCE)GetWindowLongPtr(this->hWndParent, GWLP_HINSTANCE),
+    //    NULL);        // pointer not needed
+
+    HWND hwndEdit = this->getEditControl(2, 3, 200, 20);
 
 
     
     this->hWndEditControl = hwndEdit;
 
     //formating edit control..
-    SendMessage(hwndEdit, WM_SETFONT, (WPARAM)this->getFont(18), TRUE);
+    //SendMessage(hwndEdit, WM_SETFONT, (WPARAM)this->getFont(18), TRUE);
 
     SetFocus(hWndEditControl);
 
@@ -225,22 +227,25 @@ void Search::initEditControl()
 
 void Search::initSearchButton()
 {
-    HWND hwndButton = CreateWindow( 
-    L"BUTTON",  // Predefined class; Unicode assumed 
-    L"Search",      // Button text 
-    WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
-    204,         // x position 
-    1,         // y position 
-    80,        // Button width
-    26,        // Button height
-    this->hWndSearch,     // Parent window
-    (HMENU)IDI_SEARCH_BUTTON,       // No menu.
-    (HINSTANCE)GetWindowLongPtr(this->hWndSearch, GWLP_HINSTANCE),
-    NULL);      // Pointer not needed.
+    //HWND hwndButton = CreateWindow( 
+    //L"BUTTON",  // Predefined class; Unicode assumed 
+    //L"Search",      // Button text 
+    //WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+    //204,         // x position 
+    //1,         // y position 
+    //80,        // Button width
+    //26,        // Button height
+    //this->hWndSearch,     // Parent window
+    //(HMENU)IDI_SEARCH_BUTTON,       // No menu.
+    //(HINSTANCE)GetWindowLongPtr(this->hWndSearch, GWLP_HINSTANCE),
+    //NULL);      // Pointer not needed.
 
 
     //formating button text..
-    SendMessage(hwndButton, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+    //SendMessage(hwndButton, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+
+
+    HWND hwndButton = this->getButton(this->hWndSearch, L"Search", (short)IDI_SEARCH_BUTTON, 204, 1);
 
     this->hwndButton = hwndButton;
 
@@ -343,7 +348,9 @@ void Search::createWindow()
 
     }
 
-    
+    //give handle to window controls.
+    this->setWindowControlsHandle(this->hWndSearch);
+
     ShowWindow(this->hWndSearch, this->nCmdShowGlobal);
 
     
