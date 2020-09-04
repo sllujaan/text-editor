@@ -14,12 +14,16 @@ private:
 	HWND hWndEditControl;
 	HWND hwndButton;
 	HWND hwndRichEditParent;
+	HWND _hwndTabCtrl;
+	HWND _hwndTabDisp;
 	HINSTANCE hInst;
 	int nCmdShowGlobal;
 
 	const wchar_t* CLASS_NAME = L"Search Window";
 
 	WNDPROC lpfnMainWndProc;
+
+	LPCWSTR DAYS[4] = { L"Sunday", L"Monday", L"Tuesday", L"Wednesday" };
 
 public:
 	//public stuff
@@ -40,6 +44,7 @@ private:
 	HFONT getFont(size_t size);
 	void handleEnableDisableSearchButton();
 	void handleSearchText();
+	void OnNotify(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
 

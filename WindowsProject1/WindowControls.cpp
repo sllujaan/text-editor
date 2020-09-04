@@ -117,24 +117,22 @@ HWND WindowControls::getStatic(HWND hWndParent, LPCWSTR buttonText, size_t posX,
 HWND WindowControls::getTabControl(size_t posX, size_t posY, size_t width, size_t height)
 {
     if (!this->canCreateWindow()) { this->showWindowCreationError(); return NULL; }
+    
+    INITCOMMONCONTROLSEX icex;
 
-    /*HWND hwndTabControl = CreateWindow(WC_TABCONTROL, L"", NULL,
-        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS,
-        (int)posX, (int)posY, (int)width, (int)height, this->_hwndSelf, NULL, this->_hInst, NULL);*/
+    // Initialize common controls.
+    icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
+    icex.dwICC = ICC_TAB_CLASSES;
+    InitCommonControlsEx(&icex);
 
-
-    HWND hwndTabControl = CreateWindow(WC_TABCONTROL, L"",
+    HWND hwndTab = CreateWindow(WC_TABCONTROL, L"",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
         (int)posX, (int)posY, (int)width, (int)height,
         this->_hwndSelf, NULL, this->_hInst, NULL);
 
+    SendMessage(hwndTab, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
 
-    SendMessage(hwndTabControl, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
-    return hwndTabControl;
-
-
-    //creating tabs...
-
+    return hwndTab;
 }
 
 HWND WindowControls::getRadioButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY)

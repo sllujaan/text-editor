@@ -1,6 +1,9 @@
 #pragma once
 #include<Windows.h>
 #include<CommCtrl.h>
+#include"AppLog.h"
+
+#define DAYS_IN_WEEK 7
 
 class WindowControls {
 private:

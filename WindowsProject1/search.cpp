@@ -68,6 +68,10 @@ LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         this->centerWindow(hwnd);
         break;
 
+    case WM_NOTIFY:
+        OnNotify(hwnd, message, wParam, lParam);
+        break;
+
     case WM_COMMAND:
         switch (LOWORD(wParam))
         {
@@ -257,7 +261,55 @@ void Search::initSearchButton()
 
 void Search::initTabCtrl()
 {
+    TCITEM tie;
+      // Temporary buffer for strings.
+
     HWND hwndTabCtrl = this->getTabControl(10, 200, 300, 200);
+
+    if (!hwndTabCtrl) return;
+
+    // Add tabs for each day of the week. 
+    tie.mask = TCIF_TEXT | TCIF_IMAGE;
+    tie.iImage = -1;
+    //tie.pszText = (LPWSTR)achTemp[0];
+
+
+
+    // Load the day string from the string resources. Note that
+    for (int i = 0; i < ARRAYSIZE(this->DAYS); i++) {
+
+        //issue: tab control adds tabs in reverse order
+        //therefore get the last array index in order to receive right array index.
+        size_t lastIndex = ARRAYSIZE(this->DAYS) - i - 1;
+
+        tie.pszText = (LPWSTR)this->DAYS[lastIndex];
+        if (TabCtrl_InsertItem(hwndTabCtrl, 0, &tie) == -1)
+        {
+            DestroyWindow(hwndTabCtrl);
+            LOG_WCHAR(L"tab insertItem failed.");
+            return;
+        }
+    }
+
+    HWND hwndStaticCtrl = this->DoCreateDisplayWindow(hwndTabCtrl);
+
+    this->_hwndTabCtrl = hwndTabCtrl;
+    this->_hwndTabDisp = hwndStaticCtrl;
+
+
+    //for (int i = 0; i < DAYS_IN_WEEK; i++)
+  //{
+  //    // Load the day string from the string resources. Note that
+  //    // g_hInst is the global instance handle.
+  //    LoadString(g_hInst, IDS_SUNDAY + i,
+  //        achTemp, sizeof(achTemp) / sizeof(achTemp[0]));
+  //    if (TabCtrl_InsertItem(hwndTab, i, &tie) == -1)
+  //    {
+  //        DestroyWindow(hwndTab);
+  //        return NULL;
+  //    }
+  //}
+
 }
 
 void Search::initRadioBtns()
@@ -326,6 +378,29 @@ void Search::handleSearchText()
     
 
 }
+
+void Search::OnNotify(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (((LPNMHDR)lParam)->code)
+    {
+    case TCN_SELCHANGING:
+        // Return FALSE to allow the selection to change.
+        return;
+        break;
+    case TCN_SELCHANGE:
+        {
+            int iPage = TabCtrl_GetCurSel((HWND)((LPNMHDR)lParam)->hwndFrom);
+            LOG_INT(iPage);
+
+            SendMessage(this->_hwndTabDisp, WM_SETTEXT, 0, (LPARAM)this->DAYS[iPage]);
+        }
+
+        break;
+    default:
+        break;
+    }
+}
+
 
 void Search::createWindow()
 {
