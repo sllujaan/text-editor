@@ -1,5 +1,6 @@
 #pragma once
 #include<Windows.h>
+#include<CommCtrl.h>
 
 class WindowControls {
 private:
@@ -19,8 +20,15 @@ protected:
 	HWND getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY);
 	void applyConsistentStyle(HWND hwnd);
 	HWND getStatic(HWND hWndParent, LPCWSTR buttonText, size_t posX, size_t posY);
+	HWND getTabControl(size_t posX, size_t posY, size_t width, size_t height);
+	HWND getRadioButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY);
 
-	 
+	 /*Creates a child window (a static control) to occupy the tab control's display area. 
+	 Returns the handle to the static control. 
+	 hwndTab - handle of the tab control.*/
+	HWND DoCreateDisplayWindow(HWND hwndTab);
+
+
 	 //template<size_t size>
 	 //errno_t _insertItems_listBox(HWND hWnd, int select, const wchar_t* (&itemsArray)[size]);
 	 

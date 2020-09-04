@@ -35,6 +35,8 @@ private:
 	void centerWindow(HWND hwnd);
 	void initEditControl();
 	void initSearchButton();
+	void initTabCtrl();
+	void initRadioBtns();
 	HFONT getFont(size_t size);
 	void handleEnableDisableSearchButton();
 	void handleSearchText();

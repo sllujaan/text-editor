@@ -114,6 +114,60 @@ HWND WindowControls::getStatic(HWND hWndParent, LPCWSTR buttonText, size_t posX,
 
     return hwndStatic;
 }
+HWND WindowControls::getTabControl(size_t posX, size_t posY, size_t width, size_t height)
+{
+    if (!this->canCreateWindow()) { this->showWindowCreationError(); return NULL; }
+
+    /*HWND hwndTabControl = CreateWindow(WC_TABCONTROL, L"", NULL,
+        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS,
+        (int)posX, (int)posY, (int)width, (int)height, this->_hwndSelf, NULL, this->_hInst, NULL);*/
+
+
+    HWND hwndTabControl = CreateWindow(WC_TABCONTROL, L"",
+        WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
+        (int)posX, (int)posY, (int)width, (int)height,
+        this->_hwndSelf, NULL, this->_hInst, NULL);
+
+
+    SendMessage(hwndTabControl, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+    return hwndTabControl;
+
+
+    //creating tabs...
+
+}
+
+HWND WindowControls::getRadioButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY)
+{
+    HWND hwndButton = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        buttonText,      // Button text 
+        WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,  // Styles 
+        (int)posX,         // x position 
+        (int)posY,         // y position 
+        80,        // Button width
+        17,        // Button height
+        hWndParent,     // Parent window
+        (HMENU)UID_BUTTON,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWndParent, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    this->applyConsistentStyle(hwndButton);
+
+    return hwndButton;
+}
+
+HWND WindowControls::DoCreateDisplayWindow(HWND hwndTab)
+{
+    HWND hwndStatic = CreateWindow(WC_STATIC, L"",
+        WS_CHILD | WS_VISIBLE | WS_BORDER,
+        100, 100, 100, 100,        // Position and dimensions; example only.
+        hwndTab, NULL, this->_hInst,    // g_hInst is the global instance handle
+        NULL);
+    return hwndStatic;
+
+}
+
 //
 //template<size_t size>
 //inline errno_t WindowControls::_insertItems_listBox(HWND hwnd, int select, const wchar_t* (&itemsArray)[size])

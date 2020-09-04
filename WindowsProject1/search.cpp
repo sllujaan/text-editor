@@ -14,6 +14,9 @@ void Search::initWindow()
     this->createWindow();
     this->initEditControl();
     this->initSearchButton();
+
+    this->initRadioBtns();
+    this->initTabCtrl();
 }
 
 Search::~Search()
@@ -37,7 +40,7 @@ void Search::registerWindow()
     wcex.lpszClassName = this->CLASS_NAME;
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
@@ -252,6 +255,17 @@ void Search::initSearchButton()
     EnableWindow(hwndButton, FALSE);
 }
 
+void Search::initTabCtrl()
+{
+    HWND hwndTabCtrl = this->getTabControl(10, 200, 300, 200);
+}
+
+void Search::initRadioBtns()
+{
+    HWND hwndButton1 = this->getRadioButton(this->hWndSearch, L"Forward", 12, 10, 100); //height is 17 pixels
+    HWND hwndButton2 = this->getRadioButton(this->hWndSearch, L"Back", 14, 10, 122);
+}
+
 HFONT Search::getFont(size_t size)
 {
     HFONT hFont = CreateFont(int(size), 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET,
@@ -324,7 +338,7 @@ void Search::createWindow()
             WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
 
             // Size and position
-            CW_USEDEFAULT, CW_USEDEFAULT, 302, 66,
+            CW_USEDEFAULT, CW_USEDEFAULT, 500, 600, //before: width 302, height 66
 
             this->hWndParent,       // Parent window    
             NULL,       // Menu
