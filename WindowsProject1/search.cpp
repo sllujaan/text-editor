@@ -94,7 +94,7 @@ LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_KEYDOWN:
-        switch (wParam)
+        /*switch (wParam)
         {
         case VK_RETURN:
             this->handleSearchText();
@@ -102,7 +102,7 @@ LRESULT Search::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         default:
             break;
         }
-        OutputDebugStringW((LPCWSTR)L"_WM_KEYDOWN searchlll_\r\n");
+        OutputDebugStringW((LPCWSTR)L"_WM_KEYDOWN searchlll_\r\n");*/
         break;
 
     case WM_PAINT:
@@ -175,6 +175,38 @@ LRESULT Search::WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
     return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
+LRESULT Search::searchEdit_wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    Search* pThis;
+
+    // Recover the "this" pointer stored in hwnd.
+    pThis = reinterpret_cast<Search*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+    switch (message)
+    {
+
+    case WM_KEYUP:
+        LOG_WCHAR(L"search key up-->");
+        switch (wParam)
+        {
+        case VK_RETURN:
+            LOG_WCHAR(L"VK_RETURN");
+            if(pThis->canSearch()) pThis->handleSearchText();
+            break;
+        default:
+            break;
+        }
+        break;
+
+    default:
+        return CallWindowProc(pThis->searchEdit_oldProc, hwnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
+
+}
+
 void Search::centerWindow(HWND hwnd)
 {
     RECT rectWindow;
@@ -209,26 +241,15 @@ void Search::centerWindow(HWND hwnd)
 
 void Search::initEditControl()
 {
-    //HWND hwndEdit = CreateWindowEx(
-    //    0, L"EDIT",   // predefined class 
-    //    NULL,         // no window title 
-    //    WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL | ES_LEFT,
-    //    2, 2, 200, 24,   // set size in WM_SIZE message 
-    //    this->hWndSearch,         // parent window 
-    //    NULL,   // edit control ID 
-    //    (HINSTANCE)GetWindowLongPtr(this->hWndParent, GWLP_HINSTANCE),
-    //    NULL);        // pointer not needed
-
-    HWND hwndEdit = this->getEditControl(2, 3, 200, 20);
-
-
-    
+    HWND hwndEdit = this->getEditControl(2, 3, 200, 20);   
     this->hWndEditControl = hwndEdit;
-
-    //formating edit control..
-    //SendMessage(hwndEdit, WM_SETFONT, (WPARAM)this->getFont(18), TRUE);
-
     SetFocus(hWndEditControl);
+
+    // Put the value in a safe place for future use
+    SetWindowLongPtr(this->hWndEditControl, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+
+    //register new procedure
+    this->searchEdit_oldProc = (WNDPROC)SetWindowLongPtr(this->hWndEditControl, GWLP_WNDPROC, (LONG_PTR)this->searchEdit_wndProc);
 
 }
 
@@ -367,12 +388,15 @@ void Search::handleSearchText()
         //SetFocus(this->hWndParent);
     }
     else {
+
         MessageBox(
             this->hWndSearch,
             (LPCWSTR)L"Not found.",
             (LPCWSTR)L"Search Result",
             MB_OK
         );
+
+        
     }
     
     
@@ -399,6 +423,13 @@ void Search::OnNotify(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     default:
         break;
     }
+}
+
+bool Search::canSearch()
+{
+    const int size = GetWindowTextLength(this->hWndEditControl);
+    if (size < 1) return false;
+    return true;
 }
 
 

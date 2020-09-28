@@ -22,6 +22,7 @@ private:
 	const wchar_t* CLASS_NAME = L"Search Window";
 
 	WNDPROC lpfnMainWndProc;
+	WNDPROC searchEdit_oldProc;
 
 	LPCWSTR DAYS[4] = { L"Sunday", L"Monday", L"Tuesday", L"Wednesday" };
 
@@ -45,6 +46,7 @@ private:
 	void handleEnableDisableSearchButton();
 	void handleSearchText();
 	void OnNotify(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+	bool canSearch();
 
 protected:
 
@@ -52,6 +54,8 @@ protected:
 
 	static LRESULT CALLBACK WndProcSearch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+
+	static LRESULT CALLBACK searchEdit_wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 };
 
