@@ -367,13 +367,16 @@ void Search::handleSearchText()
     //SendMessage(this->hwndRichEditParent, EM_SETSEL, 0, -1);
 
     
-    //CHARRANGE selectionRange;
+    CHARRANGE selectionRange;
 
-    //SendMessage(this->hwndRichEditParent, EM_EXGETSEL, 0, (LPARAM)&selectionRange);
-    
+    SendMessage(this->hwndRichEditParent, EM_EXGETSEL, 0, (LPARAM)&selectionRange);
+
+
+    LOG_INT(this->forwardStartIndex);
+
     FINDTEXTEX ftex;
     
-    ftex.chrg.cpMin = 0;
+    ftex.chrg.cpMin = this->forwardStartIndex;
     ftex.chrg.cpMax = -1; //-1 means select entire text
     ftex.lpstrText = text;
 
@@ -385,10 +388,20 @@ void Search::handleSearchText()
 
         SendMessage(this->hwndRichEditParent, EM_HIDESELECTION, (LPARAM)FALSE, 0);
         
+        LOG_INT((int)ftex.chrg.cpMin);
+        LOG_INT((int)ftex.chrg.cpMax);
+
+        this->forwardStartIndex = ftex.chrg.cpMax;
+
         //SetFocus(this->hWndParent);
     }
     else {
 
+        ftex.chrg.cpMin = 0;
+        ftex.chrg.cpMax = 0;
+        SendMessage(this->hwndRichEditParent, EM_EXSETSEL, 0, (LPARAM)&ftex.chrgText);
+        
+        this->forwardStartIndex = 0;
         MessageBox(
             this->hWndSearch,
             (LPCWSTR)L"Not found.",

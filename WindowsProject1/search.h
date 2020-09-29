@@ -24,6 +24,8 @@ private:
 	WNDPROC lpfnMainWndProc;
 	WNDPROC searchEdit_oldProc;
 
+	LONG forwardStartIndex = 0;
+
 	LPCWSTR DAYS[4] = { L"Sunday", L"Monday", L"Tuesday", L"Wednesday" };
 
 public:
