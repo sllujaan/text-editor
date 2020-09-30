@@ -1,5 +1,9 @@
 #pragma once
 
+#include<string>
+using namespace std;
+
+
 #ifndef LOG_WCHAR 
 #define LOG_WCHAR(x) OutputDebugStringW((LPCWSTR)x); \
 			OutputDebugStringW((LPCWSTR)L"\r\n") //for new line

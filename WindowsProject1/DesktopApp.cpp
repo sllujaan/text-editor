@@ -10,7 +10,9 @@
 #include<TextServ.h>
 #include<shellapi.h>
 
+
 #include"AppLog.h"
+#include"windowManager.h"
 #include"AppConfigure.h"
 #include"search.h"
 #include"AppSettings.h"
@@ -23,11 +25,15 @@ HWND    hwndMain;
 WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box
 
 //global sub windows instances---
-
+appConfig _appConfig;
 AppSettings* settings;
 Search* _search_app;
 config::FILE _config_file;
-void handleAppConfiguration();
+int fontSizeIndex = 0;
+int fontFamilyIndex = 0;
+int fontStyleIndex = 0;
+
+//void handleAppConfiguration();
 
 
 //#ifndef LOG 
@@ -72,7 +78,6 @@ HMENU hMenuMain;
     HFONT hFont = CreateFont(18, 0, 0, 0, FW_DONTCARE, FALSE, TRUE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
     CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, VARIABLE_PITCH, TEXT("Impact"));
 */
-
 
 
 
@@ -150,7 +155,7 @@ int CALLBACK WinMain(
         szTitle,
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        MAINWIN_WIDTH, MAINWIN_HEIGHT,
+        (int)_appConfig.getWndWidth(), (int)_appConfig.getWndHeight(),
         NULL,
         hMenuMain,
         hInstance,
@@ -170,13 +175,19 @@ int CALLBACK WinMain(
     //stroring the handle to global variable--
     hwndMain = hWnd;
 
+    LOG_WCHAR(L"__settings object initiated.");
     //registering component windows--
     settings = new AppSettings(hWnd, hInst, nCmdShowGlobal);
     settings->registerWindow();
 
+    //first read config variables from config file.
+    handleAppConfiguration();
+    //now applay the variables to settings.
+    settings->setSettings(fontSizeIndex, fontFamilyIndex, fontStyleIndex);
+    settings->handleSaveToConfigFile((int)_appConfig.getWndWidth(), (int)_appConfig.getWndHeight());
 
-    
-    settings->setSettings(3, 5, 0);
+    setEditRichFonts();
+
     _search_app = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
     _search_app->registerWindow();
 
@@ -221,7 +232,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //int msgboxID_CLOSE = 0;
     ENDROPFILES* penDropFiles;
 
+
+
+
     _configVars* vars;
+    /*LPCWSTR _f_family;
+    LPCWSTR _f_style;
+    HFONT _font;*/
+
 
     switch (message)
     {
@@ -300,11 +318,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_APPLY_CONFIGURATION:
         //HFONT font = (HFONT)wParam;
         vars = (_configVars*)lParam;
-        LOG_INT(vars->fontSizeIndex);
-        LOG_WCHAR(vars->fontFamilies[vars->fontSizeFamilyIndex]);
+        LOG_INT(vars->fontSizeIndex + 8);
+        LOG_WCHAR(vars->fontFamilies[vars->fontFamilyIndex]);
+        LOG_WCHAR(vars->fontStyles[vars->fontStyleIndex]);
+
+        
+        /*_f_family = vars->fontFamilies[vars->fontFamilyIndex];
+        _f_style = vars->fontStyles[vars->fontStyleIndex];
+        _font = vars->getFont(vars->fontSizeIndex + 8, _f_family, _f_style);*/
+
+
+        LOG_WCHAR(L"=>APPLY CONFIGURATION CALLED<=");
 
         SendMessage(hwndEdit, WM_SETFONT, wParam, TRUE);
-        LOG_WCHAR(L"=>APPLY CONFIGURATION CALLED<=");
+        
         break;
 
     case WM_COMMAND:
@@ -397,6 +424,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_DIALOG_BOX:
             handleDialolgBox(hWnd);
+            //ac.printRect(hWnd);
+            break;
+        case IDI_UNDO:
+            showFeatureNotAvailable();
+            break;
+        case IDI_REDO:
+            showFeatureNotAvailable();
             break;
             
         default:
@@ -411,8 +445,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_SETFOCUS:
         SetFocus(hwndEdit);
         break;
-
-
 
 
     case WM_SIZE:

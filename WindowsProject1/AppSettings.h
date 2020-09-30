@@ -6,6 +6,7 @@
 
 #include"AppLog.h"
 #include"WindowControls.h"
+#include"AppConfigure.h"
 using namespace std;
 
 #define IDM_CODE_SAMPLES 0x3e0f
@@ -25,9 +26,18 @@ using namespace std;
 
 
 
-class AppSettings: public WindowControls {
+class AppSettings: public WindowControls, public appConfig {
 	//attributes--------
 public:
+
+	size_t _fSizeIndex = 0;
+	size_t _fFamilyIndex = 0;
+	size_t _fStyleIndex = 0;
+
+
+	size_t _fSizeIndex_default = 8;
+	size_t _fFamilyIndex_default = 7;
+	size_t _fStyleIndex_default = 1;
 
 	//data for font families-----------
 	LPCWSTR fontFamilies[18] = {
@@ -72,15 +82,13 @@ protected:
 	WNDPROC _ec_test_oldProc;
 
 
-	
+	HWND hwndButton_OK;
 
-	size_t _fSizeIndex = 0;
-	size_t _fFamilyIndex = 0;
-	size_t _fStyleIndex = 0;
+
 
 	size_t _fSizeTotalItems = 65;
 	size_t _fFamilyTotalItems = ARRAYSIZE(this->fontFamilies);
-	size_t _fStyleTotalItems = 5;
+	size_t _fStyleTotalItems = ARRAYSIZE(this->fontStyles);
 
 	//const wchar_t* arr = L"ab";
 
@@ -103,6 +111,7 @@ public:
 	size_t getFontSize();
 	LPCWSTR getFontFamily();
 	LPCWSTR getFontStyle();
+	void handleSaveToConfigFile(size_t wndWidth, size_t wndHeight);
 
 private:
 	//private stuff
@@ -149,6 +158,7 @@ private:
 	void createCancelButton();
 	void createStaticsControls();
 	void createEditControlFontSize();
+	
 
 
 
@@ -176,6 +186,6 @@ protected:
 struct _configVars : AppSettings
 {
 	int fontSizeIndex;
-	int fontSizeFamilyIndex;
-	int fontSizeStyleIndex;
+	int fontFamilyIndex;
+	int fontStyleIndex;
 };

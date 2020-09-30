@@ -13,19 +13,6 @@ using namespace std;
 
 
 
-class appConfig {
-
-private:
-	const wchar_t* appDir = L"\\TextEditor.Dev\\config.txt";
-
-public:
-	appConfig() {}
-	LPCWSTR getAppConfigPath();
-	errno_t getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount);
-
-	
-};
-
 
 namespace config {
 	class FILE {
@@ -36,6 +23,7 @@ namespace config {
 		wchar_t* filePath;
 		string fileText;
 		string readText();
+		
 
 		//config keys
 		string _key_fSize = "fontSizeIndex";
@@ -60,7 +48,33 @@ namespace config {
 		errno_t getKeyValueTemp(string key, int* value);
 		errno_t initReadConfigKeys();
 		void resetConfigKeys();
+		errno_t writeText(string text);
+
+	private:
 		errno_t findKeyValue(string text, string key, int& value);
 
 	};
+};
+
+
+
+class appConfig: config::FILE {
+
+private:
+	const wchar_t* appDir = L"\\TextEditor.Dev\\config.txt";
+	config::FILE* _file;
+
+public:
+	size_t wndWidth = 500;
+	size_t wndHeight = 400;
+
+public:
+	appConfig();
+	~appConfig();
+	LPCWSTR getAppConfigPath();
+	errno_t getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount);
+	void printRect(HWND hwnd);
+	size_t getWndHeight();
+	size_t getWndWidth();
+
 };

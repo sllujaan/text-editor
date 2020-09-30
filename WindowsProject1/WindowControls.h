@@ -1,5 +1,9 @@
 #pragma once
 #include<Windows.h>
+#include<CommCtrl.h>
+#include"AppLog.h"
+
+#define DAYS_IN_WEEK 7
 
 class WindowControls {
 private:
@@ -15,16 +19,22 @@ protected:
 	WindowControls(HWND hwndSelf, HINSTANCE hInst);
 	HWND getEditControl(size_t posX, size_t posY, size_t width, size_t height);
 	void setWindowControlsHandle(HWND hwndSelf);
-	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Microsoft New Tai Lue", LPCWSTR fontStyle = L"Regular");
 	HWND getListBox(HWND hWndParent, int posX, int posY, int width, int height);
-	HWND getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY);
+	HWND getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY, LONG push = BS_DEFPUSHBUTTON);
 	void applyConsistentStyle(HWND hwnd);
 	HWND getStatic(HWND hWndParent, LPCWSTR buttonText, size_t posX, size_t posY);
+	HWND getTabControl(size_t posX, size_t posY, size_t width, size_t height);
+	HWND getRadioButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY);
+	HWND getGroupBox(HWND hwndParent, LPCWSTR name, int posX, int posY, int width, int height);
+	 /*Creates a child window (a static control) to occupy the tab control's display area. 
+	 Returns the handle to the static control. 
+	 hwndTab - handle of the tab control.*/
+	HWND DoCreateDisplayWindow(HWND hwndTab);
 
-	 
+
 	 //template<size_t size>
 	 //errno_t _insertItems_listBox(HWND hWnd, int select, const wchar_t* (&itemsArray)[size]);
 	 
 public:
-	
+	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Microsoft New Tai Lue", LPCWSTR fontStyle = L"Regular");
 };

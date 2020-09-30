@@ -38,6 +38,9 @@ void AppSettings::initWindow()
     //configure all edit controls texts.
     this->configureEditCtrlsText();
 
+    //update sample Text
+    this->updateSampleText();
+
     //Now set Focuses and show window beacuse every thing is ready.
     this->handleFocuses();                  //handling Focuses.
     ShowWindow(this->hWndSettings, this->nCmdShowGlobal);  //now every thing is ready show the window.
@@ -745,6 +748,8 @@ void AppSettings::handleFocuses()
     ListView_EditLabel(this->hwndListView, 0);
     //SetFocus(this->hwndListView);
     //ListView_SetSelectionMark(this->hwndListView, (72-8));
+
+    //SetFocus(this->hwndButton_OK);
 }
 
 void AppSettings::createListBox()
@@ -875,12 +880,13 @@ HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int h
 void AppSettings::createOKButton()
 {
     HWND hwndButton = this->getButton(this->hWndSettings, L"OK", UID_BUTTON_OK, 175, 370);
-
+    this->hwndButton_OK = hwndButton;
 }
 
 void AppSettings::createCancelButton()
 {
-    HWND hwndButton = this->getButton(this->hWndSettings, L"Cancel", UID_BUTTON_CANCEL, 265, 370);
+    HWND hwndButton = this->getButton(this->hWndSettings, L"Cancel", UID_BUTTON_CANCEL, 265, 370, 0);
+
 }
 
 void AppSettings::createStaticsControls()
@@ -902,6 +908,47 @@ void AppSettings::createEditControlFontSize()
 
     this->_ec_FontSize_oldProc = (WNDPROC)SetWindowLongPtr(this->_hwnd_editControl_FontSize, GWLP_WNDPROC, (LONG_PTR)this->_ec_FontSize_proc);
 
+}
+
+void AppSettings::handleSaveToConfigFile(size_t wndWidth, size_t wndHeight)
+{
+    appConfig ac;
+    wchar_t* path;
+    size_t size;
+
+    errno_t err = ac.getAppConfigPath_secure(&path, &size);
+
+    if (err) {
+        MessageBox(NULL,
+            (LPCWSTR)L"Failed to read environment variable.",
+            (LPCWSTR)("env"),
+            NULL);
+        return;
+    }
+
+    config::FILE file(path);
+
+    string _config_fontSize = "fontSizeIndex=" + to_string(this->_fSizeIndex) + ";\n";
+    string _config_fontFamily = "fontFamilyIndex=" + to_string(this->_fFamilyIndex) + ";\n";
+    string _config_fontStyle = "fontStyleIndex=" + to_string(this->_fStyleIndex) + ";\n\n";
+    string _config_wndWidth = "wndWidth=" + to_string(wndWidth) + ";\n";
+    string _config_wndHeight = "wndHeight=" + to_string(wndHeight) + ";\n";
+
+    string configText = _config_fontSize + _config_fontFamily + _config_fontStyle + _config_wndWidth + _config_wndHeight;
+
+    errno_t err_write = file.writeText(configText);
+    if (err_write) {
+        MessageBox(this->hWndSettings,
+            (LPCWSTR)L"Failed to write to Configuration File.",
+            (LPCWSTR)(L"Configuration"),
+            MB_ICONERROR);
+    }
+
+    free(path);
+
+    //save width height
+    this->wndWidth = wndWidth;
+    this->wndHeight = wndHeight;
 }
 
 void AppSettings::createComboBox()
@@ -1081,15 +1128,22 @@ void AppSettings::handleSaveConfigs()
         return;
     }
 
+    this->_fSizeIndex = indexFontSize;
+    this->_fFamilyIndex = indexFontFamily;
+    this->_fStyleIndex = indexFontStyles;
+
     _configVars* vars = new _configVars();
     vars->fontSizeIndex = (int)indexFontSize;
-    vars->fontSizeFamilyIndex = (int)indexFontFamily;
-    vars->fontSizeStyleIndex = (int)indexFontStyles;
+    vars->fontFamilyIndex = (int)indexFontFamily;
+    vars->fontStyleIndex = (int)indexFontStyles;
 
     HFONT _font_sampleText =  (HFONT)SendMessage(this->hWndGroupBoxSampleText, WM_GETFONT, 0, 0);
 
 
     SendMessage(this->hWndParent , WM_APPLY_CONFIGURATION, (WPARAM)_font_sampleText, (LPARAM)vars);
+    
+    this->handleSaveToConfigFile(this->getWndWidth(), this->getWndHeight());
+    
     SendMessage(this->hWndSettings, WM_CLOSE, 0, 0);
 
 }
@@ -1152,6 +1206,8 @@ void AppSettings::_createListBox_fontStyles()
     this->_hwnd_listBox_fontStyes = hListBox;
 
     this->_insertItems_listBox(hListBox, 0, this->fontStyles);
+
+    SendMessage(this->_hwnd_listBox_fontStyes, LB_SETCURSEL, this->_fStyleIndex, 0);
 
 }
 

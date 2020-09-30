@@ -701,7 +701,9 @@ void handleRichEditControl(HWND hWnd) {
     hwndEdit = CreateRichEdit(hWnd, 0, 0, 200, 200, hInst);
 
     //formating editrich control..
-    SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
+
+
+    //SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
 
     //formating using CHARFORMAT structure
     /*CHARFORMATA chf;
@@ -932,7 +934,7 @@ void handleAbout(HWND hWnd) {
     
     int msgboxID = MessageBox(
         hWnd,
-        (LPCWSTR)L"Developed by M.Salman Altaf\r\nVersion: v1.2.4\r\nAddress: Pakistan",
+        (LPCWSTR)L"Developed by M.Salman Altaf\r\nVersion: v1.4.0\r\nAddress: Pakistan",
         (LPCWSTR)L"About Us",
         MB_ICONINFORMATION
     );
@@ -989,7 +991,7 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     //help menu--
     AppendMenu(hHelpMenu, MF_POPUP, IDI_VIEW_HELP, (LPCWSTR)L"View Help");
     AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About TextEditor");
-    AppendMenu(hHelpMenu, MF_POPUP, ID_DIALOG_BOX, (LPCWSTR)L"Dialolg");
+    //AppendMenu(hHelpMenu, MF_POPUP, ID_DIALOG_BOX, (LPCWSTR)L"Dialolg");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
@@ -1090,7 +1092,12 @@ void handleButton(HWND hWnd) {
 
 INT onExit(HWND hWnd) {
     int msgboxID_CLOSE = handleOnClose(hWnd);
-    if (msgboxID_CLOSE == 0 || msgboxID_CLOSE == IDNO || msgboxID_CLOSE == IDI_CLOSE_TEXT_SAVED) { DestroyWindow(hWnd); return 1; }
+    if (msgboxID_CLOSE == 0 || msgboxID_CLOSE == IDNO || msgboxID_CLOSE == IDI_CLOSE_TEXT_SAVED)
+    {
+        windowManager wm(hWnd);
+        settings->handleSaveToConfigFile((int)wm.getWndWidth(), (int)wm.getWndHeight());
+        DestroyWindow(hWnd); return 1;
+    }
     else return 0;
 }
 
@@ -1240,9 +1247,23 @@ void onDropFileSingle(HWND hWnd, HDROP hdrop) {
 
 }
 
+void showInvalidConfigVars() {
+    MessageBox(NULL,
+        (LPCWSTR)L"Some of the config variables are missing! The app has adapted default settings.",
+        _T("Configuration!"),
+        MB_ICONEXCLAMATION);
+}
+
+void setFontsToDefault() {
+    fontSizeIndex = (int)settings->_fSizeIndex_default;
+    fontFamilyIndex = (int)settings->_fFamilyIndex_default;
+    fontStyleIndex = (int)settings->_fStyleIndex_default;
+}
+
 void handleAppConfiguration()
 {
     
+    LOG_WCHAR(L"handleAppConfiguration called...");
 
     appConfig ac;
     wchar_t* path;
@@ -1259,13 +1280,62 @@ void handleAppConfiguration()
     }
 
     config::FILE file(path);
-    //int value;
-    //file.getKeyValue("fontFamilyIndex", &value);
+
+    const BOOL isFile = file.isFile();
+
+    if (!isFile) {
+        MessageBox(NULL,
+            (LPCWSTR)L"Configuration file is missing! The App has adapted default settings.",
+            (LPCWSTR)L"Configuration.",
+            MB_ICONEXCLAMATION);
+        setFontsToDefault();
+        return;
+    }
+
+
+    int _fontSizeIndex;
+    int _fontFamilyIndex;
+    int _fontStyleIndex;
+    
+    errno_t err_f_Size_i =  file.getKeyValue("fontSizeIndex", _fontSizeIndex); //fsi = fontSizeIndex
+    errno_t err_f_family_i = file.getKeyValue("fontFamilyIndex", _fontFamilyIndex); //fsi = fontSizeIndex
+    errno_t err_f_style_i = file.getKeyValue("fontStyleIndex", _fontStyleIndex); //fsi = fontSizeIndex
+
+    if (err_f_Size_i || err_f_family_i || err_f_style_i) {
+        setFontsToDefault();
+        showInvalidConfigVars();
+        return;
+    }
+    fontSizeIndex = _fontSizeIndex;
+    fontFamilyIndex = _fontFamilyIndex;
+    fontStyleIndex = _fontStyleIndex;
 
     //free up memory
     free(path);
 
 }
+
+
+
+void setEditRichFonts()
+{
+    LPCWSTR _f_family = settings->fontFamilies[fontFamilyIndex];
+    LPCWSTR _f_style = settings->fontStyles[fontStyleIndex];
+    HFONT font = settings->getFont(fontSizeIndex + 8, _f_family, _f_style);
+    SendMessage(hwndEdit, WM_SETFONT, (WPARAM)font, TRUE);
+}
+
+
+void showFeatureNotAvailable() {
+    MessageBox(hwndMain,
+        (LPCWSTR)L"The Feature is currently not available.",
+        _T("Info"),
+        MB_ICONEXCLAMATION);
+}
+
+
+
+
 
 /*
 
@@ -1356,10 +1426,12 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         OutputDebugStringW((LPCWSTR)L"--------------WM_COMMAND called\r\n");
         break;
 
-    case WM_KEYDOWN:
+    case WM_SYSKEYDOWN:
+        LOG_WCHAR(L"WM_SYSKEYDOWN");
         break;
 
     case WM_KEYUP:
+        break;
     case WM_CHAR:
         switch (wParam)
         {
@@ -1380,6 +1452,9 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_SYSCHAR:
         OutputDebugStringW((LPCWSTR)L"--------------WM_SYSCHAR called\r\n");
+        if (wParam == VK_CONTROL) {
+            LOG_WCHAR(L"VK_CONTROL");
+        }
         break;
         
     }

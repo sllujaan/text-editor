@@ -1,5 +1,44 @@
 #include "AppConfigure.h"
 
+appConfig::appConfig()
+{
+	wchar_t* path;
+	size_t size;
+
+	errno_t err_env = this->getAppConfigPath_secure(&path, &size);
+
+	if (err_env) return;
+
+	this->_file = new config::FILE(path);
+	
+	if (!this->_file->isFile()) { free(path); return; };
+	
+	int width;
+	int height;
+	errno_t err_width = this->_file->getKeyValue("wndWidth", width);
+	errno_t err_height = this->_file->getKeyValue("wndHeight", height);
+
+	if (!err_width)
+	{
+		LOG_INT(width);
+	}
+	if (!err_height)
+	{
+		LOG_INT(height);
+	}
+
+	if (err_width || err_height) return;
+
+	this->wndWidth = width;
+	this->wndHeight = height;
+
+}
+
+appConfig::~appConfig()
+{
+	delete this->_file;
+}
+
 LPCWSTR appConfig::getAppConfigPath()
 {
 	wchar_t* pValue;
@@ -43,40 +82,32 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 	//free up buffer
 	free(*buffer);
 
-
-	//reaclocation of memory for concatenation---------
-	//*buffer = (wchar_t*)realloc(*buffer, totalSize + 1 );
-	//errno_t err_cat = wcscat_s(*buffer, totalSize + 1, this->appDir);
-
 	*buffer = newBuffer;
 
 
-	//check if file exists
-	config::FILE f(*buffer);
-	const BOOL file = f.isFile();
-	if (!file) {
-		MessageBox(NULL,
-			(LPCWSTR)L"file does not exist.",
-			(LPCWSTR)L"env",
-			NULL);
-	}
-
-
-
-	/*errno_t err_config = f.initReadConfigKeys();
-	if (!err_config) {
-		LOG_WCHAR(L"config success =>>");
-	}*/
-
-	int value;
-	errno_t err_key_value = f.getKeyValue("fontFamilyIndex", value);
-	if (!err_key_value) {
-		LOG_WCHAR(L"value =>");
-		LOG_INT(value);
-	}
-
-
 	return 0;
+}
+
+void appConfig::printRect(HWND hwnd)
+{
+	RECT rect;
+	GetWindowRect(hwnd, &rect);
+
+	int nWidth = rect.right - rect.left;
+	int nHeight = rect.bottom - rect.top;
+
+	LOG_INT(nWidth);
+	LOG_INT(nHeight);
+}
+
+size_t appConfig::getWndHeight()
+{
+	return this->wndHeight;
+}
+
+size_t appConfig::getWndWidth()
+{
+	return this->wndWidth;
 }
 
 config::FILE::FILE(const wchar_t* path)
@@ -85,8 +116,10 @@ config::FILE::FILE(const wchar_t* path)
 	this->filePath = new wchar_t[len + 1];
 	errno_t err = wcscpy_s(this->filePath, len, path);
 
+	LOG_WCHAR(L"reading text...");
 	//read text and store it as attribute variable
 	this->readText();
+	LOG_WCHAR(L"text read successfully.");
 }
 
 BOOL config::FILE::isFile()
@@ -99,10 +132,11 @@ BOOL config::FILE::isFile()
 	//converting wchar_t* to char*
 	_bstr_t b(this->filePath);
 	const char* path = b;
+
 	//now check for file.
 	this->file.open(path, ios::in);
-	this->CLOSE();
-	if (!this->file) return FALSE;
+	LOG_WCHAR(L"file Opened.");
+	if (!this->file) { this->CLOSE(); return FALSE; }
 	return TRUE;
 }
 
@@ -123,9 +157,13 @@ errno_t config::FILE::getKeyValue(string key, int& value)//wchar_t** destination
 	if (text == "") return 1;
 
 	//check if valid kay pair values--
-	string str_reg_valid = ".*(;*"+key+"=\\d{1,2};).*";
+	string str_reg_valid = ".*(;*"+key+"=\\d{1,10};).*";
 	regex reg_valid(str_reg_valid, regex_constants::icase);
 	
+	
+
+	LOG_STR(str_reg_valid);
+	LOG_STR(text);
 	
 	if (regex_match(text, reg_valid)) {
 		LOG_WCHAR(L"valid expression");
@@ -178,7 +216,7 @@ errno_t config::FILE::findKeyValue(string text, string key, int& value)
 {
 
 	size_t _key_found_index = 0;
-	//run while loop for maximum 500 times.
+	//run while loop for maximum 100 times.
 	const size_t LOOP_MAX_COUNT = 100;
 	size_t LOOP_CURRENT_COUNT = 0;
 
@@ -195,6 +233,7 @@ errno_t config::FILE::findKeyValue(string text, string key, int& value)
 		try {
 			int _val = stoi(_digitStr);
 			value = _val;
+			LOG_WCHAR(L"Value Found.");
 			return 0;
 		}
 		catch (...) {
@@ -211,10 +250,12 @@ errno_t config::FILE::findKeyValue(string text, string key, int& value)
 
 string config::FILE::readText()
 {
-	if (!this->isFile()) return nullptr;
+	if (!this->isFile()) return "";
 
 	//close the stream if already open
 	this->CLOSE();
+
+	LOG_WCHAR(L"opening file..");
 
 	this->file.open(this->filePath, ios::in);
 
@@ -228,4 +269,18 @@ string config::FILE::readText()
 
 	this->fileText = wholeText;
 	return wholeText;
+}
+
+errno_t config::FILE::writeText(string text)
+{
+	//if (!this->isFile()) return 1;
+
+	//close the stream if already open
+	this->CLOSE();
+
+	this->file.open(this->filePath, ios::out);
+
+	this->file << text;
+
+	return 0;
 }
