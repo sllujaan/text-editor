@@ -191,12 +191,6 @@ LRESULT Search::searchEdit_wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
         {
         case VK_RETURN:
             LOG_WCHAR(L"VK_RETURN");
-            /*if (pThis->tokenNotFound == true) {
-                LOG_WCHAR(L"tokenNotFound");
-                SetFocus(pThis->hWndEditControl);
-                pThis->tokenNotFound = false;
-                break;
-            }*/
             if(pThis->canSearch()) pThis->handleSearchText();
             break;
         default:
@@ -341,6 +335,9 @@ void Search::initTabCtrl()
 
 void Search::initRadioBtns()
 {
+    
+    HWND groupBox = this->getGroupBox(this->hWndSearch, L"Direction", 10, 40, 100, 100);
+
     HWND hwndButton1 = this->getRadioButton(this->hWndSearch, L"Forward", 12, 10, 100); //height is 17 pixels
     HWND hwndButton2 = this->getRadioButton(this->hWndSearch, L"Back", 14, 10, 122);
 
@@ -432,7 +429,6 @@ void Search::handleSearchText()
         
         this->forwardStartIndex = 0;
         this->backStartIndex = richEditLen;
-        this->tokenNotFound = true;
 
         //if (radioState_forward == BST_CHECKED) SetFocus(this->_hwndRadio_forward);
         //else SetFocus(this->_hwndRadio_back);
@@ -444,7 +440,7 @@ void Search::handleSearchText()
             MB_OK
         );
         
-        SetFocus(this->hWndEditControl);
+        //SetFocus(this->hWndEditControl);
     }
 
     //SetFocus(this->hWndEditControl);

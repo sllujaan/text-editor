@@ -25,7 +25,7 @@ protected:
 	HWND getStatic(HWND hWndParent, LPCWSTR buttonText, size_t posX, size_t posY);
 	HWND getTabControl(size_t posX, size_t posY, size_t width, size_t height);
 	HWND getRadioButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY);
-
+	HWND getGroupBox(HWND hwndParent, LPCWSTR name, int posX, int posY, int width, int height);
 	 /*Creates a child window (a static control) to occupy the tab control's display area. 
 	 Returns the handle to the static control. 
 	 hwndTab - handle of the tab control.*/

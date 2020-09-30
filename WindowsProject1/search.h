@@ -28,7 +28,6 @@ private:
 	LONG backStartIndex = 0;
 	HWND _hwndRadio_forward;
 	HWND _hwndRadio_back;
-	bool tokenNotFound = false;
 
 	LPCWSTR DAYS[4] = { L"Sunday", L"Monday", L"Tuesday", L"Wednesday" };
 

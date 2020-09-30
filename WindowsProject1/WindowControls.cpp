@@ -155,6 +155,27 @@ HWND WindowControls::getRadioButton(HWND hWndParent, LPCWSTR buttonText, short U
     return hwndButton;
 }
 
+HWND WindowControls::getGroupBox(HWND hwndParent, LPCWSTR name, int posX, int posY, int width, int height)
+{
+    HWND hwndGroupBox = CreateWindowEx(
+        0,
+        L"BUTTON",      // Button text 
+        name,
+        WS_CHILD | WS_VISIBLE | BS_GROUPBOX | BS_CENTER,  // Styles
+        posX,         // x position 
+        posY,         // y position 
+        width,        // Button width
+        height,        // Button height
+        hwndParent,     // Parent window
+        NULL,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hwndParent, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    SendMessage(hwndGroupBox, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+
+    return hwndGroupBox;
+}
+
 HWND WindowControls::DoCreateDisplayWindow(HWND hwndTab)
 {
     HWND hwndStatic = CreateWindow(WC_STATIC, L"",
