@@ -191,6 +191,12 @@ LRESULT Search::searchEdit_wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
         {
         case VK_RETURN:
             LOG_WCHAR(L"VK_RETURN");
+            /*if (pThis->tokenNotFound == true) {
+                LOG_WCHAR(L"tokenNotFound");
+                SetFocus(pThis->hWndEditControl);
+                pThis->tokenNotFound = false;
+                break;
+            }*/
             if(pThis->canSearch()) pThis->handleSearchText();
             break;
         default:
@@ -337,6 +343,11 @@ void Search::initRadioBtns()
 {
     HWND hwndButton1 = this->getRadioButton(this->hWndSearch, L"Forward", 12, 10, 100); //height is 17 pixels
     HWND hwndButton2 = this->getRadioButton(this->hWndSearch, L"Back", 14, 10, 122);
+
+    this->_hwndRadio_forward = hwndButton1;
+    this->_hwndRadio_back = hwndButton2;
+
+    SendMessage(this->_hwndRadio_forward, BM_SETCHECK, BST_CHECKED, 0);
 }
 
 HFONT Search::getFont(size_t size)
@@ -361,38 +372,56 @@ void Search::handleSearchText()
     const int size = GetWindowTextLength(this->hWndEditControl);
     //wchar_t* data = new wchar_t[size + 1];
     LPCWSTR text = new WCHAR[size + 1];
-
     GetWindowText(this->hWndEditControl, (LPWSTR)text, size + 1);
 
-    //SendMessage(this->hwndRichEditParent, EM_SETSEL, 0, -1);
+    //rich edit lenght----
+    const int richEditLen = GetWindowTextLength(this->hwndRichEditParent);
 
     
     CHARRANGE selectionRange;
+    //check which direction to search forward or backward.
+    LONG searchStartIndex = 0;
+    //also define variable for EM_FINDTEXTEXW to when search backward or forward
+    LONG searchDirection = 0;
 
-    SendMessage(this->hwndRichEditParent, EM_EXGETSEL, 0, (LPARAM)&selectionRange);
+    LRESULT radioState_forward = SendMessage(this->_hwndRadio_forward, BM_GETSTATE, 0, 0);
+    if (radioState_forward == BST_CHECKED) {
+        LOG_WCHAR(L"forward is checked");
+        searchStartIndex = this->forwardStartIndex;
+        searchDirection = (LONG)FR_DOWN;
+    }
+    else {
+        LOG_WCHAR(L"back is checked");
+        
+        //LOG_INT(richEditLen);
+        if(this->backStartIndex == 0) this->backStartIndex = richEditLen;
+        searchStartIndex = this->backStartIndex;
+        searchDirection = 0;
+    }
 
-
-    LOG_INT(this->forwardStartIndex);
+    //LOG_INT(this->backStartIndex);
 
     FINDTEXTEX ftex;
     
-    ftex.chrg.cpMin = this->forwardStartIndex;
+    ftex.chrg.cpMin = searchStartIndex;
     ftex.chrg.cpMax = -1; //-1 means select entire text
     ftex.lpstrText = text;
 
-    LRESULT lr = SendMessage(this->hwndRichEditParent, EM_FINDTEXTEXW, (WPARAM)FR_DOWN, (LPARAM)&ftex);
+    LRESULT lr = SendMessage(this->hwndRichEditParent, EM_FINDTEXTEXW, (WPARAM)searchDirection, (LPARAM)&ftex);
     
     if (lr >= 0)
     {
         SendMessage(this->hwndRichEditParent, EM_EXSETSEL, 0, (LPARAM)&ftex.chrgText);
 
-        SendMessage(this->hwndRichEditParent, EM_HIDESELECTION, (LPARAM)FALSE, 0);
-        
-        LOG_INT((int)ftex.chrg.cpMin);
-        LOG_INT((int)ftex.chrg.cpMax);
+        SendMessage(this->hwndRichEditParent, EM_HIDESELECTION, (LPARAM)FALSE, 0); 
 
-        this->forwardStartIndex = ftex.chrg.cpMax;
+        SendMessage(this->hwndRichEditParent, EM_EXGETSEL, 0, (LPARAM)&selectionRange);
 
+
+        if (radioState_forward == BST_CHECKED) this->forwardStartIndex = selectionRange.cpMax;
+        else this->backStartIndex = selectionRange.cpMin;
+        //this->forwardStartIndex = selectionRange.cpMax;
+        //this->backStartIndex = selectionRange.cpMin;
         //SetFocus(this->hWndParent);
     }
     else {
@@ -402,16 +431,29 @@ void Search::handleSearchText()
         SendMessage(this->hwndRichEditParent, EM_EXSETSEL, 0, (LPARAM)&ftex.chrgText);
         
         this->forwardStartIndex = 0;
+        this->backStartIndex = richEditLen;
+        this->tokenNotFound = true;
+
+        //if (radioState_forward == BST_CHECKED) SetFocus(this->_hwndRadio_forward);
+        //else SetFocus(this->_hwndRadio_back);
+
         MessageBox(
             this->hWndSearch,
             (LPCWSTR)L"Not found.",
             (LPCWSTR)L"Search Result",
             MB_OK
         );
-
         
+        SetFocus(this->hWndEditControl);
     }
-    
+
+    //SetFocus(this->hWndEditControl);
+
+
+    //LRESULT radioState = SendMessage(this->_hwndRadio_forward, BM_GETSTATE, 0, 0);
+    /*if (radioState == BST_CHECKED) {
+        LOG_WCHAR(L"forward is checked");
+    }*/
     
 
 }
