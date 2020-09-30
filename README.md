@@ -1,2 +1,5 @@
 # text-editor_cpp
-app allows write text in text files.
+The App Reads and Writes in text files.
+
+
+![alt text](https://github.com/sllujaan/text-editor/raw/master-edits/samples/sample.gif)
