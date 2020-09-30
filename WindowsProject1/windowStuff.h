@@ -991,7 +991,7 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     //help menu--
     AppendMenu(hHelpMenu, MF_POPUP, IDI_VIEW_HELP, (LPCWSTR)L"View Help");
     AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About TextEditor");
-    AppendMenu(hHelpMenu, MF_POPUP, ID_DIALOG_BOX, (LPCWSTR)L"Dialolg");
+    //AppendMenu(hHelpMenu, MF_POPUP, ID_DIALOG_BOX, (LPCWSTR)L"Dialolg");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
@@ -1325,6 +1325,13 @@ void setEditRichFonts()
     SendMessage(hwndEdit, WM_SETFONT, (WPARAM)font, TRUE);
 }
 
+
+void showFeatureNotAvailable() {
+    MessageBox(hwndMain,
+        (LPCWSTR)L"The Feature is currently not available.",
+        _T("Info"),
+        MB_ICONEXCLAMATION);
+}
 
 
 

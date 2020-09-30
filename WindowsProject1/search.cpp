@@ -226,10 +226,8 @@ void Search::centerWindow(HWND hwnd)
     int nScreenHeightCenter = nScreenHeight / 2;
 
     //center handwindow
-    int nX = rectWindow.right;
-    int nY = rectWindow.bottom;
-
-
+    int nX = nScreenWidthCenter - (nWidth / 2);
+    int nY = nScreenHeightCenter - (nHeight / 2);
 
 
     MoveWindow(hwnd, nX, nY, nWidth, nHeight, FALSE);
@@ -438,9 +436,11 @@ void Search::handleSearchText()
             this->hWndSearch,
             (LPCWSTR)L"Not found.",
             (LPCWSTR)L"Search Result",
-            MB_OK
+            MB_ICONEXCLAMATION
         );
         
+        SetFocus(this->hWndParent);
+        SetFocus(this->hWndSearch);
         //SetFocus(this->hWndEditControl);
     }
 

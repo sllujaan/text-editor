@@ -426,6 +426,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             handleDialolgBox(hWnd);
             //ac.printRect(hWnd);
             break;
+        case IDI_UNDO:
+            showFeatureNotAvailable();
+            break;
+        case IDI_REDO:
+            showFeatureNotAvailable();
+            break;
             
         default:
             OutputDebugStringW((LPCWSTR)L"wParam default called__________\r\n");
