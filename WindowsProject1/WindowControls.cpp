@@ -123,7 +123,7 @@ HWND WindowControls::getTabControl(size_t posX, size_t posY, size_t width, size_
     // Initialize common controls.
     icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
     icex.dwICC = ICC_TAB_CLASSES;
-    InitCommonControlsEx(&icex);
+    //InitCommonControlsEx(&icex);
 
     HWND hwndTab = CreateWindow(WC_TABCONTROL, L"",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
