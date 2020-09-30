@@ -748,6 +748,8 @@ void AppSettings::handleFocuses()
     ListView_EditLabel(this->hwndListView, 0);
     //SetFocus(this->hwndListView);
     //ListView_SetSelectionMark(this->hwndListView, (72-8));
+
+    //SetFocus(this->hwndButton_OK);
 }
 
 void AppSettings::createListBox()
@@ -878,12 +880,13 @@ HWND AppSettings::getGroupBox(LPCWSTR name, int posX, int posY, int width, int h
 void AppSettings::createOKButton()
 {
     HWND hwndButton = this->getButton(this->hWndSettings, L"OK", UID_BUTTON_OK, 175, 370);
-
+    this->hwndButton_OK = hwndButton;
 }
 
 void AppSettings::createCancelButton()
 {
-    HWND hwndButton = this->getButton(this->hWndSettings, L"Cancel", UID_BUTTON_CANCEL, 265, 370);
+    HWND hwndButton = this->getButton(this->hWndSettings, L"Cancel", UID_BUTTON_CANCEL, 265, 370, 0);
+
 }
 
 void AppSettings::createStaticsControls()

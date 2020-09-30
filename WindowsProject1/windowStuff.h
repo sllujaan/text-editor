@@ -1445,8 +1445,8 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_SYSCHAR:
         OutputDebugStringW((LPCWSTR)L"--------------WM_SYSCHAR called\r\n");
-        if (wParam == 's') {
-            LOG_WCHAR(L"s");
+        if (wParam == VK_CONTROL) {
+            LOG_WCHAR(L"VK_CONTROL");
         }
         break;
         

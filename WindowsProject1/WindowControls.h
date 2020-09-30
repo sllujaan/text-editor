@@ -20,7 +20,7 @@ protected:
 	HWND getEditControl(size_t posX, size_t posY, size_t width, size_t height);
 	void setWindowControlsHandle(HWND hwndSelf);
 	HWND getListBox(HWND hWndParent, int posX, int posY, int width, int height);
-	HWND getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY);
+	HWND getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY, LONG push = BS_DEFPUSHBUTTON);
 	void applyConsistentStyle(HWND hwnd);
 	HWND getStatic(HWND hWndParent, LPCWSTR buttonText, size_t posX, size_t posY);
 	HWND getTabControl(size_t posX, size_t posY, size_t width, size_t height);

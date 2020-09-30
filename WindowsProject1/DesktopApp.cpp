@@ -441,8 +441,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
 
-
-
     case WM_SIZE:
         MoveWindow(hwndEdit,
             0, 0,                  // starting x- and y-coordinates 

@@ -19,7 +19,7 @@ HWND WindowControls::getEditControl(size_t posX, size_t posY, size_t width, size
 
     if (!this->canCreateWindow()) { this->showWindowCreationError(); return NULL; }
 
-    HWND hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"text",
+    HWND hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"",
         WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
         (int)posX, (int)posY, (int)width, (int)height, this->_hwndSelf, NULL, this->_hInst, NULL);
 
@@ -72,12 +72,12 @@ HWND WindowControls::getListBox(HWND hWndParent, int posX, int posY, int width, 
 
     return hListBox;
 }
-HWND WindowControls::getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY)
+HWND WindowControls::getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY, LONG push)
 {
     HWND hwndButton = CreateWindow(
         L"BUTTON",  // Predefined class; Unicode assumed 
         buttonText,      // Button text 
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD,  // Styles 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | push,  // Styles 
         (int)posX,         // x position 
         (int)posY,         // y position 
         80,        // Button width

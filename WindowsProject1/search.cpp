@@ -16,7 +16,7 @@ void Search::initWindow()
     this->initSearchButton();
 
     this->initRadioBtns();
-    this->initTabCtrl();
+    //this->initTabCtrl();
 }
 
 Search::~Search()
@@ -241,7 +241,7 @@ void Search::centerWindow(HWND hwnd)
 
 void Search::initEditControl()
 {
-    HWND hwndEdit = this->getEditControl(2, 3, 200, 20);   
+    HWND hwndEdit = this->getEditControl(10, 10, 200, 20);   
     this->hWndEditControl = hwndEdit;
     SetFocus(hWndEditControl);
 
@@ -273,7 +273,8 @@ void Search::initSearchButton()
     //SendMessage(hwndButton, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
 
 
-    HWND hwndButton = this->getButton(this->hWndSearch, L"Search", (short)IDI_SEARCH_BUTTON, 204, 1);
+    HWND hwndButton = this->getButton(this->hWndSearch, L"Search", (short)IDI_SEARCH_BUTTON, 214, 8);
+
 
     this->hwndButton = hwndButton;
 
@@ -336,10 +337,10 @@ void Search::initTabCtrl()
 void Search::initRadioBtns()
 {
     
-    HWND groupBox = this->getGroupBox(this->hWndSearch, L"Direction", 10, 40, 100, 100);
+    HWND groupBox = this->getGroupBox(this->hWndSearch, L"Direction", 10, 40, 284, 50);
 
-    HWND hwndButton1 = this->getRadioButton(this->hWndSearch, L"Forward", 12, 10, 100); //height is 17 pixels
-    HWND hwndButton2 = this->getRadioButton(this->hWndSearch, L"Back", 14, 10, 122);
+    HWND hwndButton1 = this->getRadioButton(this->hWndSearch, L"Forward", 12, 30, 60); //height is 17 pixels
+    HWND hwndButton2 = this->getRadioButton(this->hWndSearch, L"Back", 14, 110, 60);
 
     this->_hwndRadio_forward = hwndButton1;
     this->_hwndRadio_back = hwndButton2;
@@ -495,7 +496,7 @@ void Search::createWindow()
             WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
 
             // Size and position
-            CW_USEDEFAULT, CW_USEDEFAULT, 500, 600, //before: width 302, height 66
+            CW_USEDEFAULT, CW_USEDEFAULT, 320, 140, //before: width 302, height 66
 
             this->hWndParent,       // Parent window    
             NULL,       // Menu

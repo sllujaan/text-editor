@@ -82,7 +82,7 @@ protected:
 	WNDPROC _ec_test_oldProc;
 
 
-	
+	HWND hwndButton_OK;
 
 
 
