@@ -16,6 +16,7 @@
 #include"AppConfigure.h"
 #include"search.h"
 #include"AppSettings.h"
+#include"demoClass.h"
 
 using namespace std;
 
@@ -28,6 +29,9 @@ WNDPROC lpfnMainWndProc; //  Original wndproc for the combo box
 appConfig _appConfig;
 AppSettings* settings;
 Search* _search_app;
+
+Learnings::Demo* _demoClass;
+
 config::FILE _config_file;
 int fontSizeIndex = 0;
 int fontFamilyIndex = 0;
@@ -190,6 +194,9 @@ int CALLBACK WinMain(
 
     _search_app = new Search(hWnd, hInst, nCmdShowGlobal, hwndEdit);
     _search_app->registerWindow();
+
+    _demoClass = new Learnings::Demo(hWnd, hInst, nCmdShowGlobal);
+    _demoClass->registerWindow();
 
     // The parameters to ShowWindow explained:
     // hWnd: the value returned from CreateWindow
@@ -423,7 +430,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             SendMessage(hwndEdit, WM_SETFONT, (WPARAM)hFont, TRUE); 
             break;
         case ID_DIALOG_BOX:
-            handleDialolgBox(hWnd);
+            //handleDialolgBox(hWnd);
+            newDialog();
             //ac.printRect(hWnd);
             break;
         case IDI_UNDO:

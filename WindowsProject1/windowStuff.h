@@ -991,7 +991,7 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     //help menu--
     AppendMenu(hHelpMenu, MF_POPUP, IDI_VIEW_HELP, (LPCWSTR)L"View Help");
     AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About TextEditor");
-    //AppendMenu(hHelpMenu, MF_POPUP, ID_DIALOG_BOX, (LPCWSTR)L"Dialolg");
+    AppendMenu(hHelpMenu, MF_POPUP, ID_DIALOG_BOX, (LPCWSTR)L"Dialolg");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
@@ -1165,6 +1165,38 @@ void handleDialolgBox(HWND hWnd) {
 
 }
 
+
+BOOL CALLBACK DeleteItemProc(HWND hwndDlg,
+    UINT message,
+    WPARAM wParam,
+    LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_CREATE:
+        LOG_WCHAR(L"dialog created.");
+        break;
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+            /*if (!GetDlgItemText(hwndDlg, ID_ITEMNAME, szItemName, 80))
+                *szItemName = 0;*/
+
+            // Fall through. 
+
+        case IDCANCEL:
+            EndDialog(hwndDlg, wParam);
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+void newDialog() {
+    
+    _demoClass->initWindow();
+}
 
 
 void onDropFiles(HDROP hdrop) {

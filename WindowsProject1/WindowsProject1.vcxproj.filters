@@ -25,6 +25,9 @@
     <Filter Include="AppLog">
       <UniqueIdentifier>{8cd1e42f-dd7e-487c-af37-0eb40223c8cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="learnings">
+      <UniqueIdentifier>{db5180ee-d4be-41e0-bef2-ecb07f806515}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -78,6 +81,9 @@
     <ClInclude Include="windowManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="demoClass.h">
+      <Filter>learnings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DesktopApp.cpp">
@@ -104,6 +110,9 @@
     <ClCompile Include="windowManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="demoClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WindowsProject1.rc">
@@ -124,6 +133,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="icon3.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="small.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

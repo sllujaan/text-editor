@@ -27,9 +27,10 @@ HWND WindowControls::getEditControl(size_t posX, size_t posY, size_t width, size
     return hwndEdit;
 }
 
-void WindowControls::setWindowControlsHandle(HWND hwndSelf)
+void WindowControls::setWindowControlsHandle(HWND hwndSelf, HINSTANCE hInstSelf)
 {
-    this->_hwndSelf = hwndSelf;
+    if(hwndSelf) this->_hwndSelf = hwndSelf;
+    if (hInstSelf) this->_hInst = hInstSelf;
 }
 
 HFONT WindowControls::getFont(size_t size, LPCWSTR fontFamily, LPCWSTR fontStyle)

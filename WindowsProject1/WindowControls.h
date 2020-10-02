@@ -18,7 +18,7 @@ protected:
 
 	WindowControls(HWND hwndSelf, HINSTANCE hInst);
 	HWND getEditControl(size_t posX, size_t posY, size_t width, size_t height);
-	void setWindowControlsHandle(HWND hwndSelf);
+	void setWindowControlsHandle(HWND hwndSelf, HINSTANCE hInstSelf = NULL);
 	HWND getListBox(HWND hWndParent, int posX, int posY, int width, int height);
 	HWND getButton(HWND hWndParent, LPCWSTR buttonText, short UID_BUTTON, size_t posX, size_t posY, LONG push = BS_DEFPUSHBUTTON);
 	void applyConsistentStyle(HWND hwnd);

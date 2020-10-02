@@ -156,6 +156,7 @@
     <ClInclude Include="AppSettings.h" />
     <ClInclude Include="AppSettingsProc.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="demoClass.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="mySample.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="AppConfigure.cpp" />
     <ClCompile Include="AppSettings.cpp" />
     <ClCompile Include="AppSettingsProc.cpp" />
+    <ClCompile Include="demoClass.cpp" />
     <ClCompile Include="DesktopApp.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="Validator.cpp" />
@@ -187,6 +189,7 @@
     <Image Include="icon1.ico" />
     <Image Include="icon2.ico" />
     <Image Include="icon3.ico" />
+    <Image Include="small.ico" />
     <Image Include="WindowsProject1.ico" />
   </ItemGroup>
   <ItemGroup>
