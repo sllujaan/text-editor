@@ -14,6 +14,7 @@ void WindowControls::showWindowCreationError()
     MB_ICONEXCLAMATION);
 }
 
+
 HWND WindowControls::getEditControl(size_t posX, size_t posY, size_t width, size_t height)
 {
 
@@ -186,6 +187,28 @@ HWND WindowControls::DoCreateDisplayWindow(HWND hwndTab)
         NULL);
     return hwndStatic;
 
+}
+
+HWND WindowControls::getTreeView(HWND hWndParent, short ID_TREEVIEW, size_t posX, size_t posY, size_t width, size_t height)
+{
+
+    if (!this->canCreateWindow()) { this->showWindowCreationError(); return NULL; }
+
+    // the tree-view control.
+    HWND hwndTV = CreateWindowEx(0,
+        WC_TREEVIEW,
+        TEXT("Tree View"),
+        WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES,
+        (int)posX,
+        (int)posY,
+        (int)width,
+        (int)height,
+        hWndParent,
+        (HMENU)ID_TREEVIEW,
+        this->_hInst,
+        NULL);
+
+    return hwndTV;
 }
 
 //

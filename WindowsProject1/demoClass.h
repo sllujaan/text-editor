@@ -3,7 +3,7 @@
 #include"WindowControls.h"
 
 namespace Learnings {
-	class Demo {
+	class Demo : public WindowControls {
 	//variables------------------------------------------------------------------
 		//public varaibles stuff--------
 	public:
@@ -20,7 +20,7 @@ namespace Learnings {
 		//private methods stuff--------
 	public:
 		Demo(HWND hWnd, HINSTANCE hInst, int nCmdShow);
-		Demo(); //: WindowControls(NULL, NULL) {}
+		Demo() : WindowControls(NULL, NULL) {}
 		~Demo();
 		void registerWindow();
 		void initWindow();
@@ -30,5 +30,6 @@ namespace Learnings {
 		LRESULT runProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 		void createWindow();
 		void centerWindow(HWND hwnd);
+		void createTreeView();
 	};
 }

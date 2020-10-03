@@ -1,6 +1,6 @@
 #include "demoClass.h"
 
-Learnings::Demo::Demo(HWND hWnd, HINSTANCE hInst, int nCmdShow)// : WindowControls(hWnd, hInst)
+Learnings::Demo::Demo(HWND hWnd, HINSTANCE hInst, int nCmdShow) : WindowControls(hWnd, hInst)
 {
     this->_hwndParent = hWnd;
     this->_hInstSelf = hInst;
@@ -8,7 +8,7 @@ Learnings::Demo::Demo(HWND hWnd, HINSTANCE hInst, int nCmdShow)// : WindowContro
 
 Learnings::Demo::~Demo()
 {
-
+    
 }
 
 void Learnings::Demo::registerWindow()
@@ -42,6 +42,7 @@ void Learnings::Demo::registerWindow()
 void Learnings::Demo::initWindow()
 {
     this->createWindow();
+    this->createTreeView();
 }
 
 LRESULT Learnings::Demo::demo_wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -109,7 +110,7 @@ void Learnings::Demo::createWindow()
         0,                              // Optional window styles.
         this->CLASS_NAME,                     // Window class
         L"Learn to Program Windows",    // Window text
-        WS_EX_DLGMODALFRAME | WS_VISIBLE,            // Window style
+        WS_OVERLAPPEDWINDOW | WS_VISIBLE,            // Window style
 
         // Size and position
         200, 200, 500, 600,
@@ -166,4 +167,9 @@ void Learnings::Demo::centerWindow(HWND hwnd)
     OutputDebugStringW((LPCWSTR)L"window centered");
 
     return;
+}
+
+void Learnings::Demo::createTreeView()
+{
+    this->getTreeView(this->_hwndSelf, 10, 20, 20, 200, 300);
 }

@@ -11,6 +11,7 @@ private:
 	HINSTANCE _hInst;
 	BOOL canCreateWindow();
 	void showWindowCreationError();
+
 protected:
 	size_t fontSize = 14;
 	LPCWSTR fontFamily = L"Arial Black";
@@ -30,6 +31,7 @@ protected:
 	 Returns the handle to the static control. 
 	 hwndTab - handle of the tab control.*/
 	HWND DoCreateDisplayWindow(HWND hwndTab);
+	HWND getTreeView(HWND hWndParent, short ID_TREEVIEW, size_t posX, size_t posY, size_t width, size_t height);
 
 
 	 //template<size_t size>
