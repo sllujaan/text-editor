@@ -1,5 +1,6 @@
 #pragma once
 #include<Windows.h>
+#include<CommCtrl.h>
 #include"WindowControls.h"
 
 namespace Learnings {
@@ -12,6 +13,7 @@ namespace Learnings {
 		HINSTANCE _hInstSelf;
 		HWND _hwndParent;
 		HWND _hwndSelf;
+		HWND _hwndTV;
 		int _nCmdShow;
 		const wchar_t* CLASS_NAME = L"Demo Window";
 
@@ -31,5 +33,7 @@ namespace Learnings {
 		void createWindow();
 		void centerWindow(HWND hwnd);
 		void createTreeView();
+		void handleTreeViewInsertItems();
+		BOOL InitTreeViewImageLists(HWND hwndTV);
 	};
 }

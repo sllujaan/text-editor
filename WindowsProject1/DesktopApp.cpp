@@ -104,6 +104,7 @@ int CALLBACK WinMain(
 )
 {
 
+
     WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);

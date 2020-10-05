@@ -1460,9 +1460,16 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_SYSKEYDOWN:
         LOG_WCHAR(L"WM_SYSKEYDOWN");
+        
+        //if ( (GetKeyState(VK_MENU) & 0x8000) && wParam == 0x53) {    //0x8000 => (1 << 15) ---- 0x53 => S
+        //    //do stuff on Alt + S keys.
+        //    LOG_WCHAR(L"Alt + S");
+        //}
+
         break;
 
     case WM_KEYUP:
+        LOG_WCHAR(L"WM_KEYUP");
         break;
     case WM_CHAR:
         switch (wParam)
@@ -1482,10 +1489,12 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             return 0;
         }
 
-    case WM_SYSCHAR:
-        OutputDebugStringW((LPCWSTR)L"--------------WM_SYSCHAR called\r\n");
-        if (wParam == VK_CONTROL) {
-            LOG_WCHAR(L"VK_CONTROL");
+    case WM_KEYDOWN:
+        OutputDebugStringW((LPCWSTR)L"--------------WM_KEYDOWN called\r\n");
+        if ( (GetKeyState(VK_CONTROL) & 0x8000) && wParam == 0x53) { //0x8000 => (1 << 15) ---- 0x53 => S
+            //do stuff when Ctrl + S keys are down.
+            LOG_WCHAR(L"Ctrl + S is down");
+            handleSaveFile(hwndMain);
         }
         break;
         

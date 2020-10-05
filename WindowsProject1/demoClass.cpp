@@ -171,5 +171,38 @@ void Learnings::Demo::centerWindow(HWND hwnd)
 
 void Learnings::Demo::createTreeView()
 {
-    this->getTreeView(this->_hwndSelf, 10, 20, 20, 200, 300);
+    HWND hwndTV = this->getTreeView(this->_hwndSelf, 10, 20, 20, 200, 300);
+
+    this->_hwndTV = hwndTV;
+
+    this->handleTreeViewInsertItems();
+
+}
+
+void Learnings::Demo::handleTreeViewInsertItems()
+{
+    InitCommonControls();
+
+    this->InitTreeViewImageLists(this->_hwndTV);
+}
+
+BOOL Learnings::Demo::InitTreeViewImageLists(HWND hwndTV)
+{
+    HIMAGELIST himl;  // handle to image list 
+    //HBITMAP hbmp;     // handle to bitmap
+
+    // Create the image list. 
+    if ((himl = ImageList_Create(10,
+        10,
+        FALSE,
+        3, 0)) == NULL)
+    {
+
+        return FALSE;
+    }
+    
+
+    // Add the open file, closed file, and document bitmaps. 
+    //hbmp = LoadBitmap(this->_hInstSelf, MAKEINTRESOURCE(IDB_OPEN_FILE));
+    return TRUE;
 }
