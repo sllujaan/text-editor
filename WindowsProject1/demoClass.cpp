@@ -183,7 +183,70 @@ void Learnings::Demo::handleTreeViewInsertItems()
 {
     InitCommonControls();
 
-    this->InitTreeViewImageLists(this->_hwndTV);
+    //this->InitTreeViewImageLists(this->_hwndTV);
+
+    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level1", 1);
+    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level2", 2);
+    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level3", 3);
+
+    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level1", 1);
+    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level2", 2);
+    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level3", 3);
+
+}
+
+HTREEITEM Learnings::Demo::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel)
+{
+    TVITEM tvi;
+    TVINSERTSTRUCT tvins;
+    static HTREEITEM hPrev = (HTREEITEM)TVI_FIRST;
+    static HTREEITEM hPrevRootItem = NULL;
+    static HTREEITEM hPrevLev2Item = NULL;
+    HTREEITEM hti;
+
+    tvi.mask = TVIF_TEXT | TVIF_IMAGE
+        | TVIF_SELECTEDIMAGE | TVIF_PARAM;
+
+    // Set the text of the item. 
+    tvi.pszText = lpszItem;
+    tvi.cchTextMax = sizeof(tvi.pszText) / sizeof(tvi.pszText[0]);
+
+    // Save the heading level in the item's application-defined 
+    // data area. 
+    tvi.lParam = (LPARAM)nLevel;
+    tvins.item = tvi;
+    tvins.hInsertAfter = hPrev;
+
+    // Set the parent item based on the specified level. 
+    if (nLevel == 1)
+        tvins.hParent = TVI_ROOT;
+    else if (nLevel == 2)
+        tvins.hParent = hPrevRootItem;
+    else
+        tvins.hParent = hPrevLev2Item;
+
+    // Add the item to the tree-view control. 
+    hPrev = (HTREEITEM)SendMessage(hwndTV, TVM_INSERTITEM,
+        0, (LPARAM)(LPTVINSERTSTRUCT)&tvins);
+
+    if (hPrev == NULL)
+        return NULL;
+    
+    // Save the handle to the item. 
+    if (nLevel == 1)
+        hPrevRootItem = hPrev;
+    else if (nLevel == 2)
+        hPrevLev2Item = hPrev;
+
+    if (nLevel > 1)
+    {
+        hti = TreeView_GetParent(hwndTV, hPrev);
+        tvi.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE;
+        tvi.hItem = hti;
+        TreeView_SetItem(hwndTV, &tvi);
+    }
+
+    return hPrev;
 }
 
 BOOL Learnings::Demo::InitTreeViewImageLists(HWND hwndTV)

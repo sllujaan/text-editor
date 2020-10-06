@@ -1195,7 +1195,10 @@ BOOL CALLBACK DeleteItemProc(HWND hwndDlg,
 
 void newDialog() {
     
-    //_demoClass->initWindow();
+    _demoClass->initWindow();
+
+
+    
     /*DialogBox(
         hInst,
         MAKEINTRESOURCE(IDD_PROPPAGE_SMALL),
@@ -1203,15 +1206,12 @@ void newDialog() {
         (WNDPROC)DeleteItemProc
     );*/
 
-    CreateDialog(
-        hInst,
-        MAKEINTRESOURCE(IDD_PROPPAGE_SMALL),
-        hwndMain,
-        (WNDPROC)DeleteItemProc
-    );
 
+    //ShellExecute(NULL, L"open", L"https://google.com", NULL, NULL, SW_SHOWNORMAL);
 
-    ShellExecute(NULL, L"open", L"https://google.com", NULL, NULL, SW_SHOWNORMAL);
+    //ShellExecute(NULL, L"explore", L"C:\\", NULL, NULL, SW_SHOWNORMAL);
+
+    //ShellExecute(NULL, L"find", L"C:\\MinGW", NULL, NULL, 0);
 
 #ifdef _WIN32
     LOG_WCHAR(L"Your are using WIN32 and WIN64 bits OS...");
@@ -1222,8 +1222,6 @@ void newDialog() {
 #endif // _WIN64
 
 
-
-    //system("start https://google.com");
 }
 
 

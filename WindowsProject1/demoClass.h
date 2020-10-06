@@ -34,6 +34,7 @@ namespace Learnings {
 		void centerWindow(HWND hwnd);
 		void createTreeView();
 		void handleTreeViewInsertItems();
+		HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel);
 		BOOL InitTreeViewImageLists(HWND hwndTV);
 	};
 }
