@@ -10,7 +10,7 @@
 #include<TextServ.h>
 #include<shellapi.h>
 
-
+#include"resource.h"
 #include"AppLog.h"
 #include"windowManager.h"
 #include"AppConfigure.h"

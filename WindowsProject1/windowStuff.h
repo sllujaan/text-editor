@@ -1173,8 +1173,8 @@ BOOL CALLBACK DeleteItemProc(HWND hwndDlg,
 {
     switch (message)
     {
-    case WM_CREATE:
-        LOG_WCHAR(L"dialog created.");
+    case WM_INITDIALOG:
+        LOG_WCHAR(L"WM_INITDIALOG");
         break;
     case WM_COMMAND:
         switch (LOWORD(wParam))
@@ -1195,7 +1195,35 @@ BOOL CALLBACK DeleteItemProc(HWND hwndDlg,
 
 void newDialog() {
     
-    _demoClass->initWindow();
+    //_demoClass->initWindow();
+    /*DialogBox(
+        hInst,
+        MAKEINTRESOURCE(IDD_PROPPAGE_SMALL),
+        hwndMain,
+        (WNDPROC)DeleteItemProc
+    );*/
+
+    CreateDialog(
+        hInst,
+        MAKEINTRESOURCE(IDD_PROPPAGE_SMALL),
+        hwndMain,
+        (WNDPROC)DeleteItemProc
+    );
+
+
+    ShellExecute(NULL, L"open", L"https://google.com", NULL, NULL, SW_SHOWNORMAL);
+
+#ifdef _WIN32
+    LOG_WCHAR(L"Your are using WIN32 and WIN64 bits OS...");
+#endif // _WIN32
+
+#ifdef _WIN64
+    LOG_WCHAR(L"Your are using WIN64 bits OS...");
+#endif // _WIN64
+
+
+
+    //system("start https://google.com");
 }
 
 
@@ -1495,6 +1523,11 @@ LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             //do stuff when Ctrl + S keys are down.
             LOG_WCHAR(L"Ctrl + S is down");
             handleSaveFile(hwndMain);
+
+            //move cursor to the end o text
+            int len = GetWindowTextLength(hwndRichEdit);
+            SendMessage(hwndRichEdit, EM_SETSEL, 0, -1);
+
         }
         break;
         
