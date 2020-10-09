@@ -6,8 +6,8 @@
 #include"WindowControls.h"
 
 
-#define CX_BITMAP 16
-#define CY_BITMAP 16
+#define CX_BITMAP 32
+#define CY_BITMAP 32
 #define NUM_BITMAPS 3
 
 

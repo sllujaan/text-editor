@@ -43,6 +43,8 @@ void Learnings::Demo::initWindow()
 {
     this->createWindow();
     this->createTreeView();
+
+    //this_thread::sleep_for(std::chrono::milliseconds(3000));
 }
 
 LRESULT Learnings::Demo::demo_wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -188,6 +190,8 @@ void Learnings::Demo::handleTreeViewInsertItems()
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level1", 1);
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level2", 2);
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level3", 3);
+    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level4", 4);
+    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level4", 5);
 
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level1", 1);
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level2", 2);
@@ -245,6 +249,7 @@ HTREEITEM Learnings::Demo::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLeve
         tvi.hItem = hti;
         TreeView_SetItem(hwndTV, &tvi);
     }
+
 
     return hPrev;
 }
