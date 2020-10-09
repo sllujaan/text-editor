@@ -198,7 +198,7 @@ HWND WindowControls::getTreeView(HWND hWndParent, short ID_TREEVIEW, size_t posX
     HWND hwndTV = CreateWindowEx(0,
         WC_TREEVIEW,
         TEXT("Tree View"),
-        WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES,
+        WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_FULLROWSELECT,
         (int)posX,
         (int)posY,
         (int)width,
