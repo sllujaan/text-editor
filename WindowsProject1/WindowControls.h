@@ -32,7 +32,7 @@ protected:
 	 hwndTab - handle of the tab control.*/
 	HWND DoCreateDisplayWindow(HWND hwndTab);
 	HWND getTreeView(HWND hWndParent, short ID_TREEVIEW, size_t posX, size_t posY, size_t width, size_t height);
-
+	void showErrorMessage(HWND hwnd, LPCWSTR msg);
 
 	 //template<size_t size>
 	 //errno_t _insertItems_listBox(HWND hWnd, int select, const wchar_t* (&itemsArray)[size]);

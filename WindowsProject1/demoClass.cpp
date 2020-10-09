@@ -183,7 +183,7 @@ void Learnings::Demo::handleTreeViewInsertItems()
 {
     InitCommonControls();
 
-    //this->InitTreeViewImageLists(this->_hwndTV);
+    if (!this->InitTreeViewImageLists(this->_hwndTV)) this->showErrorMessage(this->_hwndSelf, L"Failed to create images list");
 
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level1", 1);
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level2", 2);
@@ -251,21 +251,58 @@ HTREEITEM Learnings::Demo::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLeve
 
 BOOL Learnings::Demo::InitTreeViewImageLists(HWND hwndTV)
 {
+
+    // InitTreeViewImageLists - creates an image list, adds three bitmaps 
+    // to it, and associates the image list with a tree-view control. 
+    // Returns TRUE if successful, or FALSE otherwise. 
+    // hwndTV - handle to the tree-view control. 
+    //
+    // Global variables and constants: 
+    // g_hInst - the global instance handle.
+    // g_nOpen, g_nClosed, and g_nDocument - global indexes of the images. 
+    // CX_BITMAP and CY_BITMAP - width and height of an icon. 
+    // NUM_BITMAPS - number of bitmaps to add to the image list. 
+    // IDB_OPEN_FILE, IDB_CLOSED_FILE, IDB_DOCUMENT -
+    //     resource identifiers of the bitmaps.
+
     HIMAGELIST himl;  // handle to image list 
-    //HBITMAP hbmp;     // handle to bitmap
+    HBITMAP hbmp;     // handle to bitmap 
 
     // Create the image list. 
-    if ((himl = ImageList_Create(10,
-        10,
+    if ((himl = ImageList_Create(CX_BITMAP,
+        CY_BITMAP,
         FALSE,
-        3, 0)) == NULL)
+        NUM_BITMAPS, 0)) == NULL)
     {
-
         return FALSE;
     }
-    
 
+    LOG_WCHAR(L"Image list created.");
+
+
+    
     // Add the open file, closed file, and document bitmaps. 
-    //hbmp = LoadBitmap(this->_hInstSelf, MAKEINTRESOURCE(IDB_OPEN_FILE));
+    hbmp = LoadBitmap(this->_hInstSelf, MAKEINTRESOURCE(IDI_SMALL));
+    this->g_nOpen = ImageList_Add(himl, hbmp, (HBITMAP)NULL);
+    DeleteObject(hbmp);
+
+
+
+    /*hbmp = LoadBitmap(this->_hInstSelf, MAKEINTRESOURCE(IDI_SMALL));
+    this->g_nClosed = ImageList_Add(himl, hbmp, (HBITMAP)NULL);
+    DeleteObject(hbmp);
+
+    hbmp = LoadBitmap(this->_hInstSelf, MAKEINTRESOURCE(IDI_SMALL));
+    this->g_nDocument = ImageList_Add(himl, hbmp, (HBITMAP)NULL);
+    DeleteObject(hbmp);*/
+
+
+    // Fail if not all of the images were added. 
+    if (ImageList_GetImageCount(himl) < 1) return FALSE;
+
+    
+    // Associate the image list with the tree-view control. 
+    TreeView_SetImageList(hwndTV, himl, TVSIL_NORMAL);
+
     return TRUE;
 }

@@ -211,6 +211,16 @@ HWND WindowControls::getTreeView(HWND hWndParent, short ID_TREEVIEW, size_t posX
     return hwndTV;
 }
 
+void WindowControls::showErrorMessage(HWND hwnd, LPCWSTR msg)
+{
+    MessageBox(
+        hwnd,
+        msg,
+        L"Error",
+        MB_ICONERROR
+    );
+}
+
 //
 //template<size_t size>
 //inline errno_t WindowControls::_insertItems_listBox(HWND hwnd, int select, const wchar_t* (&itemsArray)[size])

@@ -1199,12 +1199,15 @@ void newDialog() {
 
 
     
-    /*DialogBox(
+    /*HWND hwndGoto = CreateDialog(
         hInst,
         MAKEINTRESOURCE(IDD_PROPPAGE_SMALL),
         hwndMain,
         (WNDPROC)DeleteItemProc
-    );*/
+    );
+
+    ShowWindow(hwndGoto, SW_SHOW);*/
+
 
 
     //ShellExecute(NULL, L"open", L"https://google.com", NULL, NULL, SW_SHOWNORMAL);

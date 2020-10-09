@@ -1,7 +1,18 @@
 #pragma once
 #include<Windows.h>
 #include<CommCtrl.h>
+
+#include"resource.h"
 #include"WindowControls.h"
+
+
+#define CX_BITMAP 16
+#define CY_BITMAP 16
+#define NUM_BITMAPS 3
+
+
+
+
 
 namespace Learnings {
 	class Demo : public WindowControls {
@@ -16,6 +27,11 @@ namespace Learnings {
 		HWND _hwndTV;
 		int _nCmdShow;
 		const wchar_t* CLASS_NAME = L"Demo Window";
+
+
+		int g_nOpen;
+		int g_nClosed;
+		int g_nDocument;
 
 	//Methods-----------------------------------------------------------------------------
 
