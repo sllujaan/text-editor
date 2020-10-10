@@ -85,8 +85,41 @@ LRESULT Learnings::Demo::demo_wndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 
 LRESULT Learnings::Demo::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    HTREEITEM htvi;
+    TVITEM item;
+
     switch (message)
     {
+    case WM_NOTIFY:
+
+        switch ( ((LPNMHDR)lParam)->code )
+        {
+        case NM_CLICK:
+            LOG_WCHAR(L"NM_CLICK");
+            htvi = (HTREEITEM)SendMessage(this->_hwndTV, TVM_GETNEXTITEM, TVGN_CARET, 0);
+            if (htvi == NULL) {
+                LOG_WCHAR(L"TVGN_CARET NULL");
+            }
+            else {
+                // Now get the text of the selected item
+                TCHAR buffer[128];
+
+                item.hItem = htvi;
+                item.mask = TVIF_TEXT;
+                item.cchTextMax = 128;
+                item.pszText = buffer;
+
+                if (TreeView_GetItem(this->_hwndTV, &item) != NULL) {
+                    LOG_WCHAR(item.pszText);
+                }
+            }
+
+            break;
+        default:
+            break;
+        }
+
+        break;
     case WM_CREATE:
         this->centerWindow(hwnd);
         LOG_WCHAR(L"demo window centered.");
@@ -187,7 +220,7 @@ void Learnings::Demo::handleTreeViewInsertItems()
 {
     InitCommonControls();
 
-    if (!this->InitTreeViewImageLists(this->_hwndTV)) this->showErrorMessage(this->_hwndSelf, L"Failed to create images list");
+    //if (!this->InitTreeViewImageLists(this->_hwndTV)) this->showErrorMessage(this->_hwndSelf, L"Failed to create images list");
 
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level1", 1);
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level2", 2);
