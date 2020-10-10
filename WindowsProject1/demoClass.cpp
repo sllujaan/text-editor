@@ -109,10 +109,10 @@ LRESULT Learnings::Demo::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 void Learnings::Demo::createWindow()
 {
     HWND hwnd = CreateWindowEx(
-        0,                              // Optional window styles.
+        WS_EX_DLGMODALFRAME | WS_EX_ACCEPTFILES,                              // Optional window styles.
         this->CLASS_NAME,                     // Window class
         L"Learn to Program Windows",    // Window text
-        WS_OVERLAPPEDWINDOW | WS_VISIBLE,            // Window style
+        WS_SYSMENU | WS_VISIBLE,            // Window style
 
         // Size and position
         200, 200, 500, 600,
@@ -135,6 +135,8 @@ void Learnings::Demo::createWindow()
 
         return;
     }
+
+
 
     this->_hwndSelf = hwnd;
 

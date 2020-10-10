@@ -1230,7 +1230,7 @@ LPCWSTR AppSettings::getFontStyle()
 void AppSettings::createWindow()
 {
     HWND hwnd = CreateWindowEx(
-        0,          // Optional window styles. Called Exended Window Styles.
+        WS_EX_DLGMODALFRAME,          // Optional window styles. Called Exended Window Styles.
         this->CLASS_NAME,                       // Window class
         L"Settings",    // Window text
         WS_SYSMENU,            // Window style

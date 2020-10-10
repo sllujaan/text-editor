@@ -490,7 +490,7 @@ void Search::createWindow()
 
     if (this->hWndSearch == NULL) {
         HWND hwnd = CreateWindowEx(
-            0,                              // Optional window styles.
+            WS_EX_DLGMODALFRAME,                              // Optional window styles.
             this->CLASS_NAME,                     // Window class
             L"Search",    // Window text
             WS_MINIMIZEBOX | WS_SYSMENU,            // Window style
