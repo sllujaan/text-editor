@@ -87,9 +87,24 @@ LRESULT Learnings::Demo::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 {
     HTREEITEM htvi;
     TVITEM item;
+    HMENU cMenu;
+    POINT point;
 
     switch (message)
     {
+    case WM_CONTEXTMENU:
+        LOG_WCHAR(L"WM_CONTEXTMENU");
+        cMenu = CreatePopupMenu();
+        InsertMenu(cMenu, 0, MF_BYCOMMAND | MF_STRING | MF_ENABLED, 1, L"ContextMenu");
+        
+        if (GetCursorPos(&point)) {
+            TrackPopupMenu(cMenu, TPM_LEFTALIGN, point.x, point.y, 0, hwnd, NULL);
+        }
+        
+        
+        //TrackPopupMenu(cMenu, TPM_BOTTOMALIGN | TPM_LEFTALIGN, 0, 0, 0, hwnd, NULL);
+        break;
+
     case WM_NOTIFY:
 
         switch ( ((LPNMHDR)lParam)->code )
