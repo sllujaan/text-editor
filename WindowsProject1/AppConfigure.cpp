@@ -110,6 +110,13 @@ size_t appConfig::getWndWidth()
 	return this->wndWidth;
 }
 
+size_t appConfig::resolvePath()
+{
+
+	ShellExecute(NULL, L"open", L"cmd.exe", 0, 0, SW_SHOWNORMAL);
+	return 1;
+}
+
 config::FILE::FILE(const wchar_t* path)
 {
 	size_t len = wcslen(path) + 1;

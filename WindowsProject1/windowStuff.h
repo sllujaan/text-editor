@@ -1195,9 +1195,25 @@ BOOL CALLBACK DeleteItemProc(HWND hwndDlg,
 
 void newDialog() {
     
-    _demoClass->initWindow();
+    //_demoClass->initWindow();
+    _listView->createNewWindow();
 
 
+    /*SHELLEXECUTEINFO ShExecInfo;
+    ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+    ShExecInfo.fMask = NULL;
+    ShExecInfo.hwnd = NULL;
+    ShExecInfo.lpVerb = NULL;
+    ShExecInfo.lpFile = L"cmd";
+    ShExecInfo.lpParameters = L"/c";
+    ShExecInfo.lpDirectory = NULL;
+    ShExecInfo.nShow = SW_MAXIMIZE;
+    ShExecInfo.hInstApp = NULL;
+
+    ShellExecuteEx(&ShExecInfo);*/
+
+
+    //system("DATE");
     
     /*HWND hwndGoto = CreateDialog(
         hInst,

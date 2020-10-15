@@ -76,5 +76,8 @@ public:
 	void printRect(HWND hwnd);
 	size_t getWndHeight();
 	size_t getWndWidth();
+	//this method is responsible for making sure that configuration file's direcotry extists.
+	//if not exits it will create that one.
+	size_t resolvePath();
 
 };

@@ -159,6 +159,7 @@
     <ClInclude Include="demoClass.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="ListView.h" />
     <ClInclude Include="mySample.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="search.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Validator.h" />
     <ClInclude Include="WindowControls.h" />
+    <ClInclude Include="WindowControlsEx.h" />
     <ClInclude Include="WindowsProject1.h" />
     <ClInclude Include="windowStuff.h" />
     <ClInclude Include="windowManager.h" />
@@ -176,9 +178,11 @@
     <ClCompile Include="AppSettingsProc.cpp" />
     <ClCompile Include="demoClass.cpp" />
     <ClCompile Include="DesktopApp.cpp" />
+    <ClCompile Include="ListView.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="Validator.cpp" />
     <ClCompile Include="WindowControls.cpp" />
+    <ClCompile Include="WindowControlsEx.cpp" />
     <ClCompile Include="windowManager.cpp" />
   </ItemGroup>
   <ItemGroup>

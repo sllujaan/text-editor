@@ -92,6 +92,7 @@ LRESULT Learnings::Demo::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
     switch (message)
     {
+
     case WM_CONTEXTMENU:
         LOG_WCHAR(L"WM_CONTEXTMENU");
         cMenu = CreatePopupMenu();
@@ -235,7 +236,7 @@ void Learnings::Demo::handleTreeViewInsertItems()
 {
     InitCommonControls();
 
-    //if (!this->InitTreeViewImageLists(this->_hwndTV)) this->showErrorMessage(this->_hwndSelf, L"Failed to create images list");
+    if (!this->InitTreeViewImageLists(this->_hwndTV)) this->showErrorMessage(this->_hwndSelf, L"Failed to create images list");
 
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level1", 1);
     this->AddItemToTree(this->_hwndTV, (LPTSTR)L"level2", 2);
@@ -336,8 +337,18 @@ BOOL Learnings::Demo::InitTreeViewImageLists(HWND hwndTV)
 
 
     
-    // Add the open file, closed file, and document bitmaps. 
+    // Add the open file, closed file, and document bitmaps.
+    //hbmp = LoadBitmapA(this->_hInstSelf, (LPCSTR)MAKEINTRESOURCE(IDI_SMALL));
+    
+    //hbmp = (HBITMAP)LoadImageA(this->_hInstSelf, (LPCSTR)MAKEINTRESOURCE(IDI_SMALL), IMAGE_BITMAP, 0, 0, LR_SHARED);
+
     hbmp = LoadBitmap(this->_hInstSelf, MAKEINTRESOURCE(IDI_SMALL));
+
+    if (hbmp == NULL) return FALSE;
+
+    LOG_WCHAR(L"bitmap created.");
+    
+    
     this->g_nOpen = ImageList_Add(himl, hbmp, (HBITMAP)NULL);
     DeleteObject(hbmp);
 

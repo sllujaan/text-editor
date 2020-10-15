@@ -18,6 +18,7 @@
 #include"search.h"
 #include"AppSettings.h"
 #include"demoClass.h"
+#include"ListView.h"
 
 using namespace std;
 
@@ -32,6 +33,7 @@ AppSettings* settings;
 Search* _search_app;
 
 Learnings::Demo* _demoClass;
+ListView* _listView;
 
 config::FILE _config_file;
 int fontSizeIndex = 0;
@@ -199,6 +201,9 @@ int CALLBACK WinMain(
 
     _demoClass = new Learnings::Demo(hWnd, hInst, nCmdShowGlobal);
     _demoClass->registerWindow();
+
+    
+    //_listView = new ListView(hWnd, nCmdShow);
 
     // The parameters to ShowWindow explained:
     // hWnd: the value returned from CreateWindow

@@ -28,6 +28,12 @@
     <Filter Include="learnings">
       <UniqueIdentifier>{db5180ee-d4be-41e0-bef2-ecb07f806515}</UniqueIdentifier>
     </Filter>
+    <Filter Include="List-View">
+      <UniqueIdentifier>{57362523-d263-4875-9f9e-a9b25a4b6864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windowControls">
+      <UniqueIdentifier>{496f2fd9-50ef-4e2c-a920-a2be980a9aa8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -84,6 +90,12 @@
     <ClInclude Include="demoClass.h">
       <Filter>learnings</Filter>
     </ClInclude>
+    <ClInclude Include="ListView.h">
+      <Filter>List-View</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowControlsEx.h">
+      <Filter>windowControls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DesktopApp.cpp">
@@ -111,6 +123,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="demoClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ListView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowControlsEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
