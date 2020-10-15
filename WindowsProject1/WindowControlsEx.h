@@ -7,12 +7,21 @@
 #define TASK_FAILURE 1
 
 
+struct WINDOW_CONFIG {
+	LPCSTR title;
+	HICON hIcon;
+	size_t width;
+	size_t height;
+};
+
+
 
 class WindowControlsEx {
 private:
 
 	BOOL canCreateWindow();
 	void showWindowCreationError();
+
 
 protected:
 	HWND _hwndParent;
@@ -25,6 +34,6 @@ protected:
 public:
 	WindowControlsEx() = delete;
 	WindowControlsEx(HWND hwnd, int nCmdShow);
-	errno_t createNewWindow();
-	
+	errno_t createNewWindow(WINDOW_CONFIG *windConfig);
+	errno_t createNewWindowEx(WNDCLASSEX* wcex);
 };
