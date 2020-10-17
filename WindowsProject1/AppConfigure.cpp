@@ -88,6 +88,13 @@ errno_t appConfig::getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount)
 	return 0;
 }
 
+errno_t appConfig::getAppDataPath(wchar_t** buffer, size_t* buffCount)
+{
+	errno_t err = _wdupenv_s(buffer, buffCount, L"appdata");
+	if (!*buffCount) return TASK_FAILURE;
+	return TASK_SUCCESS;
+}
+
 void appConfig::printRect(HWND hwnd)
 {
 	RECT rect;
@@ -290,4 +297,34 @@ errno_t config::FILE::writeText(string text)
 	this->file << text;
 
 	return 0;
+}
+
+errno_t config::FILE::createNewFile()
+{
+	appConfig ac;
+	wchar_t* path;
+	size_t size;
+
+	errno_t err = ac.getAppDataPath(&path, &size);
+	if (err) return TASK_FAILURE;
+
+	//LOG_WCHAR(path);
+
+
+	//converting wchar_t* to char*
+	_bstr_t appPath(path);
+	_bstr_t appDirName(this->_appDirName);
+	
+	//create directory. just in case if it doesn't exist.
+	
+	_mkdir(appPath + appDirName);
+
+	//string str1 = string(appPath);
+	//string str2 = string(appDirName);
+	//string str3 = str1 + str2;
+
+	//LOG_STR(str3);
+
+	
+	return TASK_SUCCESS;
 }

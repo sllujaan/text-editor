@@ -928,6 +928,8 @@ void AppSettings::handleSaveToConfigFile(size_t wndWidth, size_t wndHeight)
 
     config::FILE file(path);
 
+    if (!file.isFile()) file.createNewFile();
+
     string _config_fontSize = "fontSizeIndex=" + to_string(this->_fSizeIndex) + ";\n";
     string _config_fontFamily = "fontFamilyIndex=" + to_string(this->_fFamilyIndex) + ";\n";
     string _config_fontStyle = "fontStyleIndex=" + to_string(this->_fStyleIndex) + ";\n\n";

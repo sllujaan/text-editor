@@ -4,12 +4,16 @@
 #include<fstream>
 #include<comdef.h>
 #include<regex>
+#include<direct.h>
 
 #include"AppLog.h"
 using namespace std;
 
 #define ERROR_CONFIG 1
 #define SUCCESS_CONFIG 0
+
+#define TASK_SUCCESS 0
+#define TASK_FAILURE 1
 
 
 
@@ -49,16 +53,22 @@ namespace config {
 		errno_t initReadConfigKeys();
 		void resetConfigKeys();
 		errno_t writeText(string text);
+		errno_t createNewFile();
 
 	private:
 		errno_t findKeyValue(string text, string key, int& value);
+
+
+	protected:
+		const wchar_t* _appDirName = L"\\TextEditor.Dev";
+		const wchar_t* _appFileName = L"\\config.txt";
 
 	};
 };
 
 
 
-class appConfig: config::FILE {
+class appConfig : public config::FILE {
 
 private:
 	const wchar_t* appDir = L"\\TextEditor.Dev\\config.txt";
@@ -73,6 +83,7 @@ public:
 	~appConfig();
 	LPCWSTR getAppConfigPath();
 	errno_t getAppConfigPath_secure(wchar_t** buffer, size_t* buffCount);
+	errno_t getAppDataPath(wchar_t** buffer, size_t* buffCount);
 	void printRect(HWND hwnd);
 	size_t getWndHeight();
 	size_t getWndWidth();
