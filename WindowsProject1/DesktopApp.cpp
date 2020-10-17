@@ -203,7 +203,7 @@ int CALLBACK WinMain(
     _demoClass->registerWindow();
 
     
-    //_listView = new ListView(hWnd, nCmdShow);
+    _listView = new ListView(hWnd, nCmdShow);
 
     // The parameters to ShowWindow explained:
     // hWnd: the value returned from CreateWindow

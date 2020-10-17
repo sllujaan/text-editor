@@ -18,6 +18,7 @@ struct WINDOW_CONFIG {
 
 class WindowControlsEx {
 private:
+	LPCWSTR CLASS_NAME = L"WINDOW";
 
 	BOOL canCreateWindow();
 	void showWindowCreationError();
@@ -34,6 +35,7 @@ protected:
 public:
 	WindowControlsEx() = delete;
 	WindowControlsEx(HWND hwnd, int nCmdShow);
-	errno_t createNewWindow(WINDOW_CONFIG *windConfig);
-	errno_t createNewWindowEx(WNDCLASSEX* wcex);
+	errno_t createNewWindow(WINDOW_CONFIG& windConfig);
+	errno_t createNewWindowEx(WNDCLASSEX& wcex);
+	errno_t registerWindow();
 };

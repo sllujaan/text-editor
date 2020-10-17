@@ -1196,7 +1196,14 @@ BOOL CALLBACK DeleteItemProc(HWND hwndDlg,
 void newDialog() {
     
     //_demoClass->initWindow();
-    _listView->createNewWindow();
+
+    WINDOW_CONFIG wc = { };
+    wc.title = "sample";
+    wc.hIcon = NULL;
+    wc.width = 200;
+    wc.height = 200;
+
+    _listView->createNewWindow(wc);
 
 
     /*SHELLEXECUTEINFO ShExecInfo;
