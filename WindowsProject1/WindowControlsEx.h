@@ -8,10 +8,11 @@
 
 
 struct WINDOW_CONFIG {
-	LPCSTR title;
+	LPCWSTR title;
 	HICON hIcon;
 	size_t width;
 	size_t height;
+	WNDPROC wndproc;
 };
 
 
@@ -22,6 +23,10 @@ private:
 
 	BOOL canCreateWindow();
 	void showWindowCreationError();
+	errno_t createWindow(WINDOW_CONFIG& windConfig);
+	errno_t centerWindow(HWND hwnd);
+
+	static LRESULT CALLBACK wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 
 protected:
@@ -38,4 +43,6 @@ public:
 	errno_t createNewWindow(WINDOW_CONFIG& windConfig);
 	errno_t createNewWindowEx(WNDCLASSEX& wcex);
 	errno_t registerWindow();
+
+
 };

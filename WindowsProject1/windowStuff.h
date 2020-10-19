@@ -1193,15 +1193,20 @@ BOOL CALLBACK DeleteItemProc(HWND hwndDlg,
     return FALSE;
 }
 
+LRESULT listViewProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
+    return DefWindowProc(hwnd, message, wParam, lParam);
+}
+
 void newDialog() {
     
     //_demoClass->initWindow();
 
     WINDOW_CONFIG wc = { };
-    wc.title = "sample";
+    wc.title = L"sample";
     wc.hIcon = NULL;
     wc.width = 200;
     wc.height = 200;
+    wc.wndproc = listViewProc;
 
     _listView->createNewWindow(wc);
 

@@ -15,6 +15,75 @@ void WindowControlsEx::showWindowCreationError()
 		MB_ICONERROR);
 }
 
+errno_t WindowControlsEx::createWindow(WINDOW_CONFIG& windConfig)
+{
+    HWND hwnd = CreateWindowEx(
+        0,                              // Optional window styles.
+        this->CLASS_NAME,                     // Window class
+        windConfig.title,    // Window text
+        WS_OVERLAPPEDWINDOW | WS_VISIBLE,            // Window style
+
+        // Size and position
+        100, 100, (int)windConfig.width, (int)windConfig.height,
+
+        this->_hwndParent,       // Parent window    
+        NULL,       // Menu
+        this->_hInst,  // Instance handle
+        NULL        // Additional application data
+    );
+
+    if (hwnd == NULL)
+    {
+        MessageBox(
+            this->_hwndParent,
+            (LPCWSTR)L"Settings window creation failed.",
+            (LPCWSTR)L"ERROR",
+            MB_ICONERROR
+        );
+
+        return TASK_FAILURE;
+    }
+
+    return TASK_SUCCESS;
+}
+
+errno_t WindowControlsEx::centerWindow(HWND hwnd)
+{
+    RECT rectWindow;
+
+
+    GetWindowRect(hwnd, &rectWindow);
+
+    int nWidth = rectWindow.right - rectWindow.left;
+    int nHeight = rectWindow.bottom - rectWindow.top;
+
+
+    int nScreenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int nScreenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+    //screen center
+    int nScreenWidthCenter = nScreenWidth / 2;
+    int nScreenHeightCenter = nScreenHeight / 2;
+
+    //center handwindow
+    int nX = nScreenWidthCenter - (nWidth / 2);
+    int nY = nScreenHeightCenter - (nHeight / 2);
+
+
+
+
+    MoveWindow(hwnd, nX, nY, nWidth, nHeight, FALSE);
+
+    OutputDebugStringW((LPCWSTR)L"window centered");
+
+    return TASK_SUCCESS;
+}
+
+LRESULT WindowControlsEx::wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    return DefWindowProc(hwnd, message, wParam, lParam);
+}
+
 WindowControlsEx::WindowControlsEx(HWND hwnd, int nCmdShow)
 {
 	HINSTANCE hInst = (HINSTANCE)GetWindowLongPtrA(hwnd, GWLP_HINSTANCE);
@@ -28,7 +97,9 @@ errno_t WindowControlsEx::createNewWindow(WINDOW_CONFIG& windConfig)
 {
 	if (!this->canCreateWindow()) { this->showWindowCreationError(); return TASK_FAILURE; }
     
-    if (!this->registerWindow()) return TASK_FAILURE;
+    if (this->registerWindow() == TASK_FAILURE) return TASK_FAILURE;
+
+    if (this->createWindow(windConfig) == TASK_FAILURE) return TASK_FAILURE;
 
 	return TASK_SUCCESS;
 }
@@ -45,17 +116,16 @@ errno_t WindowControlsEx::registerWindow()
     if (existed) return TASK_SUCCESS;*/
 
     /*LPWNDCLASSEXA lpwcex = { };
-    BOOL existed = GetClassInfoExA(this->_hInst, (LPCSTR)this->CLASS_NAME, lpwcex);
+    BOOL existed = GetClassInfoExA(this->_hInst, (LPCSTR)L"WINDOW", lpwcex);
     if (existed) return TASK_SUCCESS;*/
 
-    LOG_WCHAR((LPCSTR)this->CLASS_NAME);
 
 
     WNDCLASSEX wcex = { };
 
     wcex.cbSize = sizeof(WNDCLASSEX);
     //wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = NULL;
+    wcex.lpfnWndProc = this->wndProc;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = this->_hInst;
@@ -78,5 +148,7 @@ errno_t WindowControlsEx::registerWindow()
         return TASK_FAILURE;
     }
 
+
+    LOG_WCHAR(L"listVew regitered successfully.");
     return TASK_SUCCESS;
 }
