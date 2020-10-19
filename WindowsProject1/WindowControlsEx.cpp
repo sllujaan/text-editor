@@ -15,6 +15,26 @@ void WindowControlsEx::showWindowCreationError()
 		MB_ICONERROR);
 }
 
+errno_t WindowControlsEx::registerWindow(WNDCLASSEX& wcex)
+{
+    //RegisterClassEx(&wcex);
+
+    wstring s1(wcex.lpszClassName);
+    wstring s2(L"Failed to Register the following window: ");
+    s2 += s1;
+
+    if (!RegisterClassEx(&wcex))
+    {
+        MessageBox(NULL,
+            s2.c_str(),
+            TEXT("Windows Registration!"),
+            MB_ICONERROR);
+        return TASK_FAILURE;
+    }
+
+    return TASK_SUCCESS;
+}
+
 errno_t WindowControlsEx::createWindow(WINDOW_CONFIG& windConfig)
 {
     HWND hwnd = CreateWindowEx(

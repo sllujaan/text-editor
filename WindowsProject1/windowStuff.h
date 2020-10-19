@@ -1208,8 +1208,8 @@ void newDialog() {
     wc.height = 200;
     wc.wndproc = listViewProc;
 
-    _listView->createNewWindow(wc);
-
+    //_listView->createNewWindow(wc);
+    _listView->_createWindow(wc);
 
     /*SHELLEXECUTEINFO ShExecInfo;
     ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
