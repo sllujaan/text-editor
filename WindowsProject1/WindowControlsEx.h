@@ -21,7 +21,7 @@ class WindowControlsEx {
 private:
 	LPCWSTR CLASS_NAME = L"WINDOW";
 
-	errno_t createWindow(WINDOW_CONFIG& windConfig);
+	
 	errno_t centerWindow(HWND hwnd);
 
 	static LRESULT CALLBACK wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -36,6 +36,7 @@ protected:
 	BOOL canCreateWindow();
 	void showWindowCreationError();
 	errno_t registerWindow(WNDCLASSEX& wcex);
+	errno_t createWindow(WINDOW_CONFIG& windConfig);
 
 public:
 	WindowControlsEx() = delete;
