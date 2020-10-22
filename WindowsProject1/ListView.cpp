@@ -2,7 +2,26 @@
 
 LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    LOG_WCHAR(L"list view runProc");
+
+    switch (message)
+    {
+    case WM_CREATE:
+        
+        break;
+    case WM_COMMAND:
+        
+        break;
+    case WM_MOUSEHOVER:
+        LOG_WCHAR(L"WM_MOUSEHOVER");
+
+        if ((HWND)lParam == this->_hwndSelf) {
+            LOG_WCHAR(L"_hwndSelf");
+        }
+        break;
+    default:
+        break;
+    }
+
     return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
@@ -46,6 +65,14 @@ ListView::ListView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
 
 }
 
+errno_t ListView::initWindow()
+{
+    this->_createWindow();
+    this->handleStaticWindows();
+
+    return TASK_SUCCESS;
+}
+
 errno_t ListView::_createWindow()
 {
 	if (!this->canCreateWindow()) { this->showWindowCreationError(); return TASK_FAILURE; }
@@ -56,11 +83,29 @@ errno_t ListView::_createWindow()
     this->_hwndSelf = this->getListViewWindow();
     if (this->_hwndSelf == NULL) return TASK_FAILURE;
 
+    return TASK_SUCCESS;
+}
+
+HWND ListView::getStaticWindow(LPCWSTR text, size_t posX, size_t posY)
+{
+    HWND hwndStatic = CreateWindowEx(0,
+        L"STATIC",  // Predefined class; Unicode assumed 
+        text,      // Button text 
+        WS_VISIBLE | WS_CHILD | SS_CENTERIMAGE,  // Styles 
+        (int)posX,         // x position 
+        (int)posY,         // y position 
+        100,        // Button width
+        100,        // Button height
+        this->_hwndSelf,     // Parent window
+        NULL,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(_hwndSelf, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    this->applyConsistentStyle(hwndStatic);
     
 
-    return TASK_SUCCESS;
 
-
+    return hwndStatic;
 }
 
 WNDCLASSEX* ListView::getWindowClass()
@@ -75,14 +120,21 @@ WNDCLASSEX* ListView::getWindowClass()
     wcex->hInstance = this->_hInst;
     wcex->lpszClassName = this->CLASS_NAME;
     wcex->hIcon = 0;
+    wcex->hCursor = LoadCursor(NULL, IDC_SIZEWE);
     wcex->hIconSm = 0;
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex->hbrBackground = (HBRUSH)(COLOR_WINDOW);
+    wcex->hbrBackground = (HBRUSH)(COLOR_WINDOW+2);
     //wcex.lpszMenuName = NULL;
     //wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
 	return wcex;
+}
+
+errno_t ListView::handleStaticWindows()
+{
+    HWND _hwndStatic1 = this->getStaticWindow(L"static 1", 10, 10);
+    return TASK_SUCCESS;
 }
 
 HWND ListView::getListViewWindow()

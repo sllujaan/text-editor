@@ -17,7 +17,10 @@ void WindowControlsEx::showWindowCreationError()
 
 errno_t WindowControlsEx::registerWindow(WNDCLASSEX& wcex)
 {
-    //RegisterClassEx(&wcex);
+    //check if window already registered---
+    WNDCLASS lpwcx = {};
+    BOOL exists = GetClassInfo(this->_hInst, wcex.lpszClassName, &lpwcx);
+    if (exists) return TASK_SUCCESS; //{ LOG_WCHAR(L"window already exists."); }
 
     wstring s1(wcex.lpszClassName);
     wstring s2(L"Failed to Register the following window: ");
@@ -65,6 +68,40 @@ errno_t WindowControlsEx::createWindow(WINDOW_CONFIG& windConfig)
     }
 
     return TASK_SUCCESS;
+}
+
+errno_t WindowControlsEx::applyConsistentStyle(HWND hwnd)
+{
+    SendMessage(hwnd, WM_SETFONT, (WPARAM)this->getFont(16), TRUE);
+    return TASK_SUCCESS;
+}
+
+HFONT WindowControlsEx::getFont(size_t size, LPCWSTR fontFamily, LPCWSTR fontStyle)
+{
+    int fontWeigh = FW_NORMAL;
+    BOOL italic = FALSE;
+
+    if (fontStyle == L"Bold") {
+        fontWeigh = FW_BOLD;
+    }
+    else if (fontStyle == L"Italic") {
+        italic = TRUE;
+    }
+    else if (fontStyle == L"Bold Italic") {
+        fontWeigh = FW_BOLD;
+        italic = TRUE;
+    }
+    else if (fontStyle == L"Light") {
+        fontWeigh = FW_LIGHT;
+    }
+
+
+
+    HFONT hFont = CreateFont(int(size), 0, 0, 0, fontWeigh, italic, FALSE, FALSE, ANSI_CHARSET,
+        OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+        DEFAULT_PITCH | FF_DONTCARE, fontFamily);
+
+    return hFont;
 }
 
 errno_t WindowControlsEx::centerWindow(HWND hwnd)

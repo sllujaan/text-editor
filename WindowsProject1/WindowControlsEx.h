@@ -37,6 +37,8 @@ protected:
 	void showWindowCreationError();
 	errno_t registerWindow(WNDCLASSEX& wcex);
 	errno_t createWindow(WINDOW_CONFIG& windConfig);
+	errno_t applyConsistentStyle(HWND hwnd);
+	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Microsoft New Tai Lue", LPCWSTR fontStyle = L"Regular");
 
 public:
 	WindowControlsEx() = delete;
