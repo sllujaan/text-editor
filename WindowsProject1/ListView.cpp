@@ -2,6 +2,7 @@
 
 LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    //HCURSOR hCurs1;
 
     switch (message)
     {
@@ -11,12 +12,14 @@ LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
         
         break;
-    case WM_MOUSEHOVER:
-        LOG_WCHAR(L"WM_MOUSEHOVER");
+    case WM_MOUSEMOVE:
+        LOG_WCHAR(L"WM_MOUSEMOVE");
+        this->handleMouseCursor();
 
-        if ((HWND)lParam == this->_hwndSelf) {
-            LOG_WCHAR(L"_hwndSelf");
-        }
+    case WM_SETCURSOR:
+        // Create a standard hourglass cursor.
+        //hCurs1 = LoadCursor(NULL, IDC_WAIT);
+        //SetCursor(hCurs1);
         break;
     default:
         break;
@@ -108,6 +111,42 @@ HWND ListView::getStaticWindow(LPCWSTR text, size_t posX, size_t posY)
     return hwndStatic;
 }
 
+void ListView::handleMouseCursor()
+{
+    POINT curPos = {};
+    GetCursorPos(&curPos);
+
+    /*LOG_INT(curPos.x);
+    LOG_INT(curPos.y);*/
+
+
+    RECT rectStatic;
+
+    GetWindowRect(this->_hwndStatic, &rectStatic);
+
+    BOOL curOnStatic_X = (curPos.x > rectStatic.left) && (curPos.x < rectStatic.right) ? TRUE : FALSE;
+    BOOL curOnStatic_Y = (curPos.y > rectStatic.top) && (curPos.y < rectStatic.bottom) ? TRUE : FALSE;
+    BOOL curOnStatic = (curOnStatic_X && curOnStatic_Y) ? TRUE : FALSE;
+    
+    /*LOG_INT(curPos.x);
+    LOG_INT(rectStatic.left);*/
+
+
+    if (curOnStatic) {
+        LOG_WCHAR(L"on static");
+
+        HCURSOR hCurs1;
+
+        // Create a standard hourglass cursor.
+        hCurs1 = LoadCursor(NULL, IDC_WAIT);
+        SetCursor(hCurs1);
+
+    }
+    
+
+
+}
+
 WNDCLASSEX* ListView::getWindowClass()
 {
 	WNDCLASSEX* wcex = new WNDCLASSEX();
@@ -134,6 +173,7 @@ WNDCLASSEX* ListView::getWindowClass()
 errno_t ListView::handleStaticWindows()
 {
     HWND _hwndStatic1 = this->getStaticWindow(L"static 1", 10, 10);
+    this->_hwndStatic = _hwndStatic1;
     return TASK_SUCCESS;
 }
 

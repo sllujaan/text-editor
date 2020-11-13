@@ -7,6 +7,7 @@
 class ListView : public WindowControlsEx {
 private:
 	LPCWSTR CLASS_NAME = L"LIST VIEW";
+	HWND _hwndStatic;
 
 	//window procedures----------
 	LRESULT runProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
@@ -18,6 +19,7 @@ private:
 	errno_t handleStaticWindows();
 	errno_t _createWindow();
 	HWND getStaticWindow(LPCWSTR text, size_t posX, size_t posY);
+	void handleMouseCursor();
 
 
 public:
