@@ -10,7 +10,9 @@ LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         
         break;
     case WM_COMMAND:
-        
+        break;
+    case WM_LBUTTONDOWN:
+        LOG_WCHAR(L"WM_LBUTTONDOWN");
         break;
     case WM_MOUSEMOVE:
         LOG_WCHAR(L"WM_MOUSEMOVE");
@@ -18,8 +20,6 @@ LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_SETCURSOR:
         // Create a standard hourglass cursor.
-        //hCurs1 = LoadCursor(NULL, IDC_WAIT);
-        //SetCursor(hCurs1);
         break;
     default:
         break;
@@ -134,7 +134,6 @@ void ListView::handleMouseCursor()
 
     if (curOnStatic) {
         LOG_WCHAR(L"on static");
-
         HCURSOR hCurs1;
 
         // Create a standard hourglass cursor.
