@@ -34,6 +34,9 @@
     <Filter Include="windowControls">
       <UniqueIdentifier>{496f2fd9-50ef-4e2c-a920-a2be980a9aa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\TreeView">
+      <UniqueIdentifier>{b20f0c6c-3e51-4009-a862-e0f28359345d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -96,6 +99,9 @@
     <ClInclude Include="WindowControlsEx.h">
       <Filter>windowControls</Filter>
     </ClInclude>
+    <ClInclude Include="TreeView.h">
+      <Filter>Header Files\TreeView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DesktopApp.cpp">
@@ -129,6 +135,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WindowControlsEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -19,6 +19,7 @@
 #include"AppSettings.h"
 #include"demoClass.h"
 #include"ListView.h"
+#include"TreeView.h"
 
 using namespace std;
 
@@ -34,6 +35,7 @@ Search* _search_app;
 
 Learnings::Demo* _demoClass;
 ListView* _listView;
+TreeView* _treeView;
 
 config::FILE _config_file;
 int fontSizeIndex = 0;
@@ -442,6 +444,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             //handleDialolgBox(hWnd);
             newDialog();
             //ac.printRect(hWnd);
+            break;
+        case ID_TREEVIEW_BOX:
+            _treeView = new TreeView(hWnd, nCmdShowGlobal);
+            _treeView->initWindow();
+            //handleTreeViewWindow();
             break;
         case IDI_UNDO:
             showFeatureNotAvailable();

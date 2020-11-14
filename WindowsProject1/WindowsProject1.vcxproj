@@ -165,6 +165,7 @@
     <ClInclude Include="search.h" />
     <ClInclude Include="settingsWindow.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TreeView.h" />
     <ClInclude Include="Validator.h" />
     <ClInclude Include="WindowControls.h" />
     <ClInclude Include="WindowControlsEx.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="DesktopApp.cpp" />
     <ClCompile Include="ListView.cpp" />
     <ClCompile Include="search.cpp" />
+    <ClCompile Include="TreeView.cpp" />
     <ClCompile Include="Validator.cpp" />
     <ClCompile Include="WindowControls.cpp" />
     <ClCompile Include="WindowControlsEx.cpp" />

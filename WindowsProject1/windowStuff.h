@@ -33,9 +33,9 @@
 #define IDI_REDO 0x90c0
 #define IDI_VIEW_HELP 0x077f
 #define ID_DIALOG_BOX 0x584b
+#define ID_TREEVIEW_BOX 0x3812
 
 
-//3812
 //2e97
 //5c0e
 //8a9d
@@ -992,6 +992,7 @@ void handleMainMenu(HWND hWnd, HMENU hMenuMain) {
     AppendMenu(hHelpMenu, MF_POPUP, IDI_VIEW_HELP, (LPCWSTR)L"View Help");
     AppendMenu(hHelpMenu, MF_POPUP, ID_ABOUT_MENU, (LPCWSTR)L"About TextEditor");
     AppendMenu(hHelpMenu, MF_POPUP, ID_DIALOG_BOX, (LPCWSTR)L"Dialolg");
+    AppendMenu(hHelpMenu, MF_POPUP, ID_TREEVIEW_BOX, (LPCWSTR)L"TREEVIEW");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_MENU, (LPCWSTR)L"Settings...");
     //AppendMenu(hSubFileMenu, MF_STRING, ID_SETTINGS_COMBOBOX_MENU, (LPCWSTR)L"Settings Combo box...");
 
@@ -1252,6 +1253,11 @@ void newDialog() {
     LOG_WCHAR(L"Your are using WIN64 bits OS...");
 #endif // _WIN64
 
+
+}
+
+
+void handleTreeViewWindow() {
 
 }
 
