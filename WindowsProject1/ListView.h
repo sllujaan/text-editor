@@ -21,6 +21,8 @@ private:
 	errno_t _createWindow();
 	HWND getStaticWindow(LPCWSTR text, size_t posX, size_t posY);
 	void handleMouseCursor();
+	void handleResizer();
+	void resizeStatic();
 
 
 public:

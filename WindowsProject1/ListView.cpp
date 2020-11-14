@@ -14,7 +14,7 @@ LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_LBUTTONDOWN:
         LOG_WCHAR(L"WM_LBUTTONDOWN");
-        MoveWindow(this->_hwndStatic, 10, 10, 50, 50, TRUE);
+        //MoveWindow(this->_hwndStatic, 10, 10, 50, 50, TRUE);
         break;
     case WM_KEYUP:
         SetCapture(this->_hwndStatic);
@@ -23,7 +23,9 @@ LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_MOUSEMOVE:
         LOG_WCHAR(L"WM_MOUSEMOVE");
-        this->handleMouseCursor();
+        //this->handleMouseCursor();
+        this->handleResizer();
+        this->resizeStatic();
         break;
     case WM_SETCURSOR:
         // Create a standard hourglass cursor.
@@ -104,18 +106,18 @@ HWND ListView::getStaticWindow(LPCWSTR text, size_t posX, size_t posY)
         WS_VISIBLE | WS_CHILD | SS_CENTERIMAGE,  // Styles 
         (int)posX,         // x position 
         (int)posY,         // y position 
-        100,        // Button width
-        100,        // Button height
-        this->_hwndSelf,     // Parent window
-        NULL,       // No menu.
-        (HINSTANCE)GetWindowLongPtr(_hwndSelf, GWLP_HINSTANCE),
-        NULL);      // Pointer not needed.
+100,        // Button width
+100,        // Button height
+this->_hwndSelf,     // Parent window
+NULL,       // No menu.
+(HINSTANCE)GetWindowLongPtr(_hwndSelf, GWLP_HINSTANCE),
+NULL);      // Pointer not needed.
 
-    this->applyConsistentStyle(hwndStatic);
-    
+this->applyConsistentStyle(hwndStatic);
 
 
-    return hwndStatic;
+
+return hwndStatic;
 }
 
 void ListView::handleMouseCursor()
@@ -134,7 +136,7 @@ void ListView::handleMouseCursor()
     BOOL curOnStatic_X = (curPos.x > rectStatic.left) && (curPos.x < rectStatic.right) ? TRUE : FALSE;
     BOOL curOnStatic_Y = (curPos.y > rectStatic.top) && (curPos.y < rectStatic.bottom) ? TRUE : FALSE;
     BOOL curOnStatic = (curOnStatic_X && curOnStatic_Y) ? TRUE : FALSE;
-    
+
     /*LOG_INT(curPos.x);
     LOG_INT(rectStatic.left);*/
 
@@ -145,13 +147,13 @@ void ListView::handleMouseCursor()
 
         if (!this->mouseOnStatic) {
             this->mouseOnStatic = TRUE;
-            
-            
+
+
             // Create a standard hourglass cursor.
             hCurs = LoadCursor(NULL, IDC_WAIT);
             SetCursor(hCurs);
         }
-        
+
     }
     else {
         LOG_WCHAR(L"static not");
@@ -159,9 +161,64 @@ void ListView::handleMouseCursor()
         hCurs = LoadCursor(NULL, IDC_ARROW);
         SetCursor(hCurs);
     }
-    
 
 
+
+}
+
+void ListView::handleResizer()
+{
+    POINT curPos = {};
+    GetCursorPos(&curPos);
+
+    RECT rectStatic;
+
+    GetWindowRect(this->_hwndStatic, &rectStatic);
+
+    BOOL isResizeArea = ((curPos.x < rectStatic.right) && (rectStatic.right - curPos.x) < 12) ? TRUE : FALSE;
+    //BOOL curOnStatic_Y = (curPos.y > rectStatic.top) && (curPos.y < rectStatic.bottom) ? TRUE : FALSE;
+    //BOOL curOnStatic = (curOnStatic_X && curOnStatic_Y) ? TRUE : FALSE;
+
+    /*LOG_INT(curPos.x);
+    LOG_INT(rectStatic.left);*/
+
+    HCURSOR hCurs;
+
+    if (isResizeArea) {
+
+        if (!this->mouseOnStatic) {
+            this->mouseOnStatic = TRUE;
+
+
+            // Create a standard hourglass cursor.
+            hCurs = LoadCursor(NULL, IDC_SIZEWE);
+            SetCursor(hCurs);
+        }
+
+    }
+    else {
+        this->mouseOnStatic = FALSE;
+        hCurs = LoadCursor(NULL, IDC_ARROW);
+        SetCursor(hCurs);
+    }
+
+}
+
+void ListView::resizeStatic()
+{
+    if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)  {
+
+        POINT curPos = {};
+        RECT rectStatic;
+        GetCursorPos(&curPos);
+        GetWindowRect(this->_hwndStatic, &rectStatic);
+
+        INT newWidth = curPos.x - rectStatic.left;
+        LOG_INT(newWidth);
+
+        MoveWindow(this->_hwndStatic, 10, 10, newWidth+5, 100, TRUE);
+        LOG_WCHAR(L"resizing......");
+    }
 }
 
 WNDCLASSEX* ListView::getWindowClass()
