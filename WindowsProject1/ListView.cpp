@@ -2,22 +2,29 @@
 
 LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    //HCURSOR hCurs1;
+    HCURSOR hCurs1;
 
     switch (message)
     {
     case WM_CREATE:
-        
+        hCurs1 = LoadCursor(NULL, IDC_ARROW);
+        SetCursor(hCurs1);
         break;
     case WM_COMMAND:
         break;
     case WM_LBUTTONDOWN:
         LOG_WCHAR(L"WM_LBUTTONDOWN");
+        MoveWindow(this->_hwndStatic, 10, 10, 50, 50, TRUE);
+        break;
+    case WM_KEYUP:
+        SetCapture(this->_hwndStatic);
+        hCurs1 = LoadCursor(NULL, IDC_WAIT);
+        SetCursor(hCurs1);
         break;
     case WM_MOUSEMOVE:
         LOG_WCHAR(L"WM_MOUSEMOVE");
         this->handleMouseCursor();
-
+        break;
     case WM_SETCURSOR:
         // Create a standard hourglass cursor.
         break;
@@ -131,15 +138,26 @@ void ListView::handleMouseCursor()
     /*LOG_INT(curPos.x);
     LOG_INT(rectStatic.left);*/
 
+    HCURSOR hCurs;
 
     if (curOnStatic) {
         LOG_WCHAR(L"on static");
-        HCURSOR hCurs1;
 
-        // Create a standard hourglass cursor.
-        hCurs1 = LoadCursor(NULL, IDC_WAIT);
-        SetCursor(hCurs1);
-
+        if (!this->mouseOnStatic) {
+            this->mouseOnStatic = TRUE;
+            
+            
+            // Create a standard hourglass cursor.
+            hCurs = LoadCursor(NULL, IDC_WAIT);
+            SetCursor(hCurs);
+        }
+        
+    }
+    else {
+        LOG_WCHAR(L"static not");
+        this->mouseOnStatic = FALSE;
+        hCurs = LoadCursor(NULL, IDC_ARROW);
+        SetCursor(hCurs);
     }
     
 
@@ -158,7 +176,7 @@ WNDCLASSEX* ListView::getWindowClass()
     wcex->hInstance = this->_hInst;
     wcex->lpszClassName = this->CLASS_NAME;
     wcex->hIcon = 0;
-    wcex->hCursor = LoadCursor(NULL, IDC_SIZEWE);
+    wcex->hCursor = NULL;   // LoadCursor(NULL, IDC_SIZEWE);
     wcex->hIconSm = 0;
 
     //wcex.hCursor = LoadCursor(NULL, IDC_ARROW);

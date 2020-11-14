@@ -8,6 +8,7 @@ class ListView : public WindowControlsEx {
 private:
 	LPCWSTR CLASS_NAME = L"LIST VIEW";
 	HWND _hwndStatic;
+	BOOL mouseOnStatic = FALSE;
 
 	//window procedures----------
 	LRESULT runProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
