@@ -129,7 +129,7 @@ int CALLBACK WinMain(
         LR_SHARED         // let the system release the handle when it's no longer used
     );
     wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
     wcex.lpszMenuName = NULL;
     wcex.lpszClassName = szWindowClass;
     wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
@@ -473,10 +473,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_SIZE:
         MoveWindow(hwndEdit,
-            0, 0,                  // starting x- and y-coordinates 
-            LOWORD(lParam),        // width of client area 
+            200, 0,                  // starting x- and y-coordinates 
+            LOWORD(lParam)-200,        // width of client area 
             HIWORD(lParam),        // height of client area 
-            TRUE);                 // repaint window 
+            FALSE);                 // repaint window 
         break;
     case WM_GETMINMAXINFO:
         MINMAXINFO MMI;
