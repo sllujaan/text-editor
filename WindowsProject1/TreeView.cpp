@@ -195,14 +195,15 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
 HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev)
 {
 
-    if (_hPrev == NULL) _hPrev = (HTREEITEM)TVI_FIRST;
+    if (_hPrev == NULL) { _hPrev = (HTREEITEM)TVI_LAST; }
 
     TVITEM tvi;
     TVINSERTSTRUCT tvins;
-    static HTREEITEM hPrev = _hPrev;
-    static HTREEITEM hPrevRootItem = _hPrev;
-    static HTREEITEM hPrevLev2Item = _hPrev;
+    HTREEITEM hPrev = _hPrev;
+    HTREEITEM hPrevRootItem = NULL;
+    HTREEITEM hPrevLev2Item = NULL;
     HTREEITEM hti;
+
 
     tvi.mask = TVIF_TEXT | TVIF_IMAGE
         | TVIF_SELECTEDIMAGE | TVIF_PARAM;
@@ -217,12 +218,11 @@ HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTRE
     tvins.item = tvi;
     tvins.hInsertAfter = hPrev;
 
-
     // Set the parent item based on the specified level. 
     if (nLevel == 1)
         tvins.hParent = TVI_ROOT;
     else if (nLevel == 2)
-        tvins.hParent = hPrevRootItem;
+        tvins.hParent = hPrev;
     else
         tvins.hParent = hPrevLev2Item;
 
@@ -240,15 +240,15 @@ HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTRE
 
     // The new item is a child item. Give the parent item a 
     // closed folder bitmap to indicate it now has child items. 
-    if (nLevel > 1)
-    {
-        hti = TreeView_GetParent(hwndTV, hPrev);
-        tvi.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE;
-        tvi.hItem = hti;
-        //tvi.iImage = g_nClosed;
-        //tvi.iSelectedImage = g_nClosed;
-        TreeView_SetItem(hwndTV, &tvi);
-    }
+    //if (nLevel > 1)
+    //{
+    //    hti = TreeView_GetParent(hwndTV, hPrev);
+    //    tvi.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE;
+    //    tvi.hItem = hti;
+    //    //tvi.iImage = g_nClosed;
+    //    //tvi.iSelectedImage = g_nClosed;
+    //    TreeView_SetItem(hwndTV, &tvi);
+    //}
 
 
     return hPrev;
@@ -266,10 +266,20 @@ errno_t TreeView::initWindow()
 
 
     HTREEITEM rootItem1 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item1", 1, NULL);
-    HTREEITEM rootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item2", 1, NULL);
+    HTREEITEM rootItem3 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item3", 1, NULL);
+
+    HTREEITEM rootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item2", 1, rootItem1);
+
+    HTREEITEM child1_RootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"child1 item2", 2, rootItem2);
+    HTREEITEM child2_RootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"child2 item2", 2, rootItem2);
 
 
-    this->AddItemToTree(this->_hwndTV, (LPTSTR)L"child 1", 2, rootItem1);
+
+
+    //HTREEITEM rootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item2", 1, NULL);
+
+
+    //this->AddItemToTree(this->_hwndTV, (LPTSTR)L"child 1", 2, rootItem1);
     //this->AddItemToTree(this->_hwndTV, (LPTSTR)L"child 2", 2);
 
 
