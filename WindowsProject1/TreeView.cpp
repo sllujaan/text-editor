@@ -177,7 +177,7 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
 {
     HIMAGELIST himl;  // handle to image list 
     HBITMAP hbmp;     // handle to bitmap 
-    INT g_nOpen;
+    //INT g_nOpen;
 
     // Create the image list. 
     if ((himl = ImageList_Create(16,
@@ -187,9 +187,15 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
     {
         return FALSE;
     }
+
+    //------------------test code--------------------------
+    LPCTSTR img = (LPCTSTR)MAKEINTRESOURCE(IDI_ICON1);
+    HWND hImag = (HWND)LoadImageA(this->_hInst, (LPCSTR)MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTSIZE);
+    SendMessage(this->_hwndSelf, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hImag);
+    //--------------------------------------------
     
     HICON hIcon = LoadIcon(this->_hInst, MAKEINTRESOURCE(IDI_ICON1));
-    LPCSTR resource = (LPCSTR)MAKEINTRESOURCE(IDI_ICON1);
+    LPCSTR resource = (LPCSTR)MAKEINTRESOURCE(32512);
     //resource = (LPCSTR)MAKEINTRESOURCE(IDI_ICON6);
 
     ICONINFO iconinfo;
@@ -198,7 +204,7 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
 
     // Add the open file, closed file, and document bitmaps.
     //hbmp = LoadBitmapA(this->_hInst, (LPCSTR)MAKEINTRESOURCE(IDI_ICON1));
-    g_nOpen = ImageList_Add(himl, hbmp, (HBITMAP)NULL);
+    this->g_nOpen = ImageList_Add(himl, hbmp, (HBITMAP)NULL);
     DeleteObject(hbmp);
 
     // Fail if not all of the images were added. 
@@ -229,6 +235,11 @@ HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTRE
     // Set the text of the item. 
     tvi.pszText = lpszItem;
     tvi.cchTextMax = sizeof(tvi.pszText) / sizeof(tvi.pszText[0]);
+
+    // Assume the item is not a parent item, so give it a 
+    // document image. 
+    tvi.iImage = this->g_nOpen;
+    tvi.iSelectedImage = this->g_nOpen;
 
     // Save the heading level in the item's application-defined 
     // data area. 
@@ -267,7 +278,6 @@ HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTRE
     //    //tvi.iSelectedImage = g_nClosed;
     //    TreeView_SetItem(hwndTV, &tvi);
     //}
-
 
     return hPrev;
 }
@@ -310,13 +320,13 @@ errno_t TreeView::initWindow()
             (LPCWSTR)L"ERROR",
             MB_ICONERROR
         );
-        //return TASK_FAILURE;
+        return TASK_FAILURE;
     }
 
-    //this->initTreeViewControl();
+    this->initTreeViewControl();
 
 
-    //HTREEITEM rootItem1 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item1", 1, NULL);
+    HTREEITEM rootItem1 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item1", 1, NULL);
     //HTREEITEM rootItem3 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item3", 1, NULL);
 
     //HTREEITEM rootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item2", 1, rootItem1);
@@ -351,8 +361,8 @@ errno_t TreeView::initWindow()
 
 
 
-    HBITMAP hBitm = (HBITMAP)LoadImageA(NULL, "sample.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-    SendMessage(this->_hwndSelf, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitm);
+    //HBITMAP hBitm = (HBITMAP)LoadImageA(NULL, "sample.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    //SendMessage(this->_hwndSelf, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitm);
 
     return TASK_SUCCESS;
 }
