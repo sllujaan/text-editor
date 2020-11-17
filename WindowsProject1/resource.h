@@ -22,6 +22,9 @@
 #define IDI_ICON5                       134
 #define IDD_DIALOG1                     139
 #define IDI_ICON6                       140
+#define IDB_BITMAP1                     141
+#define IDB_BITMAP2                     142
+#define IDI_ICON7                       143
 #define ID_ABOUT                        32771
 #define IDC_STATIC                      -1
 
@@ -30,7 +33,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        141
+#define _APS_NEXT_RESOURCE_VALUE        144
 #define _APS_NEXT_COMMAND_VALUE         32772
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110

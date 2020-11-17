@@ -21,6 +21,7 @@ private:
 	errno_t initTreeViewControl();
 	BOOL InitTreeViewImageLists(HWND hwndTV);
 	HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev);
+	errno_t handleTVItemSelectChange();
 
 public:
 	TreeView() : WindowControlsEx(NULL, 0) {}
