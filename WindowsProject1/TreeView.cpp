@@ -182,36 +182,55 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
     // Create the image list. 
     if ((himl = ImageList_Create(16,
         16,
-        ILC_COLOR16,
-        1, 0)) == NULL)
+        ILC_COLOR16 | ILC_MASK,
+        2, 0)) == NULL)
     {
         return FALSE;
     }
 
-    //------------------test code--------------------------
-    LPCTSTR img = (LPCTSTR)MAKEINTRESOURCE(IDI_ICON1);
-    HWND hImag = (HWND)LoadImageA(this->_hInst, (LPCSTR)MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTSIZE);
-    SendMessage(this->_hwndSelf, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hImag);
-    //--------------------------------------------
-    
-    HICON hIcon = LoadIcon(this->_hInst, MAKEINTRESOURCE(IDI_ICON1));
-    LPCSTR resource = (LPCSTR)MAKEINTRESOURCE(32512);
-    //resource = (LPCSTR)MAKEINTRESOURCE(IDI_ICON6);
+    ////------------------test code--------------------------
+    //LPCTSTR img = (LPCTSTR)MAKEINTRESOURCE(IDI_ICON1);
+    //HWND hImag = (HWND)LoadImageA(this->_hInst, (LPCSTR)MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTSIZE);
+    ////SendMessage(this->_hwndSelf, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hImag);
+    ////--------------------------------------------
+    //
+    //HICON hIcon = LoadIcon(this->_hInst, MAKEINTRESOURCE(IDI_ICON1));
+    //LPCSTR resource = (LPCSTR)MAKEINTRESOURCE(32512);
+    ////resource = (LPCSTR)MAKEINTRESOURCE(IDI_ICON6);
 
-    ICONINFO iconinfo;
-    GetIconInfo(hIcon, &iconinfo);
-    hbmp = iconinfo.hbmColor;
+    //ICONINFO iconinfo;
+    //GetIconInfo(hIcon, &iconinfo);
+    //hbmp = iconinfo.hbmColor;
+
+
+    HICON icon;
+    icon = (HICON)::LoadImage(::GetModuleHandle(0),
+        MAKEINTRESOURCE(IDI_ICON1),
+        IMAGE_ICON, 16, 16,
+        LR_DEFAULTCOLOR);
+
+    ImageList_AddIcon(himl, icon);
+
+    icon = (HICON)::LoadImage(::GetModuleHandle(0),
+        MAKEINTRESOURCE(IDI_ICON1),
+        IMAGE_ICON, 16, 16,
+        LR_DEFAULTCOLOR);
+
+    ImageList_AddIcon(himl, icon);
 
     // Add the open file, closed file, and document bitmaps.
     //hbmp = LoadBitmapA(this->_hInst, (LPCSTR)MAKEINTRESOURCE(IDI_ICON1));
-    this->g_nOpen = ImageList_Add(himl, hbmp, (HBITMAP)NULL);
-    DeleteObject(hbmp);
+    //this->g_nOpen = ImageList_Add(himl, hbmp, (HBITMAP)NULL);
+    //DeleteObject(hbmp);
 
     // Fail if not all of the images were added. 
-    if (ImageList_GetImageCount(himl) < 1) return FALSE;
+    if (ImageList_GetImageCount(himl) < 2) return FALSE;
 
     // Associate the image list with the tree-view control. 
     TreeView_SetImageList(hwndTV, himl, TVSIL_NORMAL);
+
+    /*SendMessage(hwndTV, TVM_SETIMAGELIST,
+        (WPARAM)TVSIL_NORMAL, (LPARAM)himl);*/
 
     return TRUE;
 }
@@ -238,8 +257,8 @@ HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTRE
 
     // Assume the item is not a parent item, so give it a 
     // document image. 
-    tvi.iImage = this->g_nOpen;
-    tvi.iSelectedImage = this->g_nOpen;
+    tvi.iImage = this->imageIndex;
+    tvi.iSelectedImage = this->imageIndex;
 
     // Save the heading level in the item's application-defined 
     // data area. 
@@ -306,12 +325,14 @@ errno_t TreeView::handleTVItemSelectChange()
 
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
 {
-
+    
 }
 
 errno_t TreeView::initWindow()
 {
     this->_createWindow();
+
+    this->initTreeViewControl();
 
     if (!this->InitTreeViewImageLists(this->_hwndTV)) {
         MessageBox(
@@ -323,7 +344,7 @@ errno_t TreeView::initWindow()
         return TASK_FAILURE;
     }
 
-    this->initTreeViewControl();
+    
 
 
     HTREEITEM rootItem1 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item1", 1, NULL);

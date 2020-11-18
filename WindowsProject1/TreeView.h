@@ -9,7 +9,7 @@ class TreeView : public WindowControlsEx {
 private:
 	LPCWSTR CLASS_NAME = L"TREEVIEW";
 	HWND _hwndTV;
-	INT g_nOpen;
+	INT imageIndex = 0;
 
 	//window procedures----------
 	LRESULT runProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
