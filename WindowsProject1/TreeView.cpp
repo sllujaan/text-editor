@@ -205,14 +205,14 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
 
     HICON icon;
     icon = (HICON)::LoadImage(::GetModuleHandle(0),
-        MAKEINTRESOURCE(IDI_ICON1),
+        MAKEINTRESOURCE(IDI_FOLDERCLOSED),
         IMAGE_ICON, 16, 16,
         LR_DEFAULTCOLOR);
 
     ImageList_AddIcon(himl, icon);
 
     icon = (HICON)::LoadImage(::GetModuleHandle(0),
-        MAKEINTRESOURCE(IDI_ICON1),
+        MAKEINTRESOURCE(IDI_FOLDEROPEN),
         IMAGE_ICON, 16, 16,
         LR_DEFAULTCOLOR);
 

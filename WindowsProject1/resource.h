@@ -25,6 +25,12 @@
 #define IDB_BITMAP1                     141
 #define IDB_BITMAP2                     142
 #define IDI_ICON7                       143
+#define IDI_ICON8                       144
+#define IDI_ICON9                       146
+#define IDI_ICON10                      147
+#define IDI_FOLDEROPEN                  147
+#define IDI_ICON11                      148
+#define IDI_FOLDERCLOSED                148
 #define ID_ABOUT                        32771
 #define IDC_STATIC                      -1
 
@@ -33,7 +39,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        144
+#define _APS_NEXT_RESOURCE_VALUE        149
 #define _APS_NEXT_COMMAND_VALUE         32772
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110

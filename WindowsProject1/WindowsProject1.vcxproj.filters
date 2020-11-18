@@ -180,6 +180,15 @@
     <Image Include="icon7.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="folderClosed.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon9.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="folderOpen.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="WindowsProject1.exe.manifest" />
