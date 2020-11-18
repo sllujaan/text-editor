@@ -9,7 +9,9 @@ class TreeView : public WindowControlsEx {
 private:
 	LPCWSTR CLASS_NAME = L"TREEVIEW";
 	HWND _hwndTV;
-	INT imageIndex = 0;
+	INT imgIndex_folderOpen = 0;
+	INT imgIndex_folderClosed = 0;
+
 
 	//window procedures----------
 	LRESULT runProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
@@ -21,7 +23,7 @@ private:
 	HWND getTreeViewWindow();
 	errno_t initTreeViewControl();
 	BOOL InitTreeViewImageLists(HWND hwndTV);
-	HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev);
+	HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
 	errno_t handleTVItemSelectChange();
 
 public:

@@ -148,7 +148,7 @@ errno_t TreeView::initTreeViewControl()
     HWND hwndTV = CreateWindowEx(0,
         WC_TREEVIEW,
         TEXT("Tree View"),
-        WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_HASLINES,
+        WS_VISIBLE | WS_CHILD | WS_BORDER | TVS_FULLROWSELECT | TVS_HASBUTTONS | TVS_LINESATROOT,
         0,
         0,
         200,
@@ -210,6 +210,7 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
         LR_DEFAULTCOLOR);
 
     ImageList_AddIcon(himl, icon);
+    this->imgIndex_folderClosed = 0;
 
     icon = (HICON)::LoadImage(::GetModuleHandle(0),
         MAKEINTRESOURCE(IDI_FOLDEROPEN),
@@ -217,6 +218,7 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
         LR_DEFAULTCOLOR);
 
     ImageList_AddIcon(himl, icon);
+    this->imgIndex_folderOpen = 1;
 
     // Add the open file, closed file, and document bitmaps.
     //hbmp = LoadBitmapA(this->_hInst, (LPCSTR)MAKEINTRESOURCE(IDI_ICON1));
@@ -235,7 +237,7 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
     return TRUE;
 }
 
-HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev)
+HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex)
 {
 
     if (_hPrev == NULL) { _hPrev = (HTREEITEM)TVI_LAST; }
@@ -257,8 +259,8 @@ HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTRE
 
     // Assume the item is not a parent item, so give it a 
     // document image. 
-    tvi.iImage = this->imageIndex;
-    tvi.iSelectedImage = this->imageIndex;
+    tvi.iImage = imageIndex;
+    tvi.iSelectedImage = imageIndex;
 
     // Save the heading level in the item's application-defined 
     // data area. 
@@ -347,7 +349,11 @@ errno_t TreeView::initWindow()
     
 
 
-    HTREEITEM rootItem1 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item1", 1, NULL);
+    HTREEITEM rootItem1 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item1", 1, NULL, this->imgIndex_folderClosed);
+    HTREEITEM rootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item2", 1, NULL, this->imgIndex_folderOpen);
+
+    HTREEITEM child1 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"child1", 2, rootItem1, this->imgIndex_folderClosed);
+
     //HTREEITEM rootItem3 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item3", 1, NULL);
 
     //HTREEITEM rootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item2", 1, rootItem1);
