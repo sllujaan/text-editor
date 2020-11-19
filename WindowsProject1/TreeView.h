@@ -2,8 +2,12 @@
 #include<Windows.h>
 #include<CommCtrl.h>
 #include<WinUser.h>
+#include<fileapi.h>
+#include<thread>
 #include"WindowControlsEx.h"
 #include"resource.h"
+
+using namespace std;
 
 class TreeView : public WindowControlsEx {
 private:
@@ -25,6 +29,7 @@ private:
 	BOOL InitTreeViewImageLists(HWND hwndTV);
 	HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
 	errno_t handleTVItemSelectChange();
+	errno_t watchDir();
 
 public:
 	TreeView() : WindowControlsEx(NULL, 0) {}

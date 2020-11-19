@@ -325,6 +325,77 @@ errno_t TreeView::handleTVItemSelectChange()
     return TASK_SUCCESS;
 }
 
+errno_t TreeView::watchDir()
+{
+    DWORD dwWaitStatus;
+    HANDLE _hwatchDir[1];
+    // Watch the directory for file creation and deletion.
+
+    _hwatchDir[0] = FindFirstChangeNotification(
+        L"C:\\Users\\SALMAN-ALTAF\\Desktop\\myWatchDir",
+        TRUE,
+        FILE_NOTIFY_CHANGE_FILE_NAME
+    );
+
+    if (_hwatchDir == INVALID_HANDLE_VALUE)
+    {
+        MessageBox(
+            NULL,
+            (LPCWSTR)L"FindFirstChangeNotification function failed.",
+            (LPCWSTR)L"ERROR",
+            MB_ICONERROR
+        );
+        //printf("\n ERROR: FindFirstChangeNotification function failed.\n");
+        return TASK_FAILURE;
+        //ExitProcess(GetLastError());
+    }
+    // Make a final validation check on our handles.
+    else if(_hwatchDir == NULL)
+    {
+        MessageBox(
+            NULL,
+            (LPCWSTR)L"Unexpected NULL from FindFirstChangeNotification.",
+            (LPCWSTR)L"ERROR",
+            MB_ICONERROR
+        );
+        return TASK_FAILURE;
+    }
+
+    while (TRUE)
+    {
+        LOG_WCHAR(L"Waiting for change in directory notification.......................");
+        dwWaitStatus = WaitForMultipleObjects(1, _hwatchDir,
+            FALSE, INFINITE);
+
+        switch (dwWaitStatus)
+        {
+        case WAIT_OBJECT_0:
+            // A file was created, renamed, or deleted in the directory.
+            // Refresh this directory and restart the notification.
+            //RefreshDirectory(lpDir);
+            LOG_WCHAR(L"A file was created, renamed, or deleted in the directory");
+            if (FindNextChangeNotification(_hwatchDir[0]) == FALSE) {
+                LOG_WCHAR(L"FindNextChangeNotification function failed.");
+                return TASK_FAILURE;
+            }
+            break;
+
+        case WAIT_OBJECT_0 + 1:
+
+            break;
+
+        default:
+            LOG_WCHAR(L"Unhandled dwWaitStatus!!!!!!!!!!");
+            return TASK_FAILURE;
+            break;
+        }
+    }
+
+
+    
+    return TASK_SUCCESS;
+}
+
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
 {
     
@@ -390,6 +461,12 @@ errno_t TreeView::initWindow()
 
     //HBITMAP hBitm = (HBITMAP)LoadImageA(NULL, "sample.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
     //SendMessage(this->_hwndSelf, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitm);
+
+
+    //watch directory with new thread....
+    /*thread t1(&TreeView::watchDir, this);
+    t1.join();*/
+    this->watchDir();
 
     return TASK_SUCCESS;
 }

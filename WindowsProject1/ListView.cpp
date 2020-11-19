@@ -216,6 +216,8 @@ void ListView::resizeStatic()
         INT newWidth = curPos.x - rectStatic.left;
         LOG_INT(newWidth);
 
+        if (newWidth < 100) return;
+
         MoveWindow(this->_hwndStatic, 10, 10, newWidth+5, 100, TRUE);
         LOG_WCHAR(L"resizing......");
     }

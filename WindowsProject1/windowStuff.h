@@ -1432,6 +1432,8 @@ void showFeatureNotAvailable() {
 
 
 
+
+
 /*
 
 int getWindowWidth(HWND hWnd) {
