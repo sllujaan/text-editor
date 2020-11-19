@@ -28,6 +28,12 @@ LRESULT TreeView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         mmi->ptMaxTrackSize.x = 800;
         mmi->ptMaxTrackSize.y = 800;
         break;
+
+    case WM_CLOSE:
+        break;
+    case WM_DESTROY:
+        //this->~TreeView();
+        break;
     default:
         break;
     }
@@ -328,7 +334,7 @@ errno_t TreeView::handleTVItemSelectChange()
 errno_t TreeView::watchDir()
 {
     DWORD dwWaitStatus;
-    HANDLE _hwatchDir[1];
+    HANDLE _hwatchDir[2];
     // Watch the directory for file creation and deletion.
 
     _hwatchDir[0] = FindFirstChangeNotification(
@@ -337,7 +343,14 @@ errno_t TreeView::watchDir()
         FILE_NOTIFY_CHANGE_FILE_NAME
     );
 
-    if (_hwatchDir == INVALID_HANDLE_VALUE)
+    _hwatchDir[1] = FindFirstChangeNotification(
+        L"C:\\Users\\SALMAN-ALTAF\\Desktop\\myWatchDir",
+        TRUE,
+        FILE_NOTIFY_CHANGE_DIR_NAME
+    );
+
+
+    if (_hwatchDir[0] == INVALID_HANDLE_VALUE || _hwatchDir[1] == INVALID_HANDLE_VALUE)
     {
         MessageBox(
             NULL,
@@ -349,8 +362,9 @@ errno_t TreeView::watchDir()
         return TASK_FAILURE;
         //ExitProcess(GetLastError());
     }
+
     // Make a final validation check on our handles.
-    else if(_hwatchDir == NULL)
+    if(_hwatchDir[0] == NULL || _hwatchDir[1] == NULL)
     {
         MessageBox(
             NULL,
@@ -364,7 +378,7 @@ errno_t TreeView::watchDir()
     while (TRUE)
     {
         LOG_WCHAR(L"Waiting for change in directory notification.......................");
-        dwWaitStatus = WaitForMultipleObjects(1, _hwatchDir,
+        dwWaitStatus = WaitForMultipleObjects(2, _hwatchDir,
             FALSE, INFINITE);
 
         switch (dwWaitStatus)
@@ -381,7 +395,23 @@ errno_t TreeView::watchDir()
             break;
 
         case WAIT_OBJECT_0 + 1:
+            // A directory was created, renamed, or deleted.
+            // Refresh the tree and restart the notification.
+            //RefreshTree(lpDrive);
+            LOG_WCHAR(L"A directory was created, renamed, or deleted in the directory");
+            if (FindNextChangeNotification(_hwatchDir[1]) == FALSE) {
+                LOG_WCHAR(L"FindNextChangeNotification function failed.");
+                return TASK_FAILURE;
+            }
+            break;
 
+        case WAIT_TIMEOUT:
+            // A timeout occurred, this would happen if some value other 
+            // than INFINITE is used in the Wait call and no changes occur.
+            // In a single-threaded environment you might not want an
+            // INFINITE wait.
+
+            LOG_WCHAR(L"No changes in the timeout period.");
             break;
 
         default:
@@ -398,7 +428,16 @@ errno_t TreeView::watchDir()
 
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
 {
+
+}
+
+TreeView::~TreeView()
+{
+    LOG_WCHAR(L"~TreeView() destructor called.");
+    //this->_thread1.detach();
+    //this->_thread1.join();
     
+    LOG_WCHAR(L"~TreeView() destructor called!!!!!!!!!!!!");
 }
 
 errno_t TreeView::initWindow()
@@ -466,7 +505,12 @@ errno_t TreeView::initWindow()
     //watch directory with new thread....
     /*thread t1(&TreeView::watchDir, this);
     t1.join();*/
-    this->watchDir();
+    //this->watchDir();
+
+    //thread t1(&TreeView::watchDir, this);
+    //this->_thread1.joinable();
+    this->_thread1 = thread(&TreeView::watchDir, this);
+    //this->_thread1.join();
 
     return TASK_SUCCESS;
 }

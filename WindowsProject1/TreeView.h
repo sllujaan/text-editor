@@ -15,6 +15,7 @@ private:
 	HWND _hwndTV;
 	INT imgIndex_folderOpen = 0;
 	INT imgIndex_folderClosed = 0;
+	thread _thread1;
 
 
 	//window procedures----------
@@ -34,6 +35,7 @@ private:
 public:
 	TreeView() : WindowControlsEx(NULL, 0) {}
 	TreeView(HWND hwnd, int nCmdShow);
+	~TreeView();
 	errno_t initWindow();
 
 };
