@@ -16,6 +16,7 @@ private:
 	INT imgIndex_folderOpen = 0;
 	INT imgIndex_folderClosed = 0;
 	thread _thread1;
+	HANDLE _hChangeHandle[2];
 
 
 	//window procedures----------
