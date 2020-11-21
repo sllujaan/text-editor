@@ -23,6 +23,7 @@ private:
 	void handleMouseCursor();
 	void handleResizer();
 	void resizeStatic();
+	void handleChangeJournals();
 
 
 public:

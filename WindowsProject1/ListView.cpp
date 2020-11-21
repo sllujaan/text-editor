@@ -3,6 +3,13 @@
 LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     HCURSOR hCurs1;
+    PAINTSTRUCT ps;
+    HDC hdc = NULL;
+    RECT _rect;
+    _rect.left = 200;
+    _rect.top = 200;
+    _rect.right = 300;
+    _rect.bottom = 300;
 
     switch (message)
     {
@@ -15,6 +22,9 @@ LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_LBUTTONDOWN:
         LOG_WCHAR(L"WM_LBUTTONDOWN");
         //MoveWindow(this->_hwndStatic, 10, 10, 50, 50, TRUE);
+        /*hdc = BeginPaint(this->_hwndSelf, &ps);
+        SetBkColor(hdc, RGB(3, 3, 3));
+        EndPaint(this->_hwndSelf, &ps);*/
         break;
     case WM_KEYUP:
         SetCapture(this->_hwndStatic);
@@ -29,6 +39,21 @@ LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_SETCURSOR:
         // Create a standard hourglass cursor.
+        break;
+
+    case WM_PAINT:
+        
+        
+        hdc = BeginPaint(this->_hwndSelf, &ps);
+        // All painting occurs here, between BeginPaintand EndPaint.
+        //FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 3));
+        //FillRect(hdc, &_rect, (HBRUSH)(COLOR_WINDOW + 3));
+        //DrawText(hdc, L"some text", 9, &_rect, DT_CENTER);
+        //TextOut(hdc, 200, 200, L"Hello, Windows!", 15);
+        //SetRect()
+        SetRect(&_rect, 0, 0, 100, 100);
+        EndPaint(this->_hwndSelf, &ps);
+
         break;
     default:
         break;
@@ -220,6 +245,25 @@ void ListView::resizeStatic()
 
         MoveWindow(this->_hwndStatic, 10, 10, newWidth+5, 100, TRUE);
         LOG_WCHAR(L"resizing......");
+    }
+}
+
+void ListView::handleChangeJournals()
+{
+    HANDLE hVol = NULL;
+    CreateFile(L"\\\\.\\C:\\Users\\SALMAN-ALTAF\\Desktop\\myWatchDir",
+        GENERIC_READ | GENERIC_WRITE,
+        FILE_SHARE_READ | FILE_SHARE_WRITE,
+        NULL,
+        OPEN_EXISTING,
+        0,
+        NULL
+    );
+
+    if (hVol == INVALID_HANDLE_VALUE)
+    {
+        LOG_WCHAR(L"CreateFile failed XXXXXXX");
+        return;
     }
 }
 

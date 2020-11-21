@@ -182,7 +182,7 @@ errno_t TreeView::initTreeViewControl()
 BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
 {
     HIMAGELIST himl;  // handle to image list 
-    HBITMAP hbmp;     // handle to bitmap 
+    //HBITMAP hbmp;     // handle to bitmap 
     //INT g_nOpen;
 
     // Create the image list. 
@@ -426,6 +426,44 @@ errno_t TreeView::watchDir()
     return TASK_SUCCESS;
 }
 
+void TreeView::handleChangeJournals()
+{
+    HANDLE hVol = NULL;
+
+    USN_JOURNAL_DATA JournalData;
+    DWORD dwBytes;
+
+    hVol = CreateFile(L"C:\\Users\\SALMAN-ALTAF\\Desktop\\myWatchDir\\abc.txt",
+        GENERIC_READ | GENERIC_WRITE,
+        FILE_SHARE_READ | FILE_SHARE_WRITE,
+        NULL,
+        OPEN_EXISTING,
+        0,
+        NULL
+    );
+
+    if (hVol == INVALID_HANDLE_VALUE)
+    {
+        LOG_WCHAR(L"CreateFile failed XXXXXXX");
+        return;
+    }
+
+
+    if (!DeviceIoControl(hVol,
+        FSCTL_QUERY_USN_JOURNAL,
+        NULL,
+        0,
+        &JournalData,
+        sizeof(JournalData),
+        &dwBytes,
+        NULL))
+    {
+        LOG_WCHAR(L"Query journal failed XXXXX");
+        return;
+    }
+
+}
+
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
 {
 
@@ -524,6 +562,8 @@ errno_t TreeView::initWindow()
     //this->_thread1.joinable();
     this->_thread1 = thread(&TreeView::watchDir, this);
     //this->_thread1.join();
+
+    this->handleChangeJournals();
 
     return TASK_SUCCESS;
 }

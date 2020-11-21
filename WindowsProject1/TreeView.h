@@ -4,6 +4,7 @@
 #include<WinUser.h>
 #include<fileapi.h>
 #include<thread>
+//#include<winioctl.h>
 #include"WindowControlsEx.h"
 #include"resource.h"
 
@@ -32,6 +33,7 @@ private:
 	HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
 	errno_t handleTVItemSelectChange();
 	errno_t watchDir();
+	void handleChangeJournals();
 
 public:
 	TreeView() : WindowControlsEx(NULL, 0) {}
