@@ -207,6 +207,33 @@ errno_t WindowControlsEx::insertListViewDetailsItems(HWND hWndListView)
     return TASK_SUCCESS;
 }
 
+HWND WindowControlsEx::getProgressBar()
+{
+
+    InitCommonControls();
+
+    HWND hwndPB = CreateWindowEx(0, PROGRESS_CLASS, (LPTSTR)NULL,
+        WS_CHILD | WS_VISIBLE, 10,
+        200,
+        100, 20,
+        this->_hwndSelf, (HMENU)0, this->_hInst, NULL);
+
+    // Set the range and increment of the progress bar. 
+
+    //SendMessage(hwndPB, PBM_SETRANGE, 0, (LPARAM)100);
+
+    //SendMessage(hwndPB, PBM_SETSTEP, (WPARAM)1, 0);
+
+    SendMessage(hwndPB, PBM_STEPIT, 0, 0);
+    SendMessage(hwndPB, PBM_STEPIT, 0, 0);
+    SendMessage(hwndPB, PBM_STEPIT, 0, 0);
+    SendMessage(hwndPB, PBM_STEPIT, 0, 0);
+    SendMessage(hwndPB, PBM_STEPIT, 0, 0);
+
+
+    return hwndPB;
+}
+
 errno_t WindowControlsEx::centerWindow(HWND hwnd)
 {
     RECT rectWindow;

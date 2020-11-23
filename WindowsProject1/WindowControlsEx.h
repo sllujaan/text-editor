@@ -43,6 +43,7 @@ protected:
 	HWND getListViewDetailsControl();
 	errno_t InitListViewColumns(HWND hWndListView);
 	errno_t insertListViewDetailsItems(HWND hWndListView);
+	HWND getProgressBar();
 
 public:
 	WindowControlsEx() = delete;

@@ -25,6 +25,7 @@ private:
 	void resizeStatic();
 	void handleChangeJournals();
 	void handleListViewDetailsCtrl();
+	void handleProgressBar();
 
 
 public:

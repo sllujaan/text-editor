@@ -110,6 +110,7 @@ errno_t ListView::initWindow()
     this->handleStaticWindows();
 
     this->handleListViewDetailsCtrl();
+    this->handleProgressBar();
 
     return TASK_SUCCESS;
 }
@@ -277,6 +278,11 @@ void ListView::handleListViewDetailsCtrl()
     
     this->InitListViewColumns(hwndListViewCtrl);
     this->insertListViewDetailsItems(hwndListViewCtrl);
+}
+
+void ListView::handleProgressBar()
+{
+    this->getProgressBar();
 }
 
 WNDCLASSEX* ListView::getWindowClass()
