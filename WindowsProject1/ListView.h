@@ -24,6 +24,7 @@ private:
 	void handleResizer();
 	void resizeStatic();
 	void handleChangeJournals();
+	void handleListViewDetailsCtrl();
 
 
 public:

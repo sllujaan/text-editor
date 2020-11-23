@@ -1,5 +1,6 @@
 #pragma once
 #include<Windows.h>
+#include<CommCtrl.h>
 #include"AppLog.h"
 
 
@@ -39,6 +40,8 @@ protected:
 	errno_t createWindow(WINDOW_CONFIG& windConfig);
 	errno_t applyConsistentStyle(HWND hwnd);
 	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Microsoft New Tai Lue", LPCWSTR fontStyle = L"Regular");
+	HWND getListViewDetailsControl();
+	errno_t InitListViewColumns(HWND hWndListView);
 
 public:
 	WindowControlsEx() = delete;

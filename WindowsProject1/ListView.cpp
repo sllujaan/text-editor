@@ -51,7 +51,9 @@ LRESULT ListView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         //DrawText(hdc, L"some text", 9, &_rect, DT_CENTER);
         //TextOut(hdc, 200, 200, L"Hello, Windows!", 15);
         //SetRect()
-        SetRect(&_rect, 0, 0, 100, 100);
+        //SetRect(&_rect, 0, 0, 100, 100);
+        //SetDCBrushColor(hdc, RGB(3, 3, 3));
+        //Ellipse(hdc, 200, 200, 300, 250);
         EndPaint(this->_hwndSelf, &ps);
 
         break;
@@ -107,6 +109,8 @@ errno_t ListView::initWindow()
     this->_createWindow();
     this->handleStaticWindows();
 
+    this->handleListViewDetailsCtrl();
+
     return TASK_SUCCESS;
 }
 
@@ -131,12 +135,12 @@ HWND ListView::getStaticWindow(LPCWSTR text, size_t posX, size_t posY)
         WS_VISIBLE | WS_CHILD | SS_CENTERIMAGE,  // Styles 
         (int)posX,         // x position 
         (int)posY,         // y position 
-100,        // Button width
-100,        // Button height
-this->_hwndSelf,     // Parent window
-NULL,       // No menu.
-(HINSTANCE)GetWindowLongPtr(_hwndSelf, GWLP_HINSTANCE),
-NULL);      // Pointer not needed.
+        100,        // Button width
+        100,        // Button height
+        this->_hwndSelf,     // Parent window
+        NULL,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(_hwndSelf, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
 
 this->applyConsistentStyle(hwndStatic);
 
@@ -267,6 +271,13 @@ void ListView::handleChangeJournals()
     }
 }
 
+void ListView::handleListViewDetailsCtrl()
+{
+    HWND hwndListViewCtrl =  this->getListViewDetailsControl();
+    
+    this->InitListViewColumns(hwndListViewCtrl);
+}
+
 WNDCLASSEX* ListView::getWindowClass()
 {
 	WNDCLASSEX* wcex = new WNDCLASSEX();
@@ -306,7 +317,7 @@ HWND ListView::getListViewWindow()
         WS_OVERLAPPEDWINDOW | WS_VISIBLE,            // Window style
 
         // Size and position
-        100, 100, 400, 400,
+        100, 100, 800, 800,
 
         this->_hwndParent,       // Parent window    
         NULL,       // Menu

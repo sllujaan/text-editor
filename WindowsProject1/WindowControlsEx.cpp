@@ -104,6 +104,84 @@ HFONT WindowControlsEx::getFont(size_t size, LPCWSTR fontFamily, LPCWSTR fontSty
     return hFont;
 }
 
+HWND WindowControlsEx::getListViewDetailsControl()
+{
+    // CreateListView: Creates a list-view control in report view.
+    // Returns the handle to the new control
+    // TO DO:  The calling procedure should determine whether the handle is NULL, in case 
+    // of an error in creation.
+    //
+    // HINST hInst: The global handle to the applicadtion instance.
+    // HWND  hWndParent: The handle to the control's parent window. 
+    //
+
+    //INITCOMMONCONTROLSEX structure ensures that the common controls DLL is loaded.
+    INITCOMMONCONTROLSEX icex;           // Structure for control initialization.
+    icex.dwICC = ICC_LISTVIEW_CLASSES;
+    InitCommonControlsEx(&icex);
+
+    // Create the list-view window in report view with label editing enabled.
+    HWND hWndListView = CreateWindow(WC_LISTVIEW,
+        L"",
+        WS_CHILD | WS_VISIBLE | LVS_REPORT | LVS_EDITLABELS,
+        200, 200,
+        400,
+        400,
+        this->_hwndSelf,
+        NULL,
+        this->_hInst,
+        NULL);
+
+    return hWndListView;
+}
+
+errno_t WindowControlsEx::InitListViewColumns(HWND hWndListView)
+{
+
+    // InitListViewColumns: Adds columns to a list-view control.
+    // hWndListView:        Handle to the list-view control. 
+    // Returns TRUE if successful, and FALSE otherwise.
+
+    WCHAR szText[2];     // Temporary buffer.
+    memset(szText, 0, 2);
+    szText[0] = L'A';
+    szText[1] = L'\0';
+    LVCOLUMN lvc;
+    int iCol;
+
+    // Initialize the LVCOLUMN structure.
+    // The mask specifies that the format, width, text,
+    // and subitem members of the structure are valid.
+    lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
+
+    // Add the columns.
+
+    for (iCol = 0; iCol < 2; iCol++)
+    {
+        lvc.iSubItem = iCol;
+        lvc.pszText = szText;
+        lvc.cx = 100;               // Width of column in pixels.
+
+        if (iCol < 2)
+            lvc.fmt = LVCFMT_LEFT;  // Left-aligned column.
+        else
+            lvc.fmt = LVCFMT_RIGHT; // Right-aligned column.
+
+
+        // Load the names of the column headings from the string resources.
+        /*LoadString(this->_hInst,
+            IDS_FIRSTCOLUMN + iCol,
+            szText,
+            sizeof(szText) / sizeof(szText[0]));*/
+
+        // Insert the columns into the list view.
+        if (ListView_InsertColumn(hWndListView, iCol, &lvc) == -1) {
+            return TASK_FAILURE;
+        }
+    }
+    return TASK_SUCCESS;
+}
+
 errno_t WindowControlsEx::centerWindow(HWND hwnd)
 {
     RECT rectWindow;

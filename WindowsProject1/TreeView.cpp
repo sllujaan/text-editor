@@ -433,7 +433,7 @@ void TreeView::handleChangeJournals()
     USN_JOURNAL_DATA JournalData;
     DWORD dwBytes;
 
-    hVol = CreateFile(L"C:\\Users\\SALMAN-ALTAF\\Desktop\\myWatchDir\\abc.txt",
+    hVol = CreateFile(L"C:\\Users\\SALMAN-ALTAF\\Desktop\\myWatchDir",
         GENERIC_READ | GENERIC_WRITE,
         FILE_SHARE_READ | FILE_SHARE_WRITE,
         NULL,
@@ -451,12 +451,9 @@ void TreeView::handleChangeJournals()
 
     if (!DeviceIoControl(hVol,
         FSCTL_QUERY_USN_JOURNAL,
-        NULL,
-        0,
         &JournalData,
         sizeof(JournalData),
-        &dwBytes,
-        NULL))
+        NULL, 0, &dwBytes, NULL ))
     {
         LOG_WCHAR(L"Query journal failed XXXXX");
         return;
