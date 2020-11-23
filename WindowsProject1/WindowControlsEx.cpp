@@ -182,6 +182,31 @@ errno_t WindowControlsEx::InitListViewColumns(HWND hWndListView)
     return TASK_SUCCESS;
 }
 
+errno_t WindowControlsEx::insertListViewDetailsItems(HWND hWndListView)
+{
+    LVITEM LvItem;
+    memset(&LvItem, 0, sizeof(LvItem)); // Zero struct's Members
+
+    //  Setting properties Of members:
+    LvItem.mask = LVIF_TEXT;  // Text Style
+    LvItem.cchTextMax = 256; // Max size of test
+    LvItem.iItem = 0;          // choose item  
+    LvItem.iSubItem = 0;       // Put in first coluom
+    LvItem.pszText = (LPWSTR)L"item"; // Text to display (can be from a char variable) (Items)
+
+    SendMessage(hWndListView, LVM_INSERTITEM, 0, (LPARAM)&LvItem); // Send info to the Listview
+
+
+    for (int i = 1; i <= 1; i++) // Add SubItems in a loop
+    {
+        LvItem.iSubItem = i;
+        LvItem.pszText = (LPWSTR)L"Sub Item 1";
+        SendMessage(hWndListView, LVM_SETITEM, 0, (LPARAM)&LvItem); // Enter text to SubItems
+    }
+
+    return TASK_SUCCESS;
+}
+
 errno_t WindowControlsEx::centerWindow(HWND hwnd)
 {
     RECT rectWindow;

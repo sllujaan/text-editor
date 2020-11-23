@@ -276,6 +276,7 @@ void ListView::handleListViewDetailsCtrl()
     HWND hwndListViewCtrl =  this->getListViewDetailsControl();
     
     this->InitListViewColumns(hwndListViewCtrl);
+    this->insertListViewDetailsItems(hwndListViewCtrl);
 }
 
 WNDCLASSEX* ListView::getWindowClass()

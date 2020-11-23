@@ -42,6 +42,7 @@ protected:
 	HFONT getFont(size_t size, LPCWSTR fontFamily = L"Microsoft New Tai Lue", LPCWSTR fontStyle = L"Regular");
 	HWND getListViewDetailsControl();
 	errno_t InitListViewColumns(HWND hWndListView);
+	errno_t insertListViewDetailsItems(HWND hWndListView);
 
 public:
 	WindowControlsEx() = delete;
