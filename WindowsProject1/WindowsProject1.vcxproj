@@ -155,9 +155,11 @@
     <ClInclude Include="AppLog.h" />
     <ClInclude Include="AppSettings.h" />
     <ClInclude Include="AppSettingsProc.h" />
+    <ClInclude Include="appUtil.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="demoClass.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="FileEx.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ListView.h" />
     <ClInclude Include="mySample.h" />
@@ -179,6 +181,7 @@
     <ClCompile Include="AppSettingsProc.cpp" />
     <ClCompile Include="demoClass.cpp" />
     <ClCompile Include="DesktopApp.cpp" />
+    <ClCompile Include="FileEx.cpp" />
     <ClCompile Include="ListView.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="TreeView.cpp" />
