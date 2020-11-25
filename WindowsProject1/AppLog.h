@@ -1,4 +1,5 @@
 #pragma once
+#include<Windows.h>
 #include<string>
 using namespace std;
 
@@ -36,3 +37,6 @@ do { \
 } \
 while (0);
 #endif // !LOG_CHAR
+
+
+void LOG_LAST_ERROR();

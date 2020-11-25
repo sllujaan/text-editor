@@ -7,9 +7,9 @@ FileEx::FileEx()
 
 errno_t FileEx::ListFiles(TCHAR _path)
 {
-	WIN32_FIND_DATA FindFileData;
+	WIN32_FIND_DATA FindFileData = {};
 	PTCHAR _dir = new TCHAR(MAX_PATH);
-	_dir = (PTCHAR)L"C:\\Users\\SALMAN-ALTAF\\Desktop\\tesDir";
+	_dir = (PTCHAR)L"C:\\Users\\SALMAN-ALTAF\\Desktop\\tesDir\\New folder";
 
 
 	HANDLE hFind = INVALID_HANDLE_VALUE;
@@ -18,12 +18,18 @@ errno_t FileEx::ListFiles(TCHAR _path)
 
 	hFind = FindFirstFile(_dir, &FindFileData);
 
-	if (hFind == INVALID_HANDLE_VALUE) return TASK_FAILURE;
+	if (hFind == INVALID_HANDLE_VALUE) { return TASK_FAILURE; }
 
-	//string((const char*)FindFileData.cFileName);
-	//FindFileData.cFileName;
 	LOG_WCHAR(L"FindFirstFile succeeded.");
 	LOG_WCHAR(FindFileData.cFileName);
+
+	BOOL nextFile = FindNextFile(hFind, &FindFileData);
+
+	if (nextFile == 0) return TASK_FAILURE;
+
+	LOG_WCHAR(L"FindNextFile succeeded.");
+	LOG_WCHAR(FindFileData.cFileName);
+
 
 	return TASK_SUCCESS;
 }

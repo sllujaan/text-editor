@@ -177,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppConfigure.cpp" />
+    <ClCompile Include="AppLog.cpp" />
     <ClCompile Include="AppSettings.cpp" />
     <ClCompile Include="AppSettingsProc.cpp" />
     <ClCompile Include="demoClass.cpp" />
