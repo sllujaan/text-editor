@@ -11,7 +11,7 @@ protected:
 
 public:
 	FileEx();
-	errno_t ListFiles(LPCWSTR _path);
+	errno_t ListFiles(TCHAR _path);
 
 
 };

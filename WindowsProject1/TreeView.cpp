@@ -560,7 +560,10 @@ errno_t TreeView::initWindow()
     this->_thread1 = thread(&TreeView::watchDir, this);
     //this->_thread1.join();
 
-    this->handleChangeJournals();
+    //this->handleChangeJournals();
+
+    FileEx* _file = new FileEx();
+    _file->ListFiles(L'A');
 
     return TASK_SUCCESS;
 }

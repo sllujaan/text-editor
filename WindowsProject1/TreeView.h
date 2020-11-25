@@ -7,6 +7,7 @@
 //#include<winioctl.h>
 #include"WindowControlsEx.h"
 #include"resource.h"
+#include"FileEx.h"
 
 using namespace std;
 
