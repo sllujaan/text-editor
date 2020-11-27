@@ -12,6 +12,7 @@ protected:
 public:
 	FileEx();
 	errno_t ListFiles(TCHAR _path);
+	errno_t ListFilesEx();
 
 
 };
