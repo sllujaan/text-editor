@@ -461,6 +461,14 @@ void TreeView::handleChangeJournals()
 
 }
 
+void TreeView::FindExtension()
+{
+    LPCWSTR extension = PathFindExtension(L"a.bc.codetxt");
+    if (wcslen(extension) == 0) return;
+    
+    LOG_WCHAR(extension);
+}
+
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
 {
 
@@ -564,6 +572,9 @@ errno_t TreeView::initWindow()
 
     FileEx* _file = new FileEx();
     _file->ListFiles(L'A');
+
+
+    this->FindExtension();
 
     return TASK_SUCCESS;
 }

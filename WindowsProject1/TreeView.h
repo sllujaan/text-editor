@@ -3,6 +3,7 @@
 #include<CommCtrl.h>
 #include<WinUser.h>
 #include<fileapi.h>
+#include<Shlwapi.h>
 #include<thread>
 //#include<winioctl.h>
 #include"WindowControlsEx.h"
@@ -35,6 +36,7 @@ private:
 	errno_t handleTVItemSelectChange();
 	errno_t watchDir();
 	void handleChangeJournals();
+	void FindExtension();
 
 public:
 	TreeView() : WindowControlsEx(NULL, 0) {}
