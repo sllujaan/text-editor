@@ -2,10 +2,13 @@
 #include <windows.h>
 #include<iostream>
 #include<vector>
+#include"Log/Log.h"
 
-
-#include"../Log/Log.h"
-
+#ifdef MYLIBRARY_EXPORTS
+#define MYLIBRARY_API __declspec(dllexport)
+#else
+#define MYLIBRARY_API __declspec(dllimport)
+#endif
 
 
 
@@ -19,16 +22,16 @@ namespace  MY_FILES {
 		LPCSTR type;
 		LPCWSTR path;
 
-		operator bool();
-		BOOL operator == (std::nullptr_t nullStruct);
-		BOOL operator != (std::nullptr_t nullStruct);
+		MYLIBRARY_API operator bool();
+		MYLIBRARY_API BOOL operator == (std::nullptr_t nullStruct);
+		MYLIBRARY_API BOOL operator != (std::nullptr_t nullStruct);
 	};
 
 	
 	/*BOOL operator == (FILE_TREE_STRUCT& str1, std::nullptr_t nullStruct);
 	BOOL operator != (FILE_TREE_STRUCT& str1, std::nullptr_t nullStruct);*/
 
-	class  FILE_TREE {
+	class MYLIBRARY_API  FILE_TREE {
 	private:
 		std::vector<FILE_TREE_STRUCT> tree;
 		//structure for caching tree items into specific levels for better retrieval or data
