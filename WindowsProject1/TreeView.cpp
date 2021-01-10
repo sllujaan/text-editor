@@ -463,16 +463,10 @@ void TreeView::handleChangeJournals()
 
 void TreeView::FindExtension()
 {
-    LPCWSTR extension = PathFindExtension(L"dir\\dir\\abc.txt");
+    LPCWSTR extension = PathFindExtension(L"a.bc.codetxt");
     if (wcslen(extension) == 0) return;
+    
     LOG_WCHAR(extension);
-
-
-    LPCWSTR fileName = PathFindFileName(L"dir1\\dir2\\abc.txt");
-    if (wcslen(fileName) == 0) return;
-    LOG_WCHAR(fileName);
-
-
 }
 
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
@@ -571,17 +565,16 @@ errno_t TreeView::initWindow()
 
     //thread t1(&TreeView::watchDir, this);
     //this->_thread1.joinable();
+    this->_thread1 = thread(&TreeView::watchDir, this);
+    //this->_thread1.join();
 
-    //this->_thread1 = thread(&TreeView::watchDir, this);
-    ////this->_thread1.join();
+    //this->handleChangeJournals();
 
-    ////this->handleChangeJournals();
-
-    //FileEx* _file = new FileEx();
-    //_file->ListFiles(L'A');
+    FileEx* _file = new FileEx();
+    _file->ListFiles(L'A');
 
 
-    //this->FindExtension();
+    this->FindExtension();
 
     return TASK_SUCCESS;
 }
