@@ -565,16 +565,16 @@ errno_t TreeView::initWindow()
 
     //thread t1(&TreeView::watchDir, this);
     //this->_thread1.joinable();
-    this->_thread1 = thread(&TreeView::watchDir, this);
-    //this->_thread1.join();
+    //this->_thread1 = thread(&TreeView::watchDir, this);
+    ////this->_thread1.join();
 
-    //this->handleChangeJournals();
+    ////this->handleChangeJournals();
 
-    FileEx* _file = new FileEx();
-    _file->ListFiles(L'A');
+    //FileEx* _file = new FileEx();
+    //_file->ListFiles(L'A');
 
 
-    this->FindExtension();
+    //this->FindExtension();
 
     return TASK_SUCCESS;
 }
