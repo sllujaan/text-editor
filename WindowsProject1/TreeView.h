@@ -10,6 +10,7 @@
 #include"resource.h"
 #include"FileEx.h"
 
+#include"File/File.h"
 #include"Log.h"
 
 

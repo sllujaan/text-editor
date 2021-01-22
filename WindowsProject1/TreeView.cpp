@@ -535,7 +535,14 @@ errno_t TreeView::initWindow()
     /*LOG(L"aaaaaaaaabbbbbbbbbb");
     CAT_NAME("aaa", "eeeee");*/
 
-    OutputDebugStringW(CAT_NAME("aaa", "eeeee"));
+    //OutputDebugStringW(CAT_NAME("aaa", "eeeee"));
+    LOG(CAT_NAME("aaa", "eeeee"));
+
+    MY_FILES::FILE_TREE _fileTree;
+    
+    _fileTree.readDirToTree(L"C:\\Users\\SALMAN-ALTAF\\Desktop\\samples");
+
+
 
     
     //SendMessage(this->_hwndTV, TVM_DELETEITEM, 0, (LPARAM)rootItem2);

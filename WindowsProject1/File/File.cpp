@@ -118,7 +118,7 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 			//_tprintf(TEXT("  %s   <DIR>\n"), ffd.cFileName);
 
 			if (NOT_DIR(ffd.cFileName)) {
-				LOG("Not Directory");
+				LOG(L"Not Directory");
 			}
 			else {
 
@@ -128,8 +128,8 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 				//-------------------------------------
 				newPath.append(L"\\");
 				newPath.append(ffd.cFileName);
-				LOG(newPath);
-				LOG("---------------");
+				LOG(newPath.c_str());
+				LOG(L"---------------");
 				//readDir(newPath.c_str(), level + 1);
 				readDirToTree(newPath.c_str(), level + 1);
 			}
@@ -140,8 +140,8 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 
 			filesize.LowPart = ffd.nFileSizeLow;
 			filesize.HighPart = ffd.nFileSizeHigh;
-			LOG("_____________");
-			LOG(level);
+			LOG(L"_____________");
+			LOG(CAT_NAME(level, ""));
 			LOG(path);
 
 			MY_FILES::FILE_TREE_STRUCT treeItem = this->createTreeStruct(newPath, path, ffd, level, "file");
@@ -150,7 +150,7 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 			//-------------------------------------
 
 			_tprintf(TEXT("  %s   %ld bytes\n"), ffd.cFileName, filesize.QuadPart);
-			LOG("_____________");
+			LOG(L"_____________");
 		}
 	} while (FindNextFile(hFind, &ffd) != 0);
 
@@ -291,8 +291,8 @@ errno_t MY_FILES::FILE_TREE::getFileNameFromPath(LPCWSTR path, LPCWSTR* destinat
 
 MY_FILES::FILE_TREE_STRUCT MY_FILES::FILE_TREE::createTreeStruct(std::wstring& newPath, const wchar_t* path, WIN32_FIND_DATA& ffd, size_t level, LPCSTR fileType)
 {
-	LOG("---------------");
-	LOG(level);
+	LOG(L"---------------");
+	LOG(CAT_NAME(level, ""));
 	//create tree items object-----------------
 	MY_FILES::FILE_TREE_STRUCT treeItem = { 0 };
 	treeItem.name = ffd.cFileName;
