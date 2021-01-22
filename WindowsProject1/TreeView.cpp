@@ -519,7 +519,8 @@ errno_t TreeView::initWindow()
     HTREEITEM rootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item2", 1, NULL, this->imgIndex_folderOpen);
 
     HTREEITEM child1 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"child1", 2, rootItem1, this->imgIndex_folderClosed);
-
+       
+    HTREEITEM child2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"child2", 2, child1, this->imgIndex_folderClosed);
     //HTREEITEM rootItem3 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item3", 1, NULL);
 
     //HTREEITEM rootItem2 = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"item2", 1, rootItem1);

@@ -111,6 +111,15 @@
     <ClInclude Include="appUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="File\File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="File\File1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DesktopApp.cpp">
@@ -153,6 +162,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="File\File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
