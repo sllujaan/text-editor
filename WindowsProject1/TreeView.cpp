@@ -532,6 +532,10 @@ errno_t TreeView::initWindow()
 
     //HTREEITEM subchild = this->AddItemToTree(this->_hwndTV, (LPTSTR)L"subchild", 2, child1_child1_RootItem2);
 
+    /*LOG(L"aaaaaaaaabbbbbbbbbb");
+    CAT_NAME("aaa", "eeeee");*/
+
+    OutputDebugStringW(CAT_NAME("aaa", "eeeee"));
 
     
     //SendMessage(this->_hwndTV, TVM_DELETEITEM, 0, (LPARAM)rootItem2);

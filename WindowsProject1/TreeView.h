@@ -10,6 +10,9 @@
 #include"resource.h"
 #include"FileEx.h"
 
+#include"Log.h"
+
+
 using namespace std;
 
 class TreeView : public WindowControlsEx {
