@@ -145,7 +145,11 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 				LOG(L"-------dir--------");
 				LOG(newPath.c_str());
 				//create file in win32 tree view
-				HTREEITEM dirItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, level, _hTreeItem, this->_treeViewWin32.imgIndex_folderClosed);
+				UINT subLevel = level;
+				if (_hTreeItem != nullptr) {
+					subLevel = 2;
+				}
+				HTREEITEM dirItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, subLevel, _hTreeItem, this->_treeViewWin32.imgIndex_folderClosed);
 				this->readDirToTree(newPath.c_str(), level + 1, dirItem);
 			}
 
@@ -162,7 +166,11 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 			MY_FILES::FILE_TREE_STRUCT treeItem = this->createTreeStruct(newPath, path, ffd, level, "file");
 
 			//create file in win32 tree view
-			HTREEITEM fileItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, level, _hTreeItem, this->_treeViewWin32.imgIndex_folderOpen);
+			UINT subLevel = level;
+			if (_hTreeItem != nullptr) {
+				subLevel = 2;
+			}
+			HTREEITEM fileItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, subLevel, _hTreeItem, this->_treeViewWin32.imgIndex_folderOpen);
 
 			this->_fileTree->addTreeItem(treeItem);
 			//-------------------------------------
