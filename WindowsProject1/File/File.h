@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 #include<iostream>
+#include<CommCtrl.h>
 #include<vector>
 
 #include <tchar.h> 
@@ -95,5 +96,4 @@ namespace  MY_FILES {
 
 	};
 }
-
 

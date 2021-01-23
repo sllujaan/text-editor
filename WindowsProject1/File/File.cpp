@@ -144,7 +144,7 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 				newPath.append(ffd.cFileName);
 				LOG(L"-------dir--------");
 				LOG(newPath.c_str());
-				//readDir(newPath.c_str(), level + 1);
+				//create file in win32 tree view
 				this->readDirToTree(newPath.c_str(), level + 1);
 			}
 
