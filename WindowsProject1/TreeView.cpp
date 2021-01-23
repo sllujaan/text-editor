@@ -539,7 +539,13 @@ errno_t TreeView::initWindow()
     LOG(CAT_NAME("aaa", "eeeee"));
 
     MY_FILES::FILE_TREE _fileTree;
-    
+
+    MY_FILES::TREEVIEW_WIN32 _treeViewWin32Strct = { };
+    _treeViewWin32Strct._hwndTV = this->_hwndTV;
+    _treeViewWin32Strct.imgIndex_folderClosed = this->imgIndex_folderClosed;
+    _treeViewWin32Strct.imgIndex_folderOpen = this->imgIndex_folderOpen;
+
+    _fileTree.setTreeViewHadlesWin32(_treeViewWin32Strct);
     _fileTree.readDirToTree(L"C:\\Users\\SALMAN-ALTAF\\Desktop\\samples");
 
 

@@ -37,6 +37,8 @@ namespace  MY_FILES {
 		HWND _hwndTV;
 		INT imgIndex_folderOpen = 0;
 		INT imgIndex_folderClosed = 0;
+
+		BOOL operator == (std::nullptr_t nullStruct);
 	};
 
 	
@@ -83,7 +85,7 @@ namespace  MY_FILES {
 
 		FILE_TREE_STRUCT* operator[] (size_t);
 
-		errno_t setTreeViewHadles(TREEVIEW_WIN32 treeViewWin32);
+		errno_t setTreeViewHadlesWin32(TREEVIEW_WIN32 treeViewWin32);
 
 		static errno_t getFileNameFromPath(LPCWSTR path, LPCWSTR* destination);
 		static size_t getArrayCount(WCHAR arr[]);

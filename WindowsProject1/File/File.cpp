@@ -72,9 +72,11 @@ MY_FILES::FILE_TREE_STRUCT* MY_FILES::FILE_TREE::operator[](size_t index)
 	return &this->tree[index];
 }
 
-errno_t MY_FILES::FILE_TREE::setTreeViewHadles(TREEVIEW_WIN32 treeViewWin32)
+errno_t MY_FILES::FILE_TREE::setTreeViewHadlesWin32(TREEVIEW_WIN32 treeViewWin32)
 {
 	this->_treeViewWin32._hwndTV = treeViewWin32._hwndTV;
+	this->_treeViewWin32.imgIndex_folderClosed = treeViewWin32.imgIndex_folderClosed;
+	this->_treeViewWin32.imgIndex_folderOpen = treeViewWin32.imgIndex_folderOpen;
 
 	return TASK_SUCCESS;
 }
@@ -82,6 +84,12 @@ errno_t MY_FILES::FILE_TREE::setTreeViewHadles(TREEVIEW_WIN32 treeViewWin32)
 
 errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int level)
 {
+
+	if (this->_treeViewWin32 == nullptr) {
+		LOG(L"cannot read directory because _treeViewWin32 was not set");
+		return TASK_FAILURE;
+	}
+
 	//instanciate the class object itself
 	if (this->_fileTree == nullptr) {
 		this->_fileTree = new FILE_TREE();
@@ -384,3 +392,14 @@ const wchar_t* getWC(const char* c) {
 	return wc;
 }
 
+BOOL MY_FILES::TREEVIEW_WIN32::operator==(std::nullptr_t nullStruct)
+{
+	if (this->_hwndTV == nullptr)
+		return TRUE;
+	if (this->imgIndex_folderClosed < 0)
+		return TRUE;
+	if (this->imgIndex_folderOpen < 0)
+		return TRUE;
+	
+	return FALSE;
+}
