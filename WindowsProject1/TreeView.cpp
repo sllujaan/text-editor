@@ -546,7 +546,9 @@ errno_t TreeView::initWindow()
     _treeViewWin32Strct.imgIndex_folderOpen = this->imgIndex_folderOpen;
 
     _fileTree.setTreeViewHadlesWin32(_treeViewWin32Strct);
-    _fileTree.readDirToTree(L"C:\\Users\\SALMAN-ALTAF\\Desktop\\samples");
+    LPCWSTR path1 = L"C:\\Users\\SALMAN-ALTAF\\Desktop\\samples";
+    LPCWSTR path2 = L"C:\\Users\\SALMAN-ALTAF\\Downloads";
+    _fileTree.readDirToTree(path1);
 
 
     /*_fileTree.initTreeCach();

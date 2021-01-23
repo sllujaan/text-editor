@@ -84,6 +84,11 @@ errno_t MY_FILES::FILE_TREE::setTreeViewHadlesWin32(TREEVIEW_WIN32 treeViewWin32
 
 errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int level, HTREEITEM _hTreeItem)
 {
+	
+	if (wcscmp(path, L"") == 0) {
+		LOG(L"path was not set");
+		return TASK_FAILURE;
+	}
 
 	if (this->_treeViewWin32 == nullptr) {
 		LOG(L"cannot read directory because _treeViewWin32 was not set");

@@ -15,6 +15,7 @@
 #define NOT_DIR(X) (wcscmp(X, L".") == 0) || (wcscmp(X, L"..") == 0)
 #endif
 
+
 #define FTSPTR std::vector<MY_FILES::FILE_TREE_STRUCT*>*
 
 const wchar_t* getWC(const char* c);
