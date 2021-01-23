@@ -543,7 +543,19 @@ errno_t TreeView::initWindow()
     _fileTree.readDirToTree(L"C:\\Users\\SALMAN-ALTAF\\Desktop\\samples");
 
 
+    /*_fileTree.initTreeCach();
 
+
+    int i = 1;
+    while (FTSPTR leveledStruct = _fileTree.getTreeIitemsByLevel(i)) {
+        LOG(L"while");
+        std::cout << "level found: " << i << std::endl;
+        for (size_t j = 0; j < leveledStruct->size(); j++)
+        {
+            LOG((*leveledStruct)[j]->name);
+        }
+        i++;
+    }*/
     
     //SendMessage(this->_hwndTV, TVM_DELETEITEM, 0, (LPARAM)rootItem2);
 

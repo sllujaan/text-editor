@@ -72,6 +72,13 @@ MY_FILES::FILE_TREE_STRUCT* MY_FILES::FILE_TREE::operator[](size_t index)
 	return &this->tree[index];
 }
 
+errno_t MY_FILES::FILE_TREE::setTreeViewHadles(TREEVIEW_WIN32 treeViewWin32)
+{
+	this->_treeViewWin32._hwndTV = treeViewWin32._hwndTV;
+
+	return TASK_SUCCESS;
+}
+
 
 errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int level)
 {
@@ -114,7 +121,6 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 	{
 		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
-			LOG_ANY(_tprintf(TEXT("  %s   <DIR>\n"), ffd.cFileName));
 			//_tprintf(TEXT("  %s   <DIR>\n"), ffd.cFileName);
 
 			if (NOT_DIR(ffd.cFileName)) {
@@ -126,12 +132,12 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 
 				this->_fileTree->addTreeItem(treeItem);
 				//-------------------------------------
-				newPath.append(L"\\");
+				newPath = oldPath + L"\\";
 				newPath.append(ffd.cFileName);
+				LOG(L"-------dir--------");
 				LOG(newPath.c_str());
-				LOG(L"---------------");
 				//readDir(newPath.c_str(), level + 1);
-				readDirToTree(newPath.c_str(), level + 1);
+				this->readDirToTree(newPath.c_str(), level + 1);
 			}
 
 		}
@@ -140,17 +146,17 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 
 			filesize.LowPart = ffd.nFileSizeLow;
 			filesize.HighPart = ffd.nFileSizeHigh;
-			LOG(L"_____________");
-			LOG(CAT_NAME(level, ""));
+			LOG(L"______file_______\r\n");
+			LOG_INT(level);
 			LOG(path);
-
+			LOG(ffd.cFileName);
 			MY_FILES::FILE_TREE_STRUCT treeItem = this->createTreeStruct(newPath, path, ffd, level, "file");
 
 			this->_fileTree->addTreeItem(treeItem);
 			//-------------------------------------
 
-			_tprintf(TEXT("  %s   %ld bytes\n"), ffd.cFileName, filesize.QuadPart);
-			LOG(L"_____________");
+			
+			LOG(L"<<_____________>>");
 		}
 	} while (FindNextFile(hFind, &ffd) != 0);
 
@@ -291,8 +297,6 @@ errno_t MY_FILES::FILE_TREE::getFileNameFromPath(LPCWSTR path, LPCWSTR* destinat
 
 MY_FILES::FILE_TREE_STRUCT MY_FILES::FILE_TREE::createTreeStruct(std::wstring& newPath, const wchar_t* path, WIN32_FIND_DATA& ffd, size_t level, LPCSTR fileType)
 {
-	LOG(L"---------------");
-	LOG(CAT_NAME(level, ""));
 	//create tree items object-----------------
 	MY_FILES::FILE_TREE_STRUCT treeItem = { 0 };
 	treeItem.name = ffd.cFileName;

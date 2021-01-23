@@ -6,7 +6,7 @@
 #include <tchar.h> 
 #include <stdio.h>
 #include <strsafe.h>
-
+#include"../AppLog.h"
 #include"../Log.h"
 
 
@@ -33,6 +33,12 @@ namespace  MY_FILES {
 		 BOOL operator != (std::nullptr_t nullStruct);
 	};
 
+	struct TREEVIEW_WIN32 {
+		HWND _hwndTV;
+		INT imgIndex_folderOpen = 0;
+		INT imgIndex_folderClosed = 0;
+	};
+
 	
 	/*BOOL operator == (FILE_TREE_STRUCT& str1, std::nullptr_t nullStruct);
 	BOOL operator != (FILE_TREE_STRUCT& str1, std::nullptr_t nullStruct);*/
@@ -50,6 +56,10 @@ namespace  MY_FILES {
 
 		//file tree
 		FILE_TREE* _fileTree;
+
+		//tree view handles win32
+		TREEVIEW_WIN32 _treeViewWin32;
+		
 		
 		errno_t addTreeCach(size_t level, FILE_TREE_STRUCT& _tree);
 		errno_t createPushTreeCach(size_t level, FILE_TREE_STRUCT& _tree);
@@ -72,6 +82,8 @@ namespace  MY_FILES {
 		);
 
 		FILE_TREE_STRUCT* operator[] (size_t);
+
+		errno_t setTreeViewHadles(TREEVIEW_WIN32 treeViewWin32);
 
 		static errno_t getFileNameFromPath(LPCWSTR path, LPCWSTR* destination);
 		static size_t getArrayCount(WCHAR arr[]);
