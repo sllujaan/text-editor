@@ -67,6 +67,7 @@ namespace  MY_FILES {
 		errno_t addTreeCach(size_t level, FILE_TREE_STRUCT& _tree);
 		errno_t createPushTreeCach(size_t level, FILE_TREE_STRUCT& _tree);
 		BOOL isItemExists(std::vector<FILE_TREE_STRUCT*>& tree, LPCWSTR name);
+		HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
 
 	public:
 		FILE_TREE();
@@ -74,7 +75,7 @@ namespace  MY_FILES {
 		//init cache
 		errno_t initTreeCach();
 		FTSPTR getTreeIitemsByLevel(size_t level);
-		errno_t readDirToTree(const wchar_t* path, unsigned int level = 1);
+		errno_t readDirToTree(const wchar_t* path, unsigned int level = 1, HTREEITEM _hTreeItem = nullptr);
 
 		MY_FILES::FILE_TREE_STRUCT createTreeStruct(
 			std::wstring& newPath,

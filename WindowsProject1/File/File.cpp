@@ -82,7 +82,7 @@ errno_t MY_FILES::FILE_TREE::setTreeViewHadlesWin32(TREEVIEW_WIN32 treeViewWin32
 }
 
 
-errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int level)
+errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int level, HTREEITEM _hTreeItem)
 {
 
 	if (this->_treeViewWin32 == nullptr) {
@@ -145,7 +145,8 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 				LOG(L"-------dir--------");
 				LOG(newPath.c_str());
 				//create file in win32 tree view
-				this->readDirToTree(newPath.c_str(), level + 1);
+				HTREEITEM dirItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, level, _hTreeItem, this->_treeViewWin32.imgIndex_folderClosed);
+				this->readDirToTree(newPath.c_str(), level + 1, dirItem);
 			}
 
 		}
@@ -159,6 +160,9 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 			LOG(path);
 			LOG(ffd.cFileName);
 			MY_FILES::FILE_TREE_STRUCT treeItem = this->createTreeStruct(newPath, path, ffd, level, "file");
+
+			//create file in win32 tree view
+			HTREEITEM fileItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, level, _hTreeItem, this->_treeViewWin32.imgIndex_folderOpen);
 
 			this->_fileTree->addTreeItem(treeItem);
 			//-------------------------------------
@@ -249,6 +253,72 @@ BOOL MY_FILES::FILE_TREE::isItemExists(std::vector<FILE_TREE_STRUCT*>& tree, LPC
 	}
 
 	return FALSE;
+}
+
+HTREEITEM MY_FILES::FILE_TREE::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex)
+{
+
+	if (_hPrev == NULL) { _hPrev = (HTREEITEM)TVI_LAST; }
+
+	TVITEM tvi;
+	TVINSERTSTRUCT tvins;
+	HTREEITEM hPrev = _hPrev;
+	HTREEITEM hPrevRootItem = NULL;
+	HTREEITEM hPrevLev2Item = NULL;
+	//HTREEITEM hti;
+
+
+	tvi.mask = TVIF_TEXT | TVIF_IMAGE
+		| TVIF_SELECTEDIMAGE | TVIF_PARAM;
+
+	// Set the text of the item. 
+	tvi.pszText = lpszItem;
+	tvi.cchTextMax = sizeof(tvi.pszText) / sizeof(tvi.pszText[0]);
+
+	// Assume the item is not a parent item, so give it a 
+	// document image. 
+	tvi.iImage = imageIndex;
+	tvi.iSelectedImage = imageIndex;
+
+	// Save the heading level in the item's application-defined 
+	// data area. 
+	tvi.lParam = (LPARAM)nLevel;
+	tvins.item = tvi;
+	tvins.hInsertAfter = hPrev;
+
+	// Set the parent item based on the specified level. 
+	if (nLevel == 1)
+		tvins.hParent = TVI_ROOT;
+	else if (nLevel == 2)
+		tvins.hParent = hPrev;
+	else
+		tvins.hParent = hPrevLev2Item;
+
+	// Add the item to the tree-view control. 
+	hPrev = (HTREEITEM)SendMessage(hwndTV, TVM_INSERTITEM,
+		0, (LPARAM)(LPTVINSERTSTRUCT)&tvins);
+
+	if (hPrev == NULL) return NULL;
+
+	// Save the handle to the item. 
+	if (nLevel == 1)
+		hPrevRootItem = hPrev;
+	else if (nLevel == 2)
+		hPrevLev2Item = hPrev;
+
+	// The new item is a child item. Give the parent item a 
+	// closed folder bitmap to indicate it now has child items. 
+	//if (nLevel > 1)
+	//{
+	//    hti = TreeView_GetParent(hwndTV, hPrev);
+	//    tvi.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE;
+	//    tvi.hItem = hti;
+	//    //tvi.iImage = g_nClosed;
+	//    //tvi.iSelectedImage = g_nClosed;
+	//    TreeView_SetItem(hwndTV, &tvi);
+	//}
+
+	return hPrev;
 }
 
 MY_FILES::FILE_TREE::FILE_TREE()

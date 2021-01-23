@@ -219,7 +219,7 @@ BOOL TreeView::InitTreeViewImageLists(HWND hwndTV)
     this->imgIndex_folderClosed = 0;
 
     icon = (HICON)::LoadImage(::GetModuleHandle(0),
-        MAKEINTRESOURCE(IDI_FOLDEROPEN),
+        MAKEINTRESOURCE(IDI_FILE),
         IMAGE_ICON, 16, 16,
         LR_DEFAULTCOLOR);
 

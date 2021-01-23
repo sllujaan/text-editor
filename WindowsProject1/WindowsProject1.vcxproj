@@ -206,9 +206,11 @@
     <Image Include="..\..\editor-png-open-2000.png" />
     <Image Include="bitmap1.bmp" />
     <Image Include="bitmap2.bmp" />
+    <Image Include="file.ico" />
     <Image Include="folderClosed.ico" />
     <Image Include="folderOpen.ico" />
     <Image Include="icon1.ico" />
+    <Image Include="icon12.ico" />
     <Image Include="icon2.ico" />
     <Image Include="icon3.ico" />
     <Image Include="icon5.ico" />

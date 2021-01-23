@@ -31,6 +31,10 @@
 #define IDI_FOLDEROPEN                  147
 #define IDI_ICON11                      148
 #define IDI_FOLDERCLOSED                148
+#define IDI_ICON12                      149
+#define IDR_ACCELERATOR1                150
+#define IDI_ICON13                      155
+#define IDI_FILE                        155
 #define ID_ABOUT                        32771
 #define IDC_STATIC                      -1
 
@@ -39,8 +43,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        149
-#define _APS_NEXT_COMMAND_VALUE         32772
+#define _APS_NEXT_RESOURCE_VALUE        156
+#define _APS_NEXT_COMMAND_VALUE         32773
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

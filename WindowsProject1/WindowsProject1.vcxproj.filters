@@ -216,6 +216,12 @@
     <Image Include="folderOpen.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="icon12.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="file.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="WindowsProject1.exe.manifest" />
