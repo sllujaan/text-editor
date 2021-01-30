@@ -20,6 +20,7 @@
 #include"demoClass.h"
 #include"ListView.h"
 #include"TreeView.h"
+#include"MemoryUsage.h"
 
 using namespace std;
 
@@ -219,13 +220,13 @@ int CALLBACK WinMain(
 
 
 
-
     // Main message loop:
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0))
     {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
+
     }
 
     

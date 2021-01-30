@@ -482,15 +482,15 @@ TreeView::~TreeView()
     BOOL closedDirWatch = FindCloseChangeNotification(this->_hChangeHandle[0]);
     BOOL closedFileWatch = FindCloseChangeNotification(this->_hChangeHandle[1]);
     if (!closedDirWatch || !closedFileWatch) {
-        MessageBox(
+        /*MessageBox(
             NULL,
             (LPCWSTR)L"FindCloseChangeNotification failed.",
             (LPCWSTR)L"ERROR",
             MB_ICONERROR
-        );
+        );*/
         return;
     }
-    //this->_thread1.detach();
+
     this->_thread1.join();
     
     LOG_WCHAR(L"~TreeView() destructor called!!!!!!!!!!!!");
@@ -548,7 +548,7 @@ errno_t TreeView::initWindow()
     _fileTree.setTreeViewHadlesWin32(_treeViewWin32Strct);
     LPCWSTR path1 = L"C:\\Users\\SALMAN-ALTAF\\Desktop\\samples";
     LPCWSTR path2 = L"C:\\Users\\SALMAN-ALTAF\\Downloads";
-    _fileTree.readDirToTree(path1);
+    _fileTree.readDirToTree(path2);
 
 
     /*_fileTree.initTreeCach();
