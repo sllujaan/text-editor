@@ -13,10 +13,22 @@
 #include"File/File.h"
 #include"Log.h"
 
+#include<vector>
+
 
 using namespace std;
 
+
+struct FILE_TREE_STORE {
+	HTREEITEM hTreeItem;
+	LPCWSTR name;
+	LPCWSTR parentName;
+};
+
+
 class TreeView : public WindowControlsEx {
+
+
 private:
 	LPCWSTR CLASS_NAME = L"TREEVIEW";
 	HWND _hwndTV;
@@ -24,6 +36,7 @@ private:
 	INT imgIndex_folderClosed = 0;
 	thread _thread1;
 	HANDLE _hChangeHandle[2];
+	
 
 
 	//window procedures----------

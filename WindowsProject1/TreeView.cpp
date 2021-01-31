@@ -581,6 +581,8 @@ errno_t TreeView::initWindow()
     _fileTree.readDirToTree(path2);
 
 
+
+
     /*_fileTree.initTreeCach();
 
 
