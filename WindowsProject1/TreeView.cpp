@@ -311,13 +311,31 @@ HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTRE
 
 errno_t TreeView::handleRightClick(LPARAM lParam)
 {
-    LPNMHDR lpnmh = (LPNMHDR)lParam;
+    //LPNMHDR lpnmh = (LPNMHDR)lParam;
 
     HTREEITEM hItem = TreeView_GetNextItem(this->_hwndTV, 0, TVGN_DROPHILITE);
     if (hItem) {
         TreeView_SelectItem(this->_hwndTV, hItem);
     }
+
+    this->createContextMenuPopUp();
     
+    return TASK_SUCCESS;
+}
+
+errno_t TreeView::createContextMenuPopUp()
+{
+    HMENU hPopupMenu = CreatePopupMenu();
+    InsertMenu(hPopupMenu, 0, MF_BYPOSITION | MF_STRING, 0, L"Exit");
+    InsertMenu(hPopupMenu, 0, MF_BYPOSITION | MF_STRING, 9, L"Play");
+    SetForegroundWindow(this->_hwndSelf);
+
+    //get cursor position
+    POINT point = { };
+    GetCursorPos(&point);
+
+    TrackPopupMenu(hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN, point.x, point.y, 0, this->_hwndSelf, NULL);
+
     return TASK_SUCCESS;
 }
 

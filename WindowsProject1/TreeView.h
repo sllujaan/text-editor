@@ -38,6 +38,7 @@ private:
 	BOOL InitTreeViewImageLists(HWND hwndTV);
 	HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
 	errno_t handleRightClick(LPARAM lParam);
+	errno_t createContextMenuPopUp();
 	errno_t handleTVItemSelectChange();
 	errno_t watchDir();
 	void handleChangeJournals();
