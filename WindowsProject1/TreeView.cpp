@@ -11,7 +11,7 @@ LRESULT TreeView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
         case NM_RCLICK:
             LOG_WCHAR(L"NM_RCLICK");
-            this->handleTVItemSelectChange();
+            this->handleRightClick(lParam);
             break;
         case TVN_ITEMCHANGED:
             this->handleTVItemSelectChange();
@@ -307,6 +307,18 @@ HTREEITEM TreeView::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTRE
     //}
 
     return hPrev;
+}
+
+errno_t TreeView::handleRightClick(LPARAM lParam)
+{
+    LPNMHDR lpnmh = (LPNMHDR)lParam;
+
+    HTREEITEM hItem = TreeView_GetNextItem(this->_hwndTV, 0, TVGN_DROPHILITE);
+    if (hItem) {
+        TreeView_SelectItem(this->_hwndTV, hItem);
+    }
+    
+    return TASK_SUCCESS;
 }
 
 errno_t TreeView::handleTVItemSelectChange()
