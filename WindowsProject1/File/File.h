@@ -21,6 +21,9 @@
 const wchar_t* getWC(const char* c);
 
 
+
+
+
 namespace  MY_FILES {
 
 	typedef struct FILE_TREE_STORE {
@@ -31,6 +34,7 @@ namespace  MY_FILES {
 		~FILE_TREE_STORE();
 
 	} *LP_FILE_TREE_STORE;
+
 
 	struct FILE_TREE_STRUCT {
 		LPCWSTR name;
@@ -74,7 +78,7 @@ namespace  MY_FILES {
 		TREEVIEW_WIN32 _treeViewWin32;
 
 		//tree items record
-		std::vector<FILE_TREE_STORE> treeItemsRecord;
+		std::vector<LP_FILE_TREE_STORE> treeItemsRecord;
 		
 		
 		errno_t addTreeCach(size_t level, FILE_TREE_STRUCT& _tree);

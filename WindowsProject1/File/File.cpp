@@ -157,11 +157,8 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 				HTREEITEM dirItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, subLevel, _hTreeItem, this->_treeViewWin32.imgIndex_folderClosed);
 				
 				//keep record of tree items
-				FILE_TREE_STORE itemRecord = {};
-				itemRecord.hTreeItem = dirItem;
-				itemRecord.name = ffd.cFileName;
-				itemRecord.path = oldPath.c_str();
-				this->treeItemsRecord.push_back(dirItem);
+				LP_FILE_TREE_STORE treeRecord = this->getRecordStruct(dirItem, ffd.cFileName, oldPath.c_str());
+				this->treeItemsRecord.push_back(treeRecord);
 				//-------------------------
 				
 				this->readDirToTree(newPath.c_str(), level + 1, dirItem);
@@ -187,14 +184,11 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 			HTREEITEM fileItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, subLevel, _hTreeItem, this->_treeViewWin32.imgIndex_folderOpen);
 
 			//keep record of tree items
-			FILE_TREE_STORE itemRecord = {};
-			itemRecord.hTreeItem = fileItem;
-			itemRecord.name = ffd.cFileName;
-			itemRecord.path = oldPath.c_str();
-			this->treeItemsRecord.push_back(fileItem);
+			LP_FILE_TREE_STORE treeRecord = this->getRecordStruct(fileItem, ffd.cFileName, oldPath.c_str());
+			this->treeItemsRecord.push_back(treeRecord);
 			//-------------------------
 
-			this->_fileTree->addTreeItem(treeItem);
+			//this->_fileTree->addTreeItem(treeItem);
 			//-------------------------------------
 
 			
@@ -351,21 +345,6 @@ HTREEITEM MY_FILES::FILE_TREE::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int n
 	return hPrev;
 }
 
-LP_FILE_TREE_STORE MY_FILES::FILE_TREE::getRecordStruct(HTREEITEM treeitemStruct, LPCWSTR _name, LPCWSTR _path)
-{
-	//keep record of tree items
-	LP_FILE_TREE_STORE itemRecord = new FILE_TREE_STORE;
-	itemRecord->hTreeItem = treeitemStruct;
-
-	LPCWSTR name = new WCHAR[_MAX_PATH];
-	memset(&name, 0, _MAX_PATH);
-
-	wcscpy_s(name, _MAX_PATH, _name);
-
-	itemRecord.name = ffd.cFileName;
-	itemRecord.path = oldPath.c_str();
-	this->treeItemsRecord.push_back(fileItem);
-}
 
 
 
@@ -374,6 +353,22 @@ MY_FILES::FILE_TREE::FILE_TREE()
 {
 	std::cout << "FILE_TREE constructor called" << std::endl;
 	
+}
+
+MY_FILES::LP_FILE_TREE_STORE MY_FILES::FILE_TREE::getRecordStruct(HTREEITEM treeitemStruct, LPCWSTR _name, LPCWSTR _path)
+{
+	//keep record of tree items
+	LP_FILE_TREE_STORE itemRecord = new FILE_TREE_STORE;
+	itemRecord->hTreeItem = treeitemStruct;
+
+	LPWSTR name = new WCHAR[_MAX_PATH];
+	memset(name, 0, _MAX_PATH);
+	wcscpy_s(name, _MAX_PATH, _name);
+
+	itemRecord->name = name;
+	itemRecord->path = nullptr;
+
+	return itemRecord;
 }
 
 errno_t MY_FILES::FILE_TREE::addTreeItem(FILE_TREE_STRUCT treeItem)
@@ -495,8 +490,11 @@ errno_t MY_FILES::FILE_TREE::getTreeItemsRecord(HTREEITEM _hTreeItem)
 
 	for (size_t i = 0; i < this->treeItemsRecord.size(); i++)
 	{
-		if (this->treeItemsRecord[i] == _hTreeItem) {
+		if (this->treeItemsRecord[i]->hTreeItem == _hTreeItem) {
 			LOG(L"item record found...........................");
+			LOG(this->treeItemsRecord[i]->name);
+			LOG(this->treeItemsRecord[i]->path);
+			LOG(L"............................................");
 			return TASK_SUCCESS;
 		}
 	}
