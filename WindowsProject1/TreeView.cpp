@@ -337,11 +337,19 @@ errno_t TreeView::createContextMenuPopUp(MY_FILES::FILE_TYPE _fileType)
     HMENU hPopupMenu = CreatePopupMenu();
 
     if (_fileType == MY_FILES::FILE_TYPE::DIR) {
-        InsertMenu(hPopupMenu, 0, MF_BYPOSITION | MF_STRING, 0, L"Dir");
+        AppendMenu(hPopupMenu, MF_STRING, 0, L"Dir");
+        AppendMenu(hPopupMenu, MF_STRING, 0, L"Add New File");
+        
     }
     else {
-        InsertMenu(hPopupMenu, 0, MF_BYPOSITION | MF_STRING, 0, L"File");
+        AppendMenu(hPopupMenu, MF_STRING, 0, L"File");
     }
+
+    AppendMenu(hPopupMenu, MF_STRING, 0, L"Copy");
+    AppendMenu(hPopupMenu, MF_STRING, 0, L"Move");
+    AppendMenu(hPopupMenu, MF_STRING, 0, L"Rename");
+    AppendMenu(hPopupMenu, MF_STRING, 0, L"Delete");
+    AppendMenu(hPopupMenu, MF_STRING, 0, L"Properties");
 
     SetForegroundWindow(this->_hwndSelf);
 
