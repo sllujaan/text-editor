@@ -316,19 +316,33 @@ errno_t TreeView::handleRightClick(LPARAM lParam)
     HTREEITEM hItem = TreeView_GetNextItem(this->_hwndTV, 0, TVGN_DROPHILITE);
     if (hItem) {
         TreeView_SelectItem(this->_hwndTV, hItem);
-        this->findTreeViewItemRecord(hItem);
+        MY_FILES::LP_FILE_TREE_STORE treeItemRecord = this->findTreeViewItemRecord(hItem);
+        if (treeItemRecord == nullptr)
+            return TASK_FAILURE;
+
+        if(treeItemRecord->fileType == MY_FILES::FILE_TYPE::DIR)
+            this->createContextMenuPopUp(MY_FILES::FILE_TYPE::DIR);
+        else
+            this->createContextMenuPopUp(MY_FILES::FILE_TYPE::FILE);
     }
 
-    this->createContextMenuPopUp();
+    
     
     return TASK_SUCCESS;
 }
 
-errno_t TreeView::createContextMenuPopUp()
+errno_t TreeView::createContextMenuPopUp(MY_FILES::FILE_TYPE _fileType)
 {
+
     HMENU hPopupMenu = CreatePopupMenu();
-    InsertMenu(hPopupMenu, 0, MF_BYPOSITION | MF_STRING, 0, L"Exit");
-    InsertMenu(hPopupMenu, 0, MF_BYPOSITION | MF_STRING, 9, L"Play");
+
+    if (_fileType == MY_FILES::FILE_TYPE::DIR) {
+        InsertMenu(hPopupMenu, 0, MF_BYPOSITION | MF_STRING, 0, L"Dir");
+    }
+    else {
+        InsertMenu(hPopupMenu, 0, MF_BYPOSITION | MF_STRING, 0, L"File");
+    }
+
     SetForegroundWindow(this->_hwndSelf);
 
     //get cursor position
@@ -500,9 +514,11 @@ void TreeView::FindExtension()
     LOG_WCHAR(extension);
 }
 
-errno_t TreeView::findTreeViewItemRecord(HTREEITEM _hTreeItem)
+MY_FILES::LP_FILE_TREE_STORE TreeView::findTreeViewItemRecord(HTREEITEM _hTreeItem)
 {
-    return this->_fileTree.getTreeItemsRecord(_hTreeItem);
+    return this->_fileTree.getTreeItemRecord(_hTreeItem);
+    
+
 }
 
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)

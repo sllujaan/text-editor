@@ -47,12 +47,12 @@ private:
 	BOOL InitTreeViewImageLists(HWND hwndTV);
 	HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
 	errno_t handleRightClick(LPARAM lParam);
-	errno_t createContextMenuPopUp();
+	errno_t createContextMenuPopUp(MY_FILES::FILE_TYPE);
 	errno_t handleTVItemSelectChange();
 	errno_t watchDir();
 	void handleChangeJournals();
 	void FindExtension();
-	errno_t findTreeViewItemRecord(HTREEITEM _hTreeItem);
+	MY_FILES::LP_FILE_TREE_STORE findTreeViewItemRecord(HTREEITEM _hTreeItem);
 
 public:
 	TreeView() : WindowControlsEx(NULL, 0) {}

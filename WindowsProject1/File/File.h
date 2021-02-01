@@ -123,7 +123,8 @@ namespace  MY_FILES {
 		void print();
 		void printCashed();
 
-		errno_t getTreeItemsRecord(HTREEITEM _hTreeItem);
+		LP_FILE_TREE_STORE getTreeItemRecord(HTREEITEM _hTreeItem);
+
 
 	};
 }

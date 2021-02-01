@@ -492,7 +492,7 @@ void MY_FILES::FILE_TREE::printCashed()
 	}
 }
 
-errno_t MY_FILES::FILE_TREE::getTreeItemsRecord(HTREEITEM _hTreeItem)
+MY_FILES::LP_FILE_TREE_STORE MY_FILES::FILE_TREE::getTreeItemRecord(HTREEITEM _hTreeItem)
 {
 
 	
@@ -500,14 +500,22 @@ errno_t MY_FILES::FILE_TREE::getTreeItemsRecord(HTREEITEM _hTreeItem)
 	for (size_t i = 0; i < this->treeItemsRecord.size(); i++)
 	{
 		if (this->treeItemsRecord[i]->hTreeItem == _hTreeItem) {
-			LOG(L"item record found...........................");
+			return treeItemsRecord[i];
+
+			/*LOG(L"item record found...........................");
 			LOG(this->treeItemsRecord[i]->name);
 			LOG(this->treeItemsRecord[i]->path);
-			LOG(L"............................................");
-			return TASK_SUCCESS;
+			if (this->treeItemsRecord[i]->fileType == FILE_TYPE::DIR) {
+				LOG(L"dir");
+			}
+			else {
+				LOG(L"file");
+			}
+
+			LOG(L"............................................");*/
 		}
 	}
-	return TASK_FAILURE;
+	return nullptr;
 }
 
 
