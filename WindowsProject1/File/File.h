@@ -23,11 +23,14 @@ const wchar_t* getWC(const char* c);
 
 namespace  MY_FILES {
 
-	struct FILE_TREE_STORE {
+	typedef struct FILE_TREE_STORE {
 		HTREEITEM hTreeItem;
-		LPCWSTR name;
-		LPCWSTR path;
-	};
+		LPWSTR name;
+		LPWSTR path;
+
+		~FILE_TREE_STORE();
+
+	} *LP_FILE_TREE_STORE;
 
 	struct FILE_TREE_STRUCT {
 		LPCWSTR name;
@@ -71,13 +74,15 @@ namespace  MY_FILES {
 		TREEVIEW_WIN32 _treeViewWin32;
 
 		//tree items record
-		std::vector<HTREEITEM> treeItemsRecord;
+		std::vector<FILE_TREE_STORE> treeItemsRecord;
 		
 		
 		errno_t addTreeCach(size_t level, FILE_TREE_STRUCT& _tree);
 		errno_t createPushTreeCach(size_t level, FILE_TREE_STRUCT& _tree);
 		BOOL isItemExists(std::vector<FILE_TREE_STRUCT*>& tree, LPCWSTR name);
 		HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
+		
+		LP_FILE_TREE_STORE getRecordStruct(HTREEITEM treeitemStruct, LPCWSTR _name, LPCWSTR _path);
 
 	public:
 		FILE_TREE();

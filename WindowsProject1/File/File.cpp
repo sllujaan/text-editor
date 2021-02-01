@@ -351,6 +351,25 @@ HTREEITEM MY_FILES::FILE_TREE::AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int n
 	return hPrev;
 }
 
+LP_FILE_TREE_STORE MY_FILES::FILE_TREE::getRecordStruct(HTREEITEM treeitemStruct, LPCWSTR _name, LPCWSTR _path)
+{
+	//keep record of tree items
+	LP_FILE_TREE_STORE itemRecord = new FILE_TREE_STORE;
+	itemRecord->hTreeItem = treeitemStruct;
+
+	LPCWSTR name = new WCHAR[_MAX_PATH];
+	memset(&name, 0, _MAX_PATH);
+
+	wcscpy_s(name, _MAX_PATH, _name);
+
+	itemRecord.name = ffd.cFileName;
+	itemRecord.path = oldPath.c_str();
+	this->treeItemsRecord.push_back(fileItem);
+}
+
+
+
+
 MY_FILES::FILE_TREE::FILE_TREE()
 {
 	std::cout << "FILE_TREE constructor called" << std::endl;
@@ -518,4 +537,11 @@ BOOL MY_FILES::TREEVIEW_WIN32::operator==(std::nullptr_t nullStruct)
 		return TRUE;
 	
 	return FALSE;
+}
+
+MY_FILES::FILE_TREE_STORE::~FILE_TREE_STORE()
+{
+	delete hTreeItem;
+	delete name;
+	delete path;
 }
