@@ -23,6 +23,12 @@ const wchar_t* getWC(const char* c);
 
 namespace  MY_FILES {
 
+	struct FILE_TREE_STORE {
+		HTREEITEM hTreeItem;
+		LPCWSTR name;
+		LPCWSTR path;
+	};
+
 	struct FILE_TREE_STRUCT {
 		LPCWSTR name;
 		LPCWSTR parentName;
@@ -63,6 +69,9 @@ namespace  MY_FILES {
 
 		//tree view handles win32
 		TREEVIEW_WIN32 _treeViewWin32;
+
+		//tree items record
+		std::vector<HTREEITEM> treeItemsRecord;
 		
 		
 		errno_t addTreeCach(size_t level, FILE_TREE_STRUCT& _tree);
@@ -95,6 +104,8 @@ namespace  MY_FILES {
 		
 		void print();
 		void printCashed();
+
+		errno_t getTreeItemsRecord(HTREEITEM _hTreeItem);
 
 	};
 }

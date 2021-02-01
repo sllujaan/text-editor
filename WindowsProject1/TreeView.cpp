@@ -316,6 +316,7 @@ errno_t TreeView::handleRightClick(LPARAM lParam)
     HTREEITEM hItem = TreeView_GetNextItem(this->_hwndTV, 0, TVGN_DROPHILITE);
     if (hItem) {
         TreeView_SelectItem(this->_hwndTV, hItem);
+        this->findTreeViewItemRecord(hItem);
     }
 
     this->createContextMenuPopUp();
@@ -499,6 +500,11 @@ void TreeView::FindExtension()
     LOG_WCHAR(extension);
 }
 
+errno_t TreeView::findTreeViewItemRecord(HTREEITEM _hTreeItem)
+{
+    return this->_fileTree.getTreeItemsRecord(_hTreeItem);
+}
+
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
 {
 
@@ -568,20 +574,20 @@ errno_t TreeView::initWindow()
     //OutputDebugStringW(CAT_NAME("aaa", "eeeee"));
     LOG(CAT_NAME("aaa", "eeeee"));
 
-    MY_FILES::FILE_TREE _fileTree;
+    
 
     MY_FILES::TREEVIEW_WIN32 _treeViewWin32Strct = { };
     _treeViewWin32Strct._hwndTV = this->_hwndTV;
     _treeViewWin32Strct.imgIndex_folderClosed = this->imgIndex_folderClosed;
     _treeViewWin32Strct.imgIndex_folderOpen = this->imgIndex_folderOpen;
 
-    _fileTree.setTreeViewHadlesWin32(_treeViewWin32Strct);
+    this->_fileTree.setTreeViewHadlesWin32(_treeViewWin32Strct);
     LPCWSTR path1 = L"C:\\Users\\SALMAN-ALTAF\\Desktop\\samples";
     LPCWSTR path2 = L"C:\\Users\\SALMAN-ALTAF\\Downloads";
-    _fileTree.readDirToTree(path2);
+    this->_fileTree.readDirToTree(path2);
 
 
-
+    LOG_INT(1);
 
     /*_fileTree.initTreeCach();
 

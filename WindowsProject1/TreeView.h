@@ -19,12 +19,6 @@
 using namespace std;
 
 
-struct FILE_TREE_STORE {
-	HTREEITEM hTreeItem;
-	LPCWSTR name;
-	LPCWSTR parentName;
-};
-
 
 class TreeView : public WindowControlsEx {
 
@@ -36,6 +30,8 @@ private:
 	INT imgIndex_folderClosed = 0;
 	thread _thread1;
 	HANDLE _hChangeHandle[2];
+
+	MY_FILES::FILE_TREE _fileTree;
 	
 
 
@@ -56,6 +52,7 @@ private:
 	errno_t watchDir();
 	void handleChangeJournals();
 	void FindExtension();
+	errno_t findTreeViewItemRecord(HTREEITEM _hTreeItem);
 
 public:
 	TreeView() : WindowControlsEx(NULL, 0) {}

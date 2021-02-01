@@ -155,6 +155,15 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 					subLevel = 2;
 				}
 				HTREEITEM dirItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, subLevel, _hTreeItem, this->_treeViewWin32.imgIndex_folderClosed);
+				
+				//keep record of tree items
+				FILE_TREE_STORE itemRecord = {};
+				itemRecord.hTreeItem = dirItem;
+				itemRecord.name = ffd.cFileName;
+				itemRecord.path = oldPath.c_str();
+				this->treeItemsRecord.push_back(dirItem);
+				//-------------------------
+				
 				this->readDirToTree(newPath.c_str(), level + 1, dirItem);
 			}
 
@@ -176,6 +185,14 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 				subLevel = 2;
 			}
 			HTREEITEM fileItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, subLevel, _hTreeItem, this->_treeViewWin32.imgIndex_folderOpen);
+
+			//keep record of tree items
+			FILE_TREE_STORE itemRecord = {};
+			itemRecord.hTreeItem = fileItem;
+			itemRecord.name = ffd.cFileName;
+			itemRecord.path = oldPath.c_str();
+			this->treeItemsRecord.push_back(fileItem);
+			//-------------------------
 
 			this->_fileTree->addTreeItem(treeItem);
 			//-------------------------------------
@@ -451,6 +468,22 @@ void MY_FILES::FILE_TREE::printCashed()
 		std::cout << "structure address:\t" << this->treeCached[i].tree[0] << std::endl;*/
 	}
 }
+
+errno_t MY_FILES::FILE_TREE::getTreeItemsRecord(HTREEITEM _hTreeItem)
+{
+
+	
+
+	for (size_t i = 0; i < this->treeItemsRecord.size(); i++)
+	{
+		if (this->treeItemsRecord[i] == _hTreeItem) {
+			LOG(L"item record found...........................");
+			return TASK_SUCCESS;
+		}
+	}
+	return TASK_FAILURE;
+}
+
 
 MY_FILES::FILE_TREE_STRUCT::operator bool()
 {
