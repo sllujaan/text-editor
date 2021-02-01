@@ -157,7 +157,7 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 				HTREEITEM dirItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, subLevel, _hTreeItem, this->_treeViewWin32.imgIndex_folderClosed);
 				
 				//keep record of tree items
-				LP_FILE_TREE_STORE treeRecord = this->getRecordStruct(dirItem, ffd.cFileName, oldPath.c_str());
+				LP_FILE_TREE_STORE treeRecord = this->getRecordStruct(dirItem, ffd.cFileName, oldPath.c_str(), FILE_TYPE::DIR);
 				this->treeItemsRecord.push_back(treeRecord);
 				//-------------------------
 				
@@ -184,7 +184,7 @@ errno_t MY_FILES::FILE_TREE::readDirToTree(const wchar_t* path, unsigned int lev
 			HTREEITEM fileItem = this->AddItemToTree(this->_treeViewWin32._hwndTV, ffd.cFileName, subLevel, _hTreeItem, this->_treeViewWin32.imgIndex_folderOpen);
 
 			//keep record of tree items
-			LP_FILE_TREE_STORE treeRecord = this->getRecordStruct(fileItem, ffd.cFileName, oldPath.c_str());
+			LP_FILE_TREE_STORE treeRecord = this->getRecordStruct(fileItem, ffd.cFileName, oldPath.c_str(), FILE_TYPE::FILE);
 			this->treeItemsRecord.push_back(treeRecord);
 			//-------------------------
 
@@ -355,18 +355,27 @@ MY_FILES::FILE_TREE::FILE_TREE()
 	
 }
 
-MY_FILES::LP_FILE_TREE_STORE MY_FILES::FILE_TREE::getRecordStruct(HTREEITEM treeitemStruct, LPCWSTR _name, LPCWSTR _path)
+MY_FILES::LP_FILE_TREE_STORE MY_FILES::FILE_TREE::getRecordStruct(HTREEITEM treeitemStruct, LPCWSTR _name, LPCWSTR _path, FILE_TYPE fileType)
 {
 	//keep record of tree items
 	LP_FILE_TREE_STORE itemRecord = new FILE_TREE_STORE;
 	itemRecord->hTreeItem = treeitemStruct;
 
+	//allocate memory for name
 	LPWSTR name = new WCHAR[_MAX_PATH];
 	memset(name, 0, _MAX_PATH);
 	wcscpy_s(name, _MAX_PATH, _name);
 
+	//allocate memory for path
+	size_t pathLen = wcslen(_path);
+	LPWSTR path = new WCHAR[pathLen + 1];
+	memset(path, 0, pathLen + 1);
+	wcscpy_s(path, pathLen + 1, _path);	
+
+	//assign the values to record structur.
 	itemRecord->name = name;
-	itemRecord->path = nullptr;
+	itemRecord->path = path;
+	itemRecord->fileType = fileType;
 
 	return itemRecord;
 }

@@ -24,12 +24,21 @@ const wchar_t* getWC(const char* c);
 
 
 
+
+
+
 namespace  MY_FILES {
+
+	enum FILE_TYPE {
+		FILE,
+		DIR
+	};
 
 	typedef struct FILE_TREE_STORE {
 		HTREEITEM hTreeItem;
 		LPWSTR name;
 		LPWSTR path;
+		FILE_TYPE fileType;
 
 		~FILE_TREE_STORE();
 
@@ -86,7 +95,7 @@ namespace  MY_FILES {
 		BOOL isItemExists(std::vector<FILE_TREE_STRUCT*>& tree, LPCWSTR name);
 		HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
 		
-		LP_FILE_TREE_STORE getRecordStruct(HTREEITEM treeitemStruct, LPCWSTR _name, LPCWSTR _path);
+		LP_FILE_TREE_STORE getRecordStruct(HTREEITEM treeitemStruct, LPCWSTR _name, LPCWSTR _path, FILE_TYPE fileType);
 
 	public:
 		FILE_TREE();
