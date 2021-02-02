@@ -32,6 +32,9 @@ private:
 	HANDLE _hChangeHandle[2];
 
 	MY_FILES::FILE_TREE _fileTree;
+
+	//tree item selected record.
+	MY_FILES::LP_FILE_TREE_STORE _treeItemSelectedRecord;
 	
 
 
@@ -47,6 +50,7 @@ private:
 	BOOL InitTreeViewImageLists(HWND hwndTV);
 	HTREEITEM AddItemToTree(HWND hwndTV, LPTSTR lpszItem, int nLevel, HTREEITEM _hPrev, INT imageIndex);
 	errno_t handleRightClick(LPARAM lParam);
+	errno_t initRightClickMenu(MY_FILES::LP_FILE_TREE_STORE treeItemRecord);
 	errno_t createContextMenuPopUp(MY_FILES::FILE_TYPE);
 	errno_t handleTVItemSelectChange();
 	errno_t watchDir();

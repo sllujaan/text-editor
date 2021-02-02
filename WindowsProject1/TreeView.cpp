@@ -316,19 +316,41 @@ errno_t TreeView::handleRightClick(LPARAM lParam)
     HTREEITEM hItem = TreeView_GetNextItem(this->_hwndTV, 0, TVGN_DROPHILITE);
     if (hItem) {
         TreeView_SelectItem(this->_hwndTV, hItem);
-        MY_FILES::LP_FILE_TREE_STORE treeItemRecord = this->findTreeViewItemRecord(hItem);
-        if (treeItemRecord == nullptr)
-            return TASK_FAILURE;
 
-        if(treeItemRecord->fileType == MY_FILES::FILE_TYPE::DIR)
-            this->createContextMenuPopUp(MY_FILES::FILE_TYPE::DIR);
-        else
-            this->createContextMenuPopUp(MY_FILES::FILE_TYPE::FILE);
+        MY_FILES::LP_FILE_TREE_STORE treeItemRecord = this->findTreeViewItemRecord(hItem);
+
+        if (treeItemRecord == nullptr) return TASK_FAILURE;
+
+        this->_treeItemSelectedRecord = treeItemRecord;
+
+        this->initRightClickMenu(this->_treeItemSelectedRecord);
     }
+
+    hItem = TreeView_GetSelection(this->_hwndTV);
+
+    if (hItem) {
+
+        this->initRightClickMenu(this->_treeItemSelectedRecord);
+    }
+
 
     
     
     return TASK_SUCCESS;
+}
+
+errno_t TreeView::initRightClickMenu(MY_FILES::LP_FILE_TREE_STORE treeItemRecord)
+{
+    if (treeItemRecord == nullptr) return TASK_FAILURE;
+
+    if (treeItemRecord->fileType == MY_FILES::FILE_TYPE::DIR) {
+        this->createContextMenuPopUp(MY_FILES::FILE_TYPE::DIR);
+        return TASK_SUCCESS;
+    }
+    else {
+        this->createContextMenuPopUp(MY_FILES::FILE_TYPE::FILE);
+        return TASK_SUCCESS;
+    }
 }
 
 errno_t TreeView::createContextMenuPopUp(MY_FILES::FILE_TYPE _fileType)
