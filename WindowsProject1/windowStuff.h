@@ -1431,6 +1431,10 @@ void showFeatureNotAvailable() {
 
 
 
+void handlePainting(HWND _hwnd) {
+
+}
+
 
 
 

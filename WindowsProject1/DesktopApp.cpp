@@ -246,8 +246,22 @@ int CALLBACK WinMain(
 //  WM_DESTROY  - post a quit message and return
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    PAINTSTRUCT ps;
-    HDC hdc;
+    PAINTSTRUCT ps = { 0 };
+    ps.rcPaint.left = 0;
+    ps.rcPaint.top = 0;
+    ps.rcPaint.right = 20;
+    ps.rcPaint.bottom = 20;
+
+    RECT _rectPoints = { 0 };
+    _rectPoints.left = 0;
+    _rectPoints.left = 0;
+    _rectPoints.top = 0;
+    _rectPoints.right = 200;
+    _rectPoints.bottom = 20;
+
+    HFONT _hFont, _hOldFont;
+
+    HDC hdc = nullptr;
     TCHAR greeting[] = _T("Hello, Windows desktop!");
     //wchar_t msg[50];
     int ID_CLOSE = NULL;
@@ -489,7 +503,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_PAINT:
+
+        
+
         hdc = BeginPaint(hWnd, &ps);
+
+        // All painting occurs here, between BeginPaint and EndPaint.
+        
+        FillRect(hdc, &_rectPoints, (HBRUSH)(COLOR_WINDOW + 8));
+        //FillRect(hdc, &_rectPoints, (HBRUSH)(COLOR_WINDOW + 2));
+        SetBkMode(hdc, TRANSPARENT);
+        //SetTextColor(hdc, RGB(252, 186, 3));
+
+        //DrawText(hdc, L"File Explorer", -1, &_rectPoints, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+
+        // Retrieve a handle to the variable stock font.  
+        _hFont = (HFONT)GetStockObject(ANSI_VAR_FONT);
+
+        if (_hOldFont = (HFONT)SelectObject(hdc, _hFont))
+        {
+            DrawText(hdc, L"File Explorer", -1, &_rectPoints, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+            // Display the text string.  
+            //TextOut(hdc, 10, 50, L"Sample ANSI_VAR_FONT text", 25);
+
+            // Restore the original font.        
+            SelectObject(hdc, _hOldFont);
+        }
+
+
         EndPaint(hWnd, &ps);
         break;
 
