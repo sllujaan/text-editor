@@ -362,19 +362,34 @@ MY_FILES::LP_FILE_TREE_STORE MY_FILES::FILE_TREE::getRecordStruct(HTREEITEM tree
 	itemRecord->hTreeItem = treeitemStruct;
 
 	//allocate memory for name
-	LPWSTR name = new WCHAR[_MAX_PATH];
-	memset(name, 0, _MAX_PATH);
-	wcscpy_s(name, _MAX_PATH, _name);
+	size_t nameLen = wcslen(_name);
+	LPWSTR name = new WCHAR[nameLen+1];
+	memset(name, 0, nameLen + 1);
+	wcscpy_s(name, nameLen + 1, _name);
 
 	//allocate memory for path
 	size_t pathLen = wcslen(_path);
 	LPWSTR path = new WCHAR[pathLen + 1];
 	memset(path, 0, pathLen + 1);
-	wcscpy_s(path, pathLen + 1, _path);	
+	wcscpy_s(path, pathLen + 1, _path);
+
+
+	//allocate memory for fullPath
+	size_t fullPathLen = pathLen + nameLen + 3;
+	LPWSTR fullPath = new WCHAR[fullPathLen + 1];
+	memset(fullPath, 0, fullPathLen + 1);
+
+	wcscpy_s(fullPath, pathLen + 1 , _path);
+	wcscat_s(fullPath, fullPathLen + 1, L"\\");
+	wcscat_s(fullPath, fullPathLen + 1, _name);
+
+
+
 
 	//assign the values to record structur.
 	itemRecord->name = name;
 	itemRecord->path = path;
+	itemRecord->fullPath = fullPath;
 	itemRecord->fileType = fileType;
 
 	return itemRecord;

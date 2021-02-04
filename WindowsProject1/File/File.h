@@ -38,6 +38,7 @@ namespace  MY_FILES {
 		HTREEITEM hTreeItem;
 		LPWSTR name;
 		LPWSTR path;
+		LPWSTR fullPath;
 		FILE_TYPE fileType;
 
 		~FILE_TREE_STORE();

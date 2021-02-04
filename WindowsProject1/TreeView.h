@@ -20,6 +20,9 @@ using namespace std;
 
 
 
+#define OPEN_IN_EXPLORER 0xf032
+#define FILE_PROPERTIES 0xf033
+
 class TreeView : public WindowControlsEx {
 
 
@@ -57,6 +60,8 @@ private:
 	void handleChangeJournals();
 	void FindExtension();
 	MY_FILES::LP_FILE_TREE_STORE findTreeViewItemRecord(HTREEITEM _hTreeItem);
+
+	errno_t handleFilePropertiesDialog(LPCWSTR fileFullPath);
 
 public:
 	TreeView() : WindowControlsEx(NULL, 0) {}

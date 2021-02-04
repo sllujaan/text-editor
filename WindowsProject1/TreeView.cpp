@@ -4,6 +4,7 @@ LRESULT TreeView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     LPMINMAXINFO mmi = nullptr;
 
+
     switch (message)
     {
     case WM_NOTIFY:
@@ -27,6 +28,26 @@ LRESULT TreeView::runProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         mmi->ptMinTrackSize.y = 200;
         mmi->ptMaxTrackSize.x = 800;
         mmi->ptMaxTrackSize.y = 800;
+        break;
+
+    case WM_COMMAND:
+
+        switch (wParam)
+        {
+        case OPEN_IN_EXPLORER:
+            LOG_WCHAR(L"open in explorer");
+            //ShellExecute(NULL, L"explore", L"./select, DATE", NULL, NULL, SW_SHOWNORMAL);
+            break;
+        case FILE_PROPERTIES:
+            if (this->_treeItemSelectedRecord != nullptr) {
+                this->handleFilePropertiesDialog(this->_treeItemSelectedRecord->fullPath);
+            }
+            
+            break;
+        default:
+            break;
+        }
+
         break;
 
     case WM_CLOSE:
@@ -324,6 +345,8 @@ errno_t TreeView::handleRightClick(LPARAM lParam)
         this->_treeItemSelectedRecord = treeItemRecord;
 
         this->initRightClickMenu(this->_treeItemSelectedRecord);
+        
+        return TASK_SUCCESS;
     }
 
     hItem = TreeView_GetSelection(this->_hwndTV);
@@ -331,6 +354,7 @@ errno_t TreeView::handleRightClick(LPARAM lParam)
     if (hItem) {
 
         this->initRightClickMenu(this->_treeItemSelectedRecord);
+        //ShellExecute(NULL, L"explore", L"C:\\Users\\SALMAN-ALTAF\\Desktop\\dd.txt", NULL, NULL, SW_SHOWNORMAL);
     }
 
 
@@ -367,11 +391,12 @@ errno_t TreeView::createContextMenuPopUp(MY_FILES::FILE_TYPE _fileType)
         AppendMenu(hPopupMenu, MF_STRING, 0, L"File");
     }
 
+    AppendMenu(hPopupMenu, MF_STRING, OPEN_IN_EXPLORER, L"Open in file explorer");
     AppendMenu(hPopupMenu, MF_STRING, 0, L"Copy");
     AppendMenu(hPopupMenu, MF_STRING, 0, L"Move");
     AppendMenu(hPopupMenu, MF_STRING, 0, L"Rename");
     AppendMenu(hPopupMenu, MF_STRING, 0, L"Delete");
-    AppendMenu(hPopupMenu, MF_STRING, 0, L"Properties");
+    AppendMenu(hPopupMenu, MF_STRING, FILE_PROPERTIES, L"Properties");
 
     SetForegroundWindow(this->_hwndSelf);
 
@@ -549,6 +574,19 @@ MY_FILES::LP_FILE_TREE_STORE TreeView::findTreeViewItemRecord(HTREEITEM _hTreeIt
     return this->_fileTree.getTreeItemRecord(_hTreeItem);
     
 
+}
+
+errno_t TreeView::handleFilePropertiesDialog(LPCWSTR fileFullPath)
+{
+    SHELLEXECUTEINFO info = { 0 };
+    info.cbSize = sizeof info;
+    info.lpFile = fileFullPath;
+    info.nShow = SW_SHOW;
+    info.fMask = SEE_MASK_INVOKEIDLIST;
+    info.lpVerb = L"properties";
+
+    ShellExecuteEx(&info);
+    return TASK_SUCCESS;
 }
 
 TreeView::TreeView(HWND hwnd, int nCmdShow) : WindowControlsEx(hwnd, nCmdShow)
